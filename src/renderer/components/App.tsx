@@ -4,8 +4,6 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 import theme from "../theme";
 import MainPage from "@components/pages/MainPage";
-import Page1 from "../components/Page1.tsx";
-import Greetings from "./Greetings";
 import { HashRouter, Link, Route, Switch } from "react-router-dom";
 export default function App(): JSX.Element {
   return (
