@@ -3,8 +3,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 import theme from "../theme";
-import { HashRouter, Route, Switch } from "react-router-dom";
-import MainPage from "./pages/MainPage";
+import { HashRouter, Link, Route, Switch } from "react-router-dom";
+import MainPage from "@components/pages/MainPage";
+import EntrysPage from "./pages/EntrysPage";
 import DatabaseProvider from "../context/database";
 export default function App(): JSX.Element {
   return (
@@ -25,7 +26,7 @@ export default function App(): JSX.Element {
                   <Route exact path="/" component={MainPage} />
                 </Switch>
                 <Switch>
-                  <Route exact path="/page1" component={MainPage} />
+                  <Route exact path="/entrysPage" component={EntrysPage} />
                 </Switch>
               </div>
             </HashRouter>

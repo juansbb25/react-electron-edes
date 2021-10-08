@@ -1,9 +1,11 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
+import { Link } from "react-router-dom";
 type MenuButtonProps = {
   text: string;
+  path: string;
 };
-const MenuButton: React.FC<MenuButtonProps> = ({ text }) => {
+const MenuButton: React.FC<MenuButtonProps> = ({ text, path }) => {
   return (
     <Box
       sx={{
@@ -22,9 +24,11 @@ const MenuButton: React.FC<MenuButtonProps> = ({ text }) => {
         },
       }}
     >
-      <Typography variant="h1" color="black" sx={{}}>
-        {text}
-      </Typography>
+      <Link to={path} style={{ textDecoration: 'none' }}>
+        <Typography variant="h1" color="black" sx={{}}>
+          {text}
+        </Typography>
+      </Link>
     </Box>
   );
 };

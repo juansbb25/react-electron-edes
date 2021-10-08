@@ -13,8 +13,8 @@ const MainPage: React.FC = () => {
           justifyContent: "space-evenly",
         }}
       >
-        <MenuButton text="MENU1" />
-        <MenuButton text="MENU1" />
+        <MenuButton text="Ingresos" path='/entryspage' />
+        <MenuButton text="MENU1" path='/'/>
       </Box>
       <Box
         sx={{
@@ -24,13 +24,13 @@ const MainPage: React.FC = () => {
           justifyContent: "space-evenly",
         }}
       >
-        <MenuButton text="MENU1" />
-        <MenuButton text="MENU1" />
+        <MenuButton text="MENU1" path='/'/>
+        <MenuButton text="MENU1" path='/'/>
       </Box>
       <Box
         sx={{ display: "flex", height: 1 / 3, p: 1, justifyContent: "center" }}
       >
-        <MenuButton text="MENU1" />
+        <MenuButton text="MENU1" path='/'/>
       </Box>
     </Box>
   );
