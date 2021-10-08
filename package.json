@@ -26,6 +26,7 @@
     "@material-ui/core": "5.0.0-alpha.28",
     "@material-ui/icons": "^4.11.2",
     "@types/react-router-dom": "^5.3.1",
+    "lodash": "^4.17.21",
     "formik": "^2.2.9",
     "formik-material-ui": "^4.0.0-alpha.1",
     "lowdb": "^3.0.0",
@@ -36,6 +37,7 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.175",
     "@types/node": "^14.14.41",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",

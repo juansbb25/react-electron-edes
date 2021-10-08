@@ -2,7 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/renderer/components/*"]
+      "@components/*": ["src/renderer/components/*"],
+      "@context/*": ["src/renderer/context/*"],
+      "@models/*": ["src/renderer/models/*"],
+      "@database/*": ["src/database/*"]
     },
     "target": "es2020",
     "module": "commonjs",

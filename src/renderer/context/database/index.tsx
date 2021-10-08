@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useReducer } from "react";
-import { initDatabase } from "./db";
+import React, { createContext, useContext, useReducer } from "react";
+
 import { initialState, reducer } from "./reducer";
 import { TDatabaseDispatch, TDatabaseState } from "./types";
 
@@ -14,11 +14,7 @@ export default function DatabaseProvider({
   children: React.ReactNode;
 }): JSX.Element {
   const [databaseState, dispatch] = useReducer(reducer, initialState);
-  useEffect(() => {
-    (async () => {
-      await initDatabase();
-    })();
-  }, []);
+
   return (
     <DatabaseState.Provider value={{ ...databaseState }}>
       <DatabaseDispatches.Provider value={dispatch}>
