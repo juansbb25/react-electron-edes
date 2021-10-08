@@ -1,6 +1,7 @@
 import { Box, Button, Stack, TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 import React from "react";
+import * as yup from "yup";
 
 type InputsFormProps = {
   items: {
@@ -10,10 +11,17 @@ type InputsFormProps = {
 };
 const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
   const [inputText, setInputText] = React.useState("");
+  const validationSchema = yup.object({
+    email: yup
+      .string()
+      .email("Enter a valid email")
+      .required("Email is required"),
+  });
   const formik = useFormik({
     initialValues: {
-      email: "",
+      email: "hola",
     },
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
@@ -24,12 +32,12 @@ const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
         {items.map((item, i) => {
           return (
             <TextField
-              key={i}
+              key={item.id}
               fullWidth
               id={item.id}
               label={item.label}
               value={formik.values.email}
-              onChange={formik.handleChange}
+              onChange={formik.handleChange("email")}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
               focused
