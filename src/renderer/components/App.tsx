@@ -4,7 +4,8 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 import theme from "../theme";
 import { HashRouter, Link, Route, Switch } from "react-router-dom";
-import MainPage from "./pages/MainPage";
+import MainPage from "@components/pages/MainPage";
+import EntrysPage from "./pages/EntrysPage";
 export default function App(): JSX.Element {
   return (
     // Setup theme and css baseline for the Material-UI app
@@ -23,7 +24,7 @@ export default function App(): JSX.Element {
                 <Route exact path="/" component={MainPage} />
               </Switch>
               <Switch>
-                <Route exact path="/page1" component={MainPage} />
+                <Route exact path="/entrysPage" component={EntrysPage} />
               </Switch>
             </div>
           </HashRouter>
