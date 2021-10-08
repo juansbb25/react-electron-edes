@@ -1,12 +1,18 @@
 import * as path from "path";
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 const rootPath = path.resolve(__dirname, "..");
 
 const config = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     mainFields: ["main", "module", "browser"],
+    plugins: [
+      new TsconfigPathsPlugin({
+        /* options: see below */
+        // https://github.com/dividab/tsconfig-paths-webpack-plugin
+      }),
+    ],
   },
   entry: path.resolve(rootPath, "src/renderer", "index.tsx"),
   target: "electron-renderer",

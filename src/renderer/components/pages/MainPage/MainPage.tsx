@@ -1,6 +1,6 @@
+import MenuButton from "@components/atoms/MenuButton";
 import { Box } from "@material-ui/core";
 import React from "react";
-import MenuButton from "../../atoms/MenuButton";
 
 const MainPage: React.FC = () => {
   return (
