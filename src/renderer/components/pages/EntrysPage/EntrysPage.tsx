@@ -4,8 +4,8 @@ import React from "react";
 type EntrysPageProps = {};
 const EntrysPage: React.FC<EntrysPageProps> = () => {
   return (
-    <UILayout>
-      <InputsForm items={["1", "2", "3", "4", "5", "6", "7"]}></InputsForm>
+    <UILayout title="Ingresos">
+      <InputsForm items={[{ label: "ingresos", id: "ingresos" }]}></InputsForm>
     </UILayout>
   );
 };
