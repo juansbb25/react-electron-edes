@@ -24,8 +24,8 @@ const MenuButton: React.FC<MenuButtonProps> = ({ text, path }) => {
         },
       }}
     >
-      <Link to={path} style={{ textDecoration: 'none' }}>
-        <Typography variant="h1" color="black" sx={{}}>
+      <Link to={path} style={{ textDecoration: "none" }}>
+        <Typography variant="body1" sx={{}}>
           {text}
         </Typography>
       </Link>
