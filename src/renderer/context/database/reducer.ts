@@ -13,7 +13,7 @@ export const reducer = (
 ): TDatabaseState => {
   switch (action.type) {
     case TYPES.SET_EXAMPLE_NAME: {
-      return { ...state, name: action.name };
+      return { ...state };
     }
     default:
       return state;
