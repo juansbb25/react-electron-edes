@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["src/renderer/components/*"]
+      "@components/*": ["src/renderer/components/*"]
     },
     "target": "es2020",
     "module": "commonjs",
