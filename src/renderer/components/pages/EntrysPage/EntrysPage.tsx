@@ -1,10 +1,11 @@
+import InputsForm from "@components/atoms/InputsForm";
 import UILayout from "@components/layout/UILayout";
 import React from "react";
 type EntrysPageProps = {};
 const EntrysPage: React.FC<EntrysPageProps> = () => {
   return (
     <UILayout>
-      <div>this is page1</div>
+      <InputsForm items={["1", "2", "3", "4", "5", "6", "7"]}></InputsForm>
     </UILayout>
   );
 };
