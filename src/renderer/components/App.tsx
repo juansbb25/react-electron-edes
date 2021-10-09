@@ -3,7 +3,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 import theme from "../theme";
-import { HashRouter, Link, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import MainPage from "@components/pages/MainPage";
 import EntrysPage from "./pages/EntrysPage";
 import DatabaseProvider from "../context/database";

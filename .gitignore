@@ -1,3 +1,4 @@
+
 ### macOS ###
 # General
 .DS_Store
@@ -157,3 +158,4 @@ packages
 
 # Local History for Visual Studio Code
 .history/
+package-lock.json
