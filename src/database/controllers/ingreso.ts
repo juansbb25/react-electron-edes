@@ -1,10 +1,23 @@
-import { initDatabase } from "@database/db";
+import { initDatabase, EnhancedDb } from "@database/initDb";
 import { Ingreso } from "@models/Transaccion";
+import { v4 as uuidv4 } from "uuid";
 
-export const createIngreso = async (ingreso: Ingreso): Promise<boolean> => {
+type IngresoInput = Omit<Ingreso, "id">;
+
+const obtainBase = (ingreso: IngresoInput, db: EnhancedDb) => {
+  return db.chain
+    .get("presupuesto")
+    .find({ code: ingreso.dimension })
+    .get("ingresos");
+};
+
+export const createIngreso = async (
+  ingreso: IngresoInput
+): Promise<boolean> => {
   try {
     const db = await initDatabase();
-    db.chain.set(["presupuesto", ingreso.dimension, "ingreso"], ingreso);
+    const id = uuidv4();
+    obtainBase(ingreso, db).push({ ...ingreso, id });
     await db.write();
     return true;
   } catch (error) {
@@ -16,7 +29,7 @@ export const createIngreso = async (ingreso: Ingreso): Promise<boolean> => {
 export const deleteIngreso = async (ingreso: Ingreso): Promise<boolean> => {
   try {
     const db = await initDatabase();
-    db.chain.set(["presupuesto", ingreso.dimension, "ingreso"], ingreso);
+    obtainBase(ingreso, db).remove({ id: ingreso.id });
     await db.write();
     return true;
   } catch (error) {
@@ -28,7 +41,7 @@ export const deleteIngreso = async (ingreso: Ingreso): Promise<boolean> => {
 export const updateIngreso = async (ingreso: Ingreso): Promise<boolean> => {
   try {
     const db = await initDatabase();
-    db.chain.set(["presupuesto", ingreso.dimension, "ingreso"], ingreso);
+    obtainBase(ingreso, db).find({ id: ingreso.id }).assign(ingreso);
     await db.write();
     return true;
   } catch (error) {
@@ -37,12 +50,12 @@ export const updateIngreso = async (ingreso: Ingreso): Promise<boolean> => {
   }
 };
 
-export const getIngreso = async (ingreso: Ingreso): Promise<boolean> => {
+export const getIngresos = async (
+  ingreso: Ingreso
+): Promise<Ingreso[] | false> => {
   try {
     const db = await initDatabase();
-    db.chain.set(["presupuesto", ingreso.dimension, "ingreso"], ingreso);
-    await db.write();
-    return true;
+    return obtainBase(ingreso, db).push(ingreso).value();
   } catch (error) {
     console.error(error);
     return false;

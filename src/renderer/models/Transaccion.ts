@@ -1,4 +1,5 @@
 export interface Transaction {
+  id: string;
   dimension: string;
   programa: string;
   fecha: Date;
