@@ -19,11 +19,11 @@ const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
   });
   const formik = useFormik({
     initialValues: {
-      email: "hola",
+      email: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: (values, actions) => {
+      console.log(JSON.stringify(values, null, 2));
     },
   });
   return (
@@ -36,9 +36,9 @@ const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
               fullWidth
               id={item.id}
               label={item.label}
-              value={formik.values.email}
               onChange={formik.handleChange("email")}
               error={formik.touched.email && Boolean(formik.errors.email)}
+              value={formik.values.email}
               helperText={formik.touched.email && formik.errors.email}
               focused
             />
