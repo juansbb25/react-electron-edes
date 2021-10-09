@@ -2,7 +2,7 @@ import { initDatabase, EnhancedDb } from "@database/initDb";
 import { Ingreso } from "@models/Transaccion";
 import { v4 as uuidv4 } from "uuid";
 
-type IngresoInput = Omit<Ingreso, "id">;
+export type IngresoInput = Omit<Ingreso, "id">;
 
 const obtainBase = (ingreso: IngresoInput, db: EnhancedDb) => {
   return db.chain

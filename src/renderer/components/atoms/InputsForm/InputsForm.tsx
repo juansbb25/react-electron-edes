@@ -1,8 +1,9 @@
 import { Button, Stack, TextField } from "@material-ui/core";
+import DatePicker from "@mui/lab/DatePicker";
 import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
-
+import moment from "moment";
 type Validator = {
   [key: string]: yup.AnyObjectSchema;
 };
@@ -15,19 +16,28 @@ type InputsFormProps = {
     id: string;
     label: string;
     type: "string" | "number" | "date";
-    validator: yup.AnyObjectSchema;
+    validator?: any;
+    initialValue: any;
   }[];
 };
-
+document.addEventListener('keydown', function (event:any) {
+  if (event.keyCode === 13 && event.target.nodeName === 'INPUT') {
+    console.log(event.target.form.elements);
+    var form = event.target.form;
+    var index = Array.prototype.indexOf.call(form, event.target);
+    form.elements[index + 2].focus();
+    event.preventDefault();
+  }
+});
 const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
   const validator: Validator = {};
   items.forEach((item) => {
-    validator[item.id] = item.validator;
+    if (item.validator) validator[item.id] = item.validator;
   });
 
   const initialValues: InitialValue = {};
   items.forEach((item) => {
-    validator[item.id] = item.validator;
+    initialValues[item.id] = item.initialValue;
   });
 
   const validationSchema = yup.object(validator);
@@ -36,7 +46,7 @@ const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
     initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.debug(JSON.stringify(values, null, 2));
+      console.log(JSON.stringify(values, null, 2));
     },
   });
   return (
@@ -44,24 +54,48 @@ const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
       <Stack justifyContent="space-between" spacing={2} alignItems="center">
         {items.map((item) => {
           return (
-            <>
-              {item.type === "string" ||
-                (item.type === "number" && (
-                  <TextField
-                    type={item.type === "number" ? item.type : ""}
-                    key={item.id}
-                    fullWidth
-                    id={item.id}
-                    label={item.label}
-                    onChange={formik.handleChange("email")}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    value={formik.values.email}
-                    helperText={formik.touched.email && formik.errors.email}
-                    focused
-                  />
-                ))}
-              {item.type === "date" && <></>}
-            </>
+            <div
+              key={item.id}
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {(item.type === "string" || item.type === "number") && (
+                <TextField
+                  fullWidth
+                  type={item.type === "number" ? item.type : ""}
+                  id={item.id}
+                  label={item.label}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched[item.id] && Boolean(formik.errors[item.id])
+                  }
+                  value={formik.values[item.id]}
+                  helperText={formik.touched[item.id] && formik.errors[item.id]}
+                  onKeyPress={(e) => {
+                    e.key == "Enter" && e.preventDefault;
+                  }}
+                />
+              )}
+              {item.type === "date" && (
+                <DatePicker
+                  value={formik.values[item.id]}
+                  label={item.label}
+                  onChange={(e) => {
+                    formik.setFieldValue(
+                      item.id,
+                      moment(e).format("DD-MM-YYYY")
+                    );
+                  }}
+                  renderInput={(params: any) => (
+                    <TextField focused fullWidth {...params} />
+                  )}
+                />
+              )}
+            </div>
           );
         })}
         <Button

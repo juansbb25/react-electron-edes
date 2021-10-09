@@ -14,7 +14,7 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
         height: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         alignItems: "center",
         m: "auto",
         overflow: "auto",

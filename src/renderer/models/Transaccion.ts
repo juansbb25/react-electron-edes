@@ -22,7 +22,6 @@ export interface Ingreso extends Transaction {
   numBoucher?: string; //podria ser number
   numDeposito?: string; //podria ser number
   transferencia?: string;
-  observacion?: string;
 }
 
 export interface Gasto extends Transaction {

@@ -6,7 +6,7 @@ import { TextField } from "@material-ui/core";
 type DatePickerFieldProps = {
   name: string;
 };
-export const DatePickerField: React.FC<DatePickerFieldProps> = ({
+export const DatePickerField: React.FC<any> = ({
   ...props
 }) => {
   const { setFieldValue } = useFormikContext();
@@ -20,7 +20,6 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
         setFieldValue(field.name, val);
       }}
       // TODO add explicit type to params
-      renderInput={(params: any) => <TextField {...params} />}
     />
   );
 };
