@@ -4,32 +4,22 @@ import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
 import moment from "moment";
-type Validator = {
-  [key: string]: yup.AnyObjectSchema;
-};
-type InitialValue = {
-  [key: string]: any;
-};
+import { InitialValue, TextFieldProps, Validator } from "./types";
 
 type InputsFormProps = {
-  items: {
-    id: string;
-    label: string;
-    type: "string" | "number" | "date";
-    validator?: any;
-    initialValue: any;
-  }[];
+  onSubmit: (values: InitialValue) => void;
+  items: TextFieldProps[];
 };
-document.addEventListener('keydown', function (event:any) {
-  if (event.keyCode === 13 && event.target.nodeName === 'INPUT') {
-    console.log(event.target.form.elements);
-    var form = event.target.form;
-    var index = Array.prototype.indexOf.call(form, event.target);
+
+document.addEventListener("keydown", function (event: any) {
+  if (event.keyCode === 13 && event.target.nodeName === "INPUT") {
+    const form = event.target.form;
+    const index = Array.prototype.indexOf.call(form, event.target);
     form.elements[index + 2].focus();
     event.preventDefault();
   }
 });
-const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
+const InputsForm: React.FC<InputsFormProps> = ({ items, onSubmit }) => {
   const validator: Validator = {};
   items.forEach((item) => {
     if (item.validator) validator[item.id] = item.validator;
@@ -45,9 +35,7 @@ const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
   const formik = useFormik({
     initialValues,
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-    },
+    onSubmit: onSubmit,
   });
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: "100%", padding: 40 }}>
@@ -91,7 +79,13 @@ const InputsForm: React.FC<InputsFormProps> = ({ items }) => {
                     );
                   }}
                   renderInput={(params: any) => (
-                    <TextField focused fullWidth {...params} />
+                    <TextField
+                      fullWidth
+                      {...params}
+                      helperText={
+                        formik.touched[item.id] && formik.errors[item.id]
+                      }
+                    />
                   )}
                 />
               )}

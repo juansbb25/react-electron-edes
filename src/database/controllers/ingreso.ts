@@ -17,7 +17,9 @@ export const createIngreso = async (
   try {
     const db = await initDatabase();
     const id = uuidv4();
-    obtainBase(ingreso, db).push({ ...ingreso, id });
+    obtainBase(ingreso, db)
+      .push({ ...ingreso, id })
+      .value();
     await db.write();
     return true;
   } catch (error) {

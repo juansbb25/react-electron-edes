@@ -1,3 +1,32 @@
 {
-  "name": ""
+  "presupuesto": [
+    {
+      "code": "123",
+      "ingresos": [
+        {
+          "dimension": "123",
+          "programa": "",
+          "fecha": "09-10-2021",
+          "factura": "1212",
+          "proveedor": "",
+          "responsable": "",
+          "ciudad": "",
+          "observacion": "",
+          "empresa": "",
+          "cedula": "",
+          "correo": "",
+          "montoCurso": "",
+          "porcentajeBeca": "",
+          "montoBeca": "",
+          "abono": "",
+          "saldo": "",
+          "numBoucher": "",
+          "numDeposito": "",
+          "transferencia": "",
+          "id": "5fabca9a-486c-4b52-aae6-2d12fc47fe80"
+        }
+      ]
+    }
+  ],
+  "presupuestoCode": []
 }

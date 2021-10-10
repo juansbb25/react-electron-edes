@@ -2,6 +2,7 @@ import { JSONFile, Low } from "lowdb";
 import lodash, { ObjectChain } from "lodash";
 import { DB } from "@models/DB";
 
+//Important to add explict array in neew objects
 export type EnhancedDb = Low<DB> & { chain: ObjectChain<DB> };
 // Use JSON file for storage
 export const initDatabase = async (): Promise<EnhancedDb> => {
