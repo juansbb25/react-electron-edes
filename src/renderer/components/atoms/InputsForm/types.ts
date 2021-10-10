@@ -1,16 +1,25 @@
 import * as yup from "yup";
-export type TextFieldProps = {
-  id: string;
+
+export type TextFieldProps<T> = {
+  id: Extract<keyof T, string>;
   label: string;
   type: "string" | "number" | "date";
   validator?: any;
-  initialValue: any;
+  initialValue: T[keyof T];
 };
 
-export type InitialValue = {
-  [key: string]: any;
+export type TextFieldPropsList<T> = {
+  id: Extract<keyof T, string>;
+  label: string;
+  type: "string" | "number" | "date";
+  validator?: any;
+  initialValue: T[keyof T];
 };
 
-export type Validator = {
-  [key: string]: yup.AnyObjectSchema;
+export type InitialValue<T> = {
+  [Property in keyof T]: any;
+};
+
+export type Validator<Type> = {
+  [Property in keyof Type]: yup.AnyObjectSchema;
 };

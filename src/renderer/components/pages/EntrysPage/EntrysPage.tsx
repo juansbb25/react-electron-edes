@@ -6,10 +6,9 @@ import React from "react";
 import { createIngresosForm } from "./formDefinition";
 
 const EntrysPage: React.FC = () => {
-  const onSubmit = async (value: InitialValue) => {
-    console.debug("Values", value);
+  const onSubmit = async (value: InitialValue<IngresoInput>) => {
     try {
-      const response = await createIngreso(value as IngresoInput);
+      const response = await createIngreso(value);
       console.debug("ingresada correctamente", response);
     } catch (error) {
       console.debug("ocurrio un error", error);

@@ -6,9 +6,9 @@ import * as yup from "yup";
 import moment from "moment";
 import { InitialValue, TextFieldProps, Validator } from "./types";
 
-type InputsFormProps = {
-  onSubmit: (values: InitialValue) => void;
-  items: TextFieldProps[];
+type InputsFormProps<T> = {
+  onSubmit: (values: InitialValue<T>) => void;
+  items: TextFieldProps<T>[];
 };
 
 document.addEventListener("keydown", function (event: any) {
@@ -19,13 +19,16 @@ document.addEventListener("keydown", function (event: any) {
     event.preventDefault();
   }
 });
-const InputsForm: React.FC<InputsFormProps> = ({ items, onSubmit }) => {
-  const validator: Validator = {};
+const InputsForm = <T extends unknown>({
+  items,
+  onSubmit,
+}: InputsFormProps<T>): React.ReactElement => {
+  const validator: Validator<T> = {} as Validator<T>;
   items.forEach((item) => {
     if (item.validator) validator[item.id] = item.validator;
   });
 
-  const initialValues: InitialValue = {};
+  const initialValues: InitialValue<T> = {} as InitialValue<T>;
   items.forEach((item) => {
     initialValues[item.id] = item.initialValue;
   });

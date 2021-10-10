@@ -1,8 +1,9 @@
 import { TextFieldProps } from "@components/atoms/InputsForm/types";
+import { IngresoInput } from "@database/controllers";
 import moment from "moment";
 import * as yup from "yup";
 
-export const createIngresosForm = (): TextFieldProps[] => {
+export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
   const date = new Date();
   const todayDate = moment(date).format("DD-MM-YYYY");
   return [
