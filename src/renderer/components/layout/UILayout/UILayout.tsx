@@ -49,7 +49,7 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
           startIcon={<ArrowBack />}
           onClick={() => isOpen(true)}
         >
-          Volver
+          Salir
         </Button>
       </Box>
     </Box>
