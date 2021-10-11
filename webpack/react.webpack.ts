@@ -30,6 +30,10 @@ const config = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
       },
+      {
+        test: /\.(woff|woff2|ttf|otf)$/,
+        use: { loader: "file-loader" },
+      },
     ],
   },
   devServer: {

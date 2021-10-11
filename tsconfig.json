@@ -6,7 +6,8 @@
       "@hocs/*": ["src/renderer/hocs/*"],
       "@context/*": ["src/renderer/context/*"],
       "@models/*": ["src/models/*"],
-      "@database/*": ["src/database/*"]
+      "@database/*": ["src/database/*"],
+      "@fonts/*": ["static/fonts/*"]
     },
     "target": "es2020",
     "module": "commonjs",

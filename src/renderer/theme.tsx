@@ -1,5 +1,4 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-
 // Create a Material-UI theme instance
 // https://material-ui.com/customization/theming/
 const theme = createMuiTheme({
@@ -17,6 +16,7 @@ const theme = createMuiTheme({
   typography: {
     fontWeightMedium: 600,
     fontSize: 17,
+    fontFamily: "Miller Text SC",
     h1: {
       fontSize: "2.2rem",
       fontWeight: 400,
@@ -28,7 +28,7 @@ const theme = createMuiTheme({
       color: "#000000",
     },
     h2: {
-      fontSize: "1.8rem",
+      fontSize: "2rem",
       fontWeight: 400,
       color: "#FFFFFF",
     },

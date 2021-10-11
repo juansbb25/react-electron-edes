@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import App from "./App";
+import "./fonts/MillerText.otf";
 
 declare module "@material-ui/core/Button" {
   interface ButtonPropsColorOverrides {
