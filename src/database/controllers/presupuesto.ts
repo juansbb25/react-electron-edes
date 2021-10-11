@@ -1,27 +1,24 @@
 import { initDatabase, EnhancedDb } from "@database/initDb";
 import { ServerResponse } from "@database/types";
-import { Ingreso } from "src/models/Transaccion";
-import { v4 as uuidv4 } from "uuid";
-
-export type IngresoInput = Omit<Ingreso, "id">;
+import { Presupuesto } from "@models/presupuesto";
 
 const obtainBase = (db: EnhancedDb) => {
-  return db.chain.get("ingresos");
+  return db.chain.get("presupuestos");
 };
 
-export const createIngreso = async (
-  ingreso: IngresoInput
+export const createPresupuesto = async (
+  presupuesto: Presupuesto
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
     const exists = !!db.chain
       .get("presupuestos")
-      .find({ code: ingreso.dimension })
+      .find({ code: presupuesto.code })
       .value();
-    if (!exists) return { state: false, message: "No existe la dimension" };
-    const id = uuidv4();
+    if (exists)
+      return { state: false, message: "Ya existe el presupuesto creado" };
     obtainBase(db)
-      .push({ ...ingreso, id })
+      .push({ ...presupuesto })
       .value();
     await db.write();
     return { state: true };
@@ -31,12 +28,12 @@ export const createIngreso = async (
   }
 };
 
-export const deleteIngreso = async (
-  ingreso: Ingreso
+export const deletePresupuesto = async (
+  presupuesto: Presupuesto
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    obtainBase(db).remove({ id: ingreso.id });
+    obtainBase(db).remove({ code: presupuesto.code });
     await db.write();
     return { state: true };
   } catch (error) {
@@ -45,12 +42,12 @@ export const deleteIngreso = async (
   }
 };
 
-export const updateIngreso = async (
-  ingreso: Ingreso
+export const updatePresupuesto = async (
+  presupuesto: Presupuesto
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    obtainBase(db).find({ id: ingreso.id }).assign(ingreso);
+    obtainBase(db).find({ code: presupuesto.code }).assign(presupuesto);
     await db.write();
     return { state: true };
   } catch (error) {
@@ -59,7 +56,9 @@ export const updateIngreso = async (
   }
 };
 
-export const getIngresos = async (): Promise<ServerResponse<Ingreso[]>> => {
+export const getPresupuestos = async (): Promise<
+  ServerResponse<Presupuesto[]>
+> => {
   try {
     const db = await initDatabase();
     return {

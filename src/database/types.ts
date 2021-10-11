@@ -1,5 +1,5 @@
-export interface ServerResponse {
+export interface ServerResponse<T> {
   state: boolean;
   message?: string;
-  values?: any;
+  values?: T;
 }

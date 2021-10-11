@@ -1,6 +1,8 @@
 import { Presupuesto } from "./presupuesto";
+import { Gasto, Ingreso } from "./Transaccion";
 
 export interface DB {
-  presupuesto: Presupuesto[];
-  presupuestoCode: string[];
+  presupuestos: Presupuesto[];
+  ingresos: Ingreso[];
+  gastos: Gasto[];
 }
