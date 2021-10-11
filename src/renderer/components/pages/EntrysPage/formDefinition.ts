@@ -14,8 +14,8 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       type: "string",
       validator: yup
         .string()
-        .min(2, "Se requiere texto")
-        .required("Este campo es requerito"),
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -31,8 +31,8 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       type: "date",
       validator: yup
         .string()
-        .min(2, "Se requiere texto")
-        .required("Este campo es requerito"),
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -41,8 +41,8 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       type: "string",
       validator: yup
         .string()
-        .min(2, "Se requiere texto")
-        .required("Este campo es requerito"),
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -86,8 +86,8 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       type: "string",
       validator: yup
         .string()
-        .min(2, "Se requiere texto")
-        .required("Este campo es requerito"),
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -104,7 +104,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: 0,
@@ -115,7 +115,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
         .number()
         .max(100, "El valor debe estar entre 0 y 100")
         .min(0, "El valor debe estar entre 0 y 100")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: 0,
@@ -125,7 +125,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: 0,
@@ -135,7 +135,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: 0,
@@ -145,7 +145,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",

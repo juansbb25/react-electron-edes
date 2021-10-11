@@ -15,8 +15,8 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       type: "string",
       validator: yup
         .string()
-        .min(2, "Se requiere texto")
-        .required("Este campo es requerito"),
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -32,8 +32,8 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       type: "date",
       validator: yup
         .string()
-        .min(2, "Se requiere texto")
-        .required("Este campo es requerito"),
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -42,8 +42,8 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       type: "string",
       validator: yup
         .string()
-        .min(2, "Se requiere texto")
-        .required("Este campo es requerito"),
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -95,7 +95,7 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: 0,
@@ -105,7 +105,7 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: 0,
@@ -115,7 +115,7 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: 0,
@@ -124,8 +124,8 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       type: "string",
       validator: yup
         .string()
-        .min(2, "Se requiere texto")
-        .required("Este campo es requerito"),
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
     },
   ];
 };
