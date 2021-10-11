@@ -9,6 +9,8 @@ import EntrysPage from "./components/pages/EntrysPage";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import DatabaseProvider from "@context/database";
+import GastoPage from "@components/pages/GastoPage/GastoPage";
+import PresupuestoPage from "@components/pages/PresupuestoPage";
 
 export default function App(): JSX.Element {
   return (
@@ -31,6 +33,16 @@ export default function App(): JSX.Element {
                   </Switch>
                   <Switch>
                     <Route exact path="/entrysPage" component={EntrysPage} />
+                  </Switch>
+                  <Switch>
+                    <Route exact path="/gastoPage" component={GastoPage} />
+                  </Switch>
+                  <Switch>
+                    <Route
+                      exact
+                      path="/presupuestoPage"
+                      component={PresupuestoPage}
+                    />
                   </Switch>
                 </div>
               </HashRouter>

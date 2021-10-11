@@ -12,7 +12,10 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       id: "dimension",
       label: "Dimension",
       type: "string",
-      validator: yup.string().required("Este campo es requerito"),
+      validator: yup
+        .string()
+        .min(2, "Se requiere texto")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: "",
@@ -26,14 +29,20 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       id: "fecha",
       label: "Fecha",
       type: "date",
-      validator: yup.string().required("Este campo es requerito"),
+      validator: yup
+        .string()
+        .min(2, "Se requiere texto")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: "",
       id: "factura",
       label: "Factura",
       type: "string",
-      validator: yup.string().required("Este campo es requerito"),
+      validator: yup
+        .string()
+        .min(2, "Se requiere texto")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: "",
@@ -75,7 +84,10 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       id: "cedula",
       label: "Cedula",
       type: "string",
-      validator: yup.string().required("Este campo es requerito"),
+      validator: yup
+        .string()
+        .min(2, "Se requiere texto")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: "",
