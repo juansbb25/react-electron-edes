@@ -88,35 +88,51 @@ export const createIngresosForm = (): TextFieldProps[] => {
       id: "montoCurso",
       label: "Monto en Curso",
       type: "number",
-      validator: yup.number().required("Este campo es requerito"),
+      validator: yup
+        .number()
+        .min(0, "El Valor debe ser mayor o igual a 0")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: 0,
       id: "porcentajeBeca",
       label: "Porcentaje De Beca",
       type: "number",
-      validator: yup.number().required("Este campo es requerito"),
+      validator: yup
+        .number()
+        .max(100, "El valor debe estar entre 0 y 100")
+        .min(0, "El valor debe estar entre 0 y 100")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: 0,
       id: "montoBeca",
       label: "Monto Beca",
       type: "number",
-      validator: yup.number().required("Este campo es requerito"),
+      validator: yup
+        .number()
+        .min(0, "El Valor debe ser mayor o igual a 0")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: 0,
       id: "abono",
       label: "Abono",
       type: "number",
-      validator: yup.number().required("Este campo es requerito"),
+      validator: yup
+        .number()
+        .min(0, "El Valor debe ser mayor o igual a 0")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: 0,
       id: "saldo",
       label: "Saldo",
       type: "number",
-      validator: yup.number().required("Este campo es requerito"),
+      validator: yup
+        .number()
+        .min(0, "El Valor debe ser mayor o igual a 0")
+        .required("Este campo es requerito"),
     },
     {
       initialValue: "",
