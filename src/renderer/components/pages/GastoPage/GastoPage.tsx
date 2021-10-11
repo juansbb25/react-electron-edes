@@ -1,12 +1,14 @@
 import InputsForm from "@components/atoms/InputsForm";
+import { InitialValue } from "@components/atoms/InputsForm/types";
 import UILayout from "@components/layout/UILayout";
+import { createGasto, GastoInput } from "@database/controllers/gasto";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import React from "react";
 import { createGastosForm } from "./formDefinition";
 
-const GastoPage: React.FC<WithNotifications> = () => {
-  /*const onSubmit = async (value: InitialValue<Gasto>) => {
-      const response = createGasto(value);
+const GastoPage: React.FC<WithNotifications> = ({ showNotification }) => {
+  const onSubmit = async (value: InitialValue<GastoInput>) => {
+    const response = await createGasto(value);
     if (response.state) {
       showNotification("Ingreso creado correctamente", "success");
     } else {
@@ -15,9 +17,6 @@ const GastoPage: React.FC<WithNotifications> = () => {
         "error"
       );
     }
-  };*/
-  const onSubmit = () => {
-    console.debug("sumbited");
   };
   return (
     <UILayout title="Ingresos">

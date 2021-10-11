@@ -1,12 +1,15 @@
 import InputsForm from "@components/atoms/InputsForm";
+import { InitialValue } from "@components/atoms/InputsForm/types";
 import UILayout from "@components/layout/UILayout";
+import { createPresupuesto } from "@database/controllers/presupuesto";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
+import { Presupuesto } from "@models/presupuesto";
 import React from "react";
-import { createGastosForm } from "./formDefinition";
+import { createPresupuestoForm } from "./formDefinition";
 
-const PresupuestoPage: React.FC<WithNotifications> = () => {
-  /*const onSubmit = async (value: InitialValue<Gasto>) => {
-      const response = createGasto(value);
+const PresupuestoPage: React.FC<WithNotifications> = ({ showNotification }) => {
+  const onSubmit = async (value: InitialValue<Presupuesto>) => {
+    const response = await createPresupuesto(value);
     if (response.state) {
       showNotification("Ingreso creado correctamente", "success");
     } else {
@@ -15,13 +18,10 @@ const PresupuestoPage: React.FC<WithNotifications> = () => {
         "error"
       );
     }
-  };*/
-  const onSubmit = () => {
-    console.debug("sumbited");
   };
   return (
     <UILayout title="Ingresos">
-      <InputsForm items={createGastosForm()} onSubmit={onSubmit} />
+      <InputsForm items={createPresupuestoForm()} onSubmit={onSubmit} />
     </UILayout>
   );
 };
