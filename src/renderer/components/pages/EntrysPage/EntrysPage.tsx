@@ -7,8 +7,9 @@ import React from "react";
 import { createIngresosForm } from "./formDefinition";
 
 const EntrysPage: React.FC<WithNotifications> = ({ showNotification }) => {
-  const onSubmit = async (value: InitialValue<IngresoInput>) => {
-    const response = await createIngreso(value);
+  const onSubmit = async (ingreso: InitialValue<IngresoInput>) => {
+    console.debug({ ingreso });
+    const response = await createIngreso(ingreso);
     if (response.state) {
       showNotification("Ingreso creado correctamente", "success");
     } else {

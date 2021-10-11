@@ -1,7 +1,7 @@
 import { Grid, TextField } from "@material-ui/core";
 import DatePicker from "@mui/lab/DatePicker";
 import { useFormik } from "formik";
-import React, { forwardRef, Ref, useImperativeHandle } from "react";
+import React, { forwardRef, Ref, useImperativeHandle, useEffect } from "react";
 import * as yup from "yup";
 import moment from "moment";
 import { InitialValue, TextFieldProps, Validator } from "./types";
@@ -15,14 +15,6 @@ export type RefObject = {
   submitForm: () => void;
 };
 
-document.addEventListener("keydown", function (event: any) {
-  if (event.keyCode === 13 && event.target.nodeName === "INPUT") {
-    const form = event.target.form;
-    const index = Array.prototype.indexOf.call(form, event.target);
-    form.elements[index + 2].focus();
-    event.preventDefault();
-  }
-});
 const InputsForm = <T,>(
   { items, onSubmit }: InputsFormProps<T>,
   ref: Ref<RefObject>
@@ -51,6 +43,25 @@ const InputsForm = <T,>(
       submit();
     },
   }));
+
+  useEffect(() => {
+    const eventEnter = (event: any) => {
+      if (event.keyCode === 13 && event.target.nodeName === "INPUT") {
+        event.preventDefault();
+        event.stopPropagation();
+        const form = event.target?.form;
+        const index = Array.prototype.indexOf.call(form, event.target);
+        console.debug(form, index, event.target, event.target?.type);
+        if (event.target?.type === "tel") {
+          form.elements[index + 3].focus();
+        } else {
+          form.elements[index + 2].focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", eventEnter);
+    return () => document.removeEventListener("keydown", eventEnter);
+  }, []);
 
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: "100%", padding: 40 }}>
