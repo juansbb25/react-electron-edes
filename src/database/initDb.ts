@@ -1,6 +1,6 @@
 import { JSONFile, Low } from "lowdb";
 import lodash, { ObjectChain } from "lodash";
-import { DB } from "@models/DB";
+import { DB } from "src/models/DB";
 
 //Important to add explict array in neew objects
 export type EnhancedDb = Low<DB> & { chain: ObjectChain<DB> };

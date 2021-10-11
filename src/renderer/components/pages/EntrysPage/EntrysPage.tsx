@@ -8,13 +8,14 @@ import { createIngresosForm } from "./formDefinition";
 
 const EntrysPage: React.FC<WithNotifications> = ({ showNotification }) => {
   const onSubmit = async (value: InitialValue<IngresoInput>) => {
-    try {
-      const response = await createIngreso(value);
+    const response = await createIngreso(value);
+    if (response.state) {
       showNotification("Ingreso creado correctamente", "success");
-      console.debug("ingresada correctamente", response);
-    } catch (error) {
-      showNotification("Ha ocurrido un error creando el ingreso", "error");
-      console.debug("ocurrio un error", error);
+    } else {
+      showNotification(
+        response.message || "Ha ocurrido un error creando el ingreso",
+        "error"
+      );
     }
   };
   return (

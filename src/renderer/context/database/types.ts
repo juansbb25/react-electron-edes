@@ -1,4 +1,4 @@
-import { DB } from "@models/DB";
+import { DB } from "src/models/DB";
 
 // redux types
 export const SET_EXAMPLE_NAME = "SET_EXAMPLE_NAME";
