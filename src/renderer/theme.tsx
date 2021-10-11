@@ -13,6 +13,9 @@ const theme = createMuiTheme({
       default: "#FFFFFF",
     },
   },
+  components: {
+    MuiButton: {},
+  },
   typography: {
     fontWeightMedium: 600,
     fontSize: 17,
