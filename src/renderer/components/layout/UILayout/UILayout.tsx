@@ -1,8 +1,8 @@
 import CloseFormDialog from "@components/atoms/CloseFormDialog";
-import { Box, Button, Stack, Typography } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
+import { Paper } from "@mui/material";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 type UILayoutProps = {
   children: React.ReactElement;
   title: string;
@@ -22,36 +22,45 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
         justifyContent: "space-between",
         alignItems: "center",
         m: "auto",
-        overflow: "auto",
+        padding: 2,
+        background: "#dbdbdb",
       }}
     >
-      <Typography variant="h1">{title}</Typography>
-      <>{children}</>
-      <CloseFormDialog open={open} handleClose={handleClose} />
-      <Box
-        sx={{
-          display: "flex",
-          width: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+      <Paper
+        elevation={2}
+        style={{ width: "100%", height: "100%" }}
+        sx={{ padding: 3, overflow: "auto", boxShadow: 10, borderRadius: 5 }}
       >
-        <Button
-          variant="outlined"
-          color="error"
+        <Typography variant="h1" style={{ textAlign: "center" }}>
+          {title}
+        </Typography>
+        <>{children}</>
+        <CloseFormDialog open={open} handleClose={handleClose} />
+        <Box
           sx={{
-            bottom: 2,
-            left: 40,
-            width: 150,
-            height: 50,
+            display: "flex",
+            width: 1,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
-          startIcon={<ArrowBack />}
-          onClick={() => isOpen(true)}
         >
-          Salir
-        </Button>
-      </Box>
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{
+              bottom: 2,
+              left: 40,
+              width: 150,
+              height: 50,
+            }}
+            startIcon={<ArrowBack />}
+            onClick={() => isOpen(true)}
+          >
+            Salir
+          </Button>
+        </Box>
+      </Paper>
     </Box>
   );
 };

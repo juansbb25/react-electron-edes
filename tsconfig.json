@@ -3,8 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/renderer/components/*"],
+      "@hocs/*": ["src/renderer/hocs/*"],
       "@context/*": ["src/renderer/context/*"],
-      "@models/*": ["src/renderer/models/*"],
+      "@models/*": ["src/models/*"],
       "@database/*": ["src/database/*"]
     },
     "target": "es2020",

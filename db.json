@@ -24,6 +24,28 @@
           "numDeposito": "",
           "transferencia": "",
           "id": "5fabca9a-486c-4b52-aae6-2d12fc47fe80"
+        },
+        {
+          "dimension": "123",
+          "programa": "",
+          "fecha": "10-10-2021",
+          "factura": "123",
+          "proveedor": "",
+          "responsable": "",
+          "ciudad": "QUITO",
+          "observacion": "",
+          "empresa": "",
+          "cedula": "11",
+          "correo": "",
+          "montoCurso": 0,
+          "porcentajeBeca": 0,
+          "montoBeca": 0,
+          "abono": 0,
+          "saldo": 0,
+          "numBoucher": "",
+          "numDeposito": "",
+          "transferencia": "",
+          "id": "6a450eb0-d145-4ef2-9832-862512eeec29"
         }
       ]
     }

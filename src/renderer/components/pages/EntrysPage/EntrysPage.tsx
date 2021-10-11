@@ -2,17 +2,20 @@ import InputsForm from "@components/atoms/InputsForm";
 import { InitialValue } from "@components/atoms/InputsForm/types";
 import UILayout from "@components/layout/UILayout";
 import { createIngreso, IngresoInput } from "@database/controllers";
+import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import React from "react";
 import { createIngresosForm } from "./formDefinition";
 
-const EntrysPage: React.FC = () => {
-  const onSubmit = async (value: InitialValue) => {
-    console.debug("Values", value);
-    try {
-      const response = await createIngreso(value as IngresoInput);
-      console.debug("ingresada correctamente", response);
-    } catch (error) {
-      console.debug("ocurrio un error", error);
+const EntrysPage: React.FC<WithNotifications> = ({ showNotification }) => {
+  const onSubmit = async (value: InitialValue<IngresoInput>) => {
+    const response = await createIngreso(value);
+    if (response.state) {
+      showNotification("Ingreso creado correctamente", "success");
+    } else {
+      showNotification(
+        response.message || "Ha ocurrido un error creando el ingreso",
+        "error"
+      );
     }
   };
   return (
@@ -21,4 +24,4 @@ const EntrysPage: React.FC = () => {
     </UILayout>
   );
 };
-export default EntrysPage;
+export default withNotifications(EntrysPage);
