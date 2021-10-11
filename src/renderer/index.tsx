@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import App from "./App";
 import "./fonts/MillerText.otf";
 
-declare module "@material-ui/core/Button" {
+declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     error: true;
     info: true;

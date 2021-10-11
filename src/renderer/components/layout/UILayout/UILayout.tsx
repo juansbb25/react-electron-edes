@@ -1,7 +1,7 @@
 import CloseFormDialog from "@components/atoms/CloseFormDialog";
 import { RefObject } from "@components/atoms/InputsForm/InputsForm";
-import { Box, Button, Typography } from "@material-ui/core";
-import { ArrowBack } from "@material-ui/icons";
+import { Box, Button, Typography } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
 import { Paper } from "@mui/material";
 import React, { useState, useRef } from "react";
 type UILayoutProps = {

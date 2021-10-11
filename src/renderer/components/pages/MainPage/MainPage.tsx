@@ -1,5 +1,5 @@
 import MenuButton from "@components/atoms/MenuButton";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import React from "react";
 
 const MainPage: React.FC = () => {
@@ -25,7 +25,7 @@ const MainPage: React.FC = () => {
         }}
       >
         <MenuButton text="Presupuesto" path="/presupuestoPage" />
-        <MenuButton text="MENU1" path="/" />
+        <MenuButton text="Ver datos" path="/viewPage" />
       </Box>
       <Box
         sx={{ display: "flex", height: 1 / 3, p: 1, justifyContent: "center" }}
