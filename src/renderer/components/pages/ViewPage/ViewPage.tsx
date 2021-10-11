@@ -46,7 +46,7 @@ const rows = [
   { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
 ];
-const DataGridDemo = () => {
+const ViewPage = () => {
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
@@ -61,4 +61,4 @@ const DataGridDemo = () => {
   );
 };
 
-export default DataGridDemo;
+export default ViewPage;

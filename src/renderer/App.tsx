@@ -11,6 +11,7 @@ import AdapterMoment from "@mui/lab/AdapterMoment";
 import DatabaseProvider from "@context/database";
 import GastoPage from "@components/pages/GastoPage/GastoPage";
 import PresupuestoPage from "@components/pages/PresupuestoPage";
+import ViewPage from "@components/pages/ViewPage";
 
 export default function App(): JSX.Element {
   return (
@@ -30,19 +31,14 @@ export default function App(): JSX.Element {
                 <div className="App">
                   <Switch>
                     <Route exact path="/" component={MainPage} />
-                  </Switch>
-                  <Switch>
                     <Route exact path="/entrysPage" component={EntrysPage} />
-                  </Switch>
-                  <Switch>
                     <Route exact path="/gastoPage" component={GastoPage} />
-                  </Switch>
-                  <Switch>
                     <Route
                       exact
                       path="/presupuestoPage"
                       component={PresupuestoPage}
                     />
+                    <Route exact path="/viewPage" component={ViewPage} />
                   </Switch>
                 </div>
               </HashRouter>
