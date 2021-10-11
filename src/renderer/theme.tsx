@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import MillerText from "./fonts/MillerText.otf";
 // Create a Material-UI theme instance
 // https://material-ui.com/customization/theming/
 const theme = createTheme({
@@ -14,7 +15,14 @@ const theme = createTheme({
     },
   },
   components: {
-    MuiButton: {},
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Miller Text SC';
+          src: local('Miller Text SC'), url(${MillerText}) format('opentype');
+        }
+      `,
+    },
   },
   typography: {
     fontWeightMedium: 600,
