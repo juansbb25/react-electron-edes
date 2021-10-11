@@ -1,7 +1,7 @@
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 import DatePicker from "@mui/lab/DatePicker";
 import { useFormik } from "formik";
-import React from "react";
+import React, { forwardRef, Ref, useImperativeHandle } from "react";
 import * as yup from "yup";
 import moment from "moment";
 import { InitialValue, TextFieldProps, Validator } from "./types";
@@ -9,6 +9,10 @@ import { InitialValue, TextFieldProps, Validator } from "./types";
 type InputsFormProps<T> = {
   onSubmit: (values: InitialValue<T>) => void;
   items: TextFieldProps<T>[];
+};
+
+export type RefObject = {
+  submitForm: () => void;
 };
 
 document.addEventListener("keydown", function (event: any) {
@@ -19,10 +23,10 @@ document.addEventListener("keydown", function (event: any) {
     event.preventDefault();
   }
 });
-const InputsForm = <T extends unknown>({
-  items,
-  onSubmit,
-}: InputsFormProps<T>): React.ReactElement => {
+const InputsForm = <T,>(
+  { items, onSubmit }: InputsFormProps<T>,
+  ref: Ref<RefObject>
+): React.ReactElement => {
   const validator: Validator<T> = {} as Validator<T>;
   items.forEach((item) => {
     if (item.validator) validator[item.id] = item.validator;
@@ -40,6 +44,14 @@ const InputsForm = <T extends unknown>({
     validationSchema: validationSchema,
     onSubmit: onSubmit,
   });
+
+  useImperativeHandle(ref, () => ({
+    submitForm() {
+      const submit = formik.submitForm;
+      submit();
+    },
+  }));
+
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: "100%", padding: 40 }}>
       <Grid container spacing={2}>
@@ -99,16 +111,8 @@ const InputsForm = <T extends unknown>({
             </Grid>
           );
         })}
-        <Button
-          color="success"
-          variant="contained"
-          type="submit"
-          style={{ width: 200 }}
-        >
-          Guardar
-        </Button>
       </Grid>
     </form>
   );
 };
-export default InputsForm;
+export default forwardRef(InputsForm);

@@ -1,13 +1,16 @@
 import CloseFormDialog from "@components/atoms/CloseFormDialog";
+import { RefObject } from "@components/atoms/InputsForm/InputsForm";
 import { Box, Button, Typography } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { Paper } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 type UILayoutProps = {
   children: React.ReactElement;
   title: string;
 };
+
 const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
+  const childRef = useRef<RefObject>();
   const [open, isOpen] = useState(false);
   const handleClose = () => {
     isOpen(false);
@@ -34,7 +37,7 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
         <Typography variant="h1" style={{ textAlign: "center" }}>
           {title}
         </Typography>
-        <>{children}</>
+        <div>{React.cloneElement(children, { ref: childRef })}</div>
         <CloseFormDialog open={open} handleClose={handleClose} />
         <Box
           sx={{
@@ -58,6 +61,15 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
             onClick={() => isOpen(true)}
           >
             Salir
+          </Button>
+          <Button
+            color="success"
+            variant="contained"
+            type="submit"
+            style={{ width: 200 }}
+            onClick={() => childRef?.current?.submitForm()}
+          >
+            Guardar
           </Button>
         </Box>
       </Paper>
