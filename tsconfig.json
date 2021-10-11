@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/renderer/components/*"],
+      "@hocs/*": ["src/renderer/hocs/*"],
       "@context/*": ["src/renderer/context/*"],
       "@models/*": ["src/renderer/models/*"],
       "@database/*": ["src/database/*"]
