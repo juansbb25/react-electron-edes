@@ -6,6 +6,7 @@ export type TextFieldProps<T> = {
   type: "string" | "number" | "date";
   validator?: any;
   initialValue: T[keyof T];
+  render?: (context: InitialValue<T>) => string | number | Date;
 };
 
 export type TextFieldPropsList<T> = {

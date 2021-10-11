@@ -80,11 +80,16 @@ const InputsForm = <T,>(
                   error={
                     formik.touched[item.id] && Boolean(formik.errors[item.id])
                   }
-                  value={formik.values[item.id]}
+                  value={
+                    item.render
+                      ? item.render(formik.values)
+                      : formik.values[item.id]
+                  }
                   helperText={formik.touched[item.id] && formik.errors[item.id]}
                   onKeyPress={(e) => {
                     e.key == "Enter" && e.preventDefault;
                   }}
+                  disabled={!!item.render}
                 />
               )}
               {item.type === "date" && (

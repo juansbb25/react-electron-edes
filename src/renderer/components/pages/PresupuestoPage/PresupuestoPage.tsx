@@ -20,7 +20,7 @@ const PresupuestoPage: React.FC<WithNotifications> = ({ showNotification }) => {
     }
   };
   return (
-    <UILayout title="Ingresos">
+    <UILayout title="Crear Presupuesto">
       <InputsForm items={createPresupuestoForm()} onSubmit={onSubmit} />
     </UILayout>
   );

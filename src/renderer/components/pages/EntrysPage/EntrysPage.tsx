@@ -19,7 +19,7 @@ const EntrysPage: React.FC<WithNotifications> = ({ showNotification }) => {
     }
   };
   return (
-    <UILayout title="Ingresos">
+    <UILayout title="Crear Ingreso">
       <InputsForm items={createIngresosForm()} onSubmit={onSubmit} />
     </UILayout>
   );

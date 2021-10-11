@@ -13,7 +13,7 @@ export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -23,7 +23,7 @@ export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerito"),
+        .required("Este campo es requerido"),
     },
   ];
 };

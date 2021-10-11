@@ -19,7 +19,7 @@ const GastoPage: React.FC<WithNotifications> = ({ showNotification }) => {
     }
   };
   return (
-    <UILayout title="Ingresos">
+    <UILayout title="Crear Gasto">
       <InputsForm items={createGastosForm()} onSubmit={onSubmit} />
     </UILayout>
   );

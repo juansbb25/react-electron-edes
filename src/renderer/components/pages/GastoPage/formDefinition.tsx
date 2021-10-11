@@ -106,6 +106,9 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
+      render: (context) => {
+        return (context.iva * context.valorSinIva) / 100 + context.valorSinIva;
+      },
     },
     {
       initialValue: 0,
