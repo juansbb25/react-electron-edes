@@ -15,8 +15,7 @@ export const createPresupuesto = async (
       .get("presupuestos")
       .find({ code: presupuesto.code })
       .value();
-    if (exists)
-      return { state: false, message: "Ya existe el presupuesto creado" };
+    if (exists) return { state: false, message: "Ya existe este presupuesto" };
     obtainBase(db)
       .push({ ...presupuesto })
       .value();
