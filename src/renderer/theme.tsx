@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import MillerText from "./fonts/MillerText.otf";
+import GothamBookRegular from "./fonts/GothamBookRegular.otf";
 // Create a Material-UI theme instance
 // https://material-ui.com/customization/theming/
 const theme = createTheme({
@@ -21,7 +22,20 @@ const theme = createTheme({
           font-family: 'Miller Text SC';
           src: local('Miller Text SC'), url(${MillerText}) format('opentype');
         }
+
+        @font-face {
+          font-family: 'Gotham Book';
+          src: local('Gotham Book'), url(${GothamBookRegular}) format('opentype');}
       `,
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          // apply theme's border-radius instead of component's default
+          fontSize: "0.9rem",
+          fontFamily: "Gotham Book",
+        },
+      },
     },
   },
   typography: {
@@ -45,5 +59,4 @@ const theme = createTheme({
     },
   },
 });
-
 export default theme;
