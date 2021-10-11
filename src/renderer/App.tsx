@@ -1,6 +1,6 @@
-import { Box } from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { Box } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import theme from "./theme";
 import { HashRouter, Route, Switch } from "react-router-dom";
