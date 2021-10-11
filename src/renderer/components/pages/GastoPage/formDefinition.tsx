@@ -1,10 +1,10 @@
 import { TextFieldProps } from "@components/atoms/InputsForm/types";
 import {} from "@database/controllers";
-import { Gasto } from "@models/Transaccion";
+import { GastoInput } from "@database/controllers/gasto";
 import moment from "moment";
 import * as yup from "yup";
 
-export const createGastosForm = (): TextFieldProps<Gasto>[] => {
+export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
   const date = new Date();
   const todayDate = moment(date).format("DD-MM-YYYY");
   return [

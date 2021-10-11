@@ -3,7 +3,7 @@ import {} from "@database/controllers";
 import { Presupuesto } from "@models/presupuesto";
 import * as yup from "yup";
 
-export const createGastosForm = (): TextFieldProps<Presupuesto>[] => {
+export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
   return [
     {
       initialValue: "",
