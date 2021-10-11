@@ -1,4 +1,4 @@
-import { Button, Stack, TextField } from "@material-ui/core";
+import { Button, Grid, TextField } from "@material-ui/core";
 import DatePicker from "@mui/lab/DatePicker";
 import { useFormik } from "formik";
 import React from "react";
@@ -42,10 +42,14 @@ const InputsForm = <T extends unknown>({
   });
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: "100%", padding: 40 }}>
-      <Stack justifyContent="space-between" spacing={2} alignItems="center">
+      <Grid container spacing={2}>
         {items.map((item) => {
           return (
-            <div
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
               key={item.id}
               style={{
                 width: "100%",
@@ -92,7 +96,7 @@ const InputsForm = <T extends unknown>({
                   )}
                 />
               )}
-            </div>
+            </Grid>
           );
         })}
         <Button
@@ -103,7 +107,7 @@ const InputsForm = <T extends unknown>({
         >
           Guardar
         </Button>
-      </Stack>
+      </Grid>
     </form>
   );
 };
