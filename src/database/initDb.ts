@@ -11,7 +11,7 @@ export const initDatabase = async (): Promise<EnhancedDb> => {
 
   await db.read();
   // Read data from JSON file, this will set db.data content
-  db.data ||= { presupuesto: [], presupuestoCode: [] };
+  db.data ||= { presupuestos: [], ingresos: [], gastos: [] };
   const chain = lodash.chain(db.data);
   db.chain = chain;
   return db;
