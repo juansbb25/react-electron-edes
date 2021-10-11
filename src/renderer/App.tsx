@@ -2,13 +2,13 @@ import { Box } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
-import theme from "../theme";
+import theme from "./theme";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import MainPage from "@components/pages/MainPage";
-import EntrysPage from "./pages/EntrysPage";
-import DatabaseProvider from "../context/database";
+import EntrysPage from "./components/pages/EntrysPage";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterMoment from "@mui/lab/AdapterMoment";
+import DatabaseProvider from "@context/database";
 
 export default function App(): JSX.Element {
   return (
