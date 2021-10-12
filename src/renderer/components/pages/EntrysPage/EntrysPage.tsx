@@ -3,13 +3,20 @@ import { InitialValue } from "@components/atoms/InputsForm/types";
 import UILayout from "@components/layout/UILayout";
 import { createIngreso, IngresoInput } from "@database/controllers";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
+import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 import React from "react";
 import { createIngresosForm } from "./formDefinition";
 
-const EntrysPage: React.FC<WithNotifications> = ({ showNotification }) => {
+const EntrysPage: React.FC<WithNotifications & WithProgress> = ({
+  showNotification,
+  showProgressBar,
+  closeProgressBar,
+}) => {
   const onSubmit = async (ingreso: InitialValue<IngresoInput>) => {
     console.debug({ ingreso });
+    showProgressBar();
     const response = await createIngreso(ingreso);
+    closeProgressBar();
     if (response.state) {
       showNotification("Ingreso creado correctamente", "success");
     } else {
@@ -25,4 +32,4 @@ const EntrysPage: React.FC<WithNotifications> = ({ showNotification }) => {
     </UILayout>
   );
 };
-export default withNotifications(EntrysPage);
+export default withProgressBar(withNotifications(EntrysPage));
