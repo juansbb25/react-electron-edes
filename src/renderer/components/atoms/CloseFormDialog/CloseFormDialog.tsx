@@ -22,18 +22,18 @@ const CloseFormDialog: React.FC<CloseFormDialogProps> = ({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"Esta seguro que desea salir?"}
+        {"¿Estás seguro que desea salir?"}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Si sale se perdera su progreso y no podra recuperar los cambios
+          Si sale se perderá su progreso y no podrá recuperar los cambios
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Link to="/" style={{ textDecoration: "none" }}>
           <Button color="error">Salir</Button>
         </Link>
-        <Button>Cancelar</Button>
+        <Button onClick={handleClose}>Cancelar</Button>
       </DialogActions>
     </Dialog>
   );
