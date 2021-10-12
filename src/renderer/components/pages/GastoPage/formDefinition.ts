@@ -3,6 +3,7 @@ import {
   TextFieldProps,
 } from "@components/atoms/InputsForm/types";
 import { GastoInput } from "@database/controllers/gasto";
+import { GridValueGetterParams } from "@mui/x-data-grid";
 import moment from "moment";
 import * as yup from "yup";
 
@@ -110,6 +111,15 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     },
     {
       initialValue: 0,
+      id: "valorSinIva",
+      type: "number",
+      validator: yup
+        .number()
+        .min(0, "El Valor debe ser mayor o igual a 0")
+        .required("Este campo es requerido"),
+    },
+    {
+      initialValue: 0,
       id: "valorConIva",
       type: "number",
       validator: yup
@@ -119,16 +129,16 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       render: (context: InitialValue<GastoInput>) => {
         return (context.iva * context.valorSinIva) / 100 + context.valorSinIva;
       },
+      renderInTable: (context: GridValueGetterParams) => {
+        return (
+          (((context.getValue(context.id, "iva") as number) || 0) *
+            ((context.getValue(context.id, "valorSinIva") as number) || 0)) /
+            100 +
+          ((context.getValue(context.id, "valorSinIva") as number) || 0)
+        );
+      },
     },
-    {
-      initialValue: 0,
-      id: "valorSinIva",
-      type: "number",
-      validator: yup
-        .number()
-        .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerido"),
-    },
+
     {
       initialValue: 0,
       id: "req",

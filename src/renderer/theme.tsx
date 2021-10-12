@@ -47,7 +47,7 @@ const theme = createTheme(
     },
     typography: {
       fontWeightMedium: 600,
-      fontSize: 17,
+      fontSize: 12,
       fontFamily: "Gotham Book",
       h1: {
         fontSize: "2.2rem",

@@ -1,3 +1,4 @@
+import { GridValueGetterParams } from "@mui/x-data-grid";
 import * as yup from "yup";
 
 export type TextFieldProps<T> = {
@@ -7,6 +8,7 @@ export type TextFieldProps<T> = {
   validator?: any;
   initialValue: T[keyof T];
   render?: (context: InitialValue<T>) => string | number | Date;
+  renderInTable?: (context: GridValueGetterParams) => string | number | Date; //used to render in tables mui-x
 };
 
 export type TextFieldPropsList<T> = {
