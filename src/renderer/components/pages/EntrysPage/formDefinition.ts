@@ -3,14 +3,39 @@ import { IngresoInput } from "@database/controllers";
 import moment from "moment";
 import * as yup from "yup";
 
+export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
+  const diccionary = {
+    id: "id",
+    dimension: "Dimension",
+    programa: "Programa",
+    fecha: "Fecha",
+    factura: "Factura",
+    proveedor: "Proveedor",
+    responsable: "Responsable",
+    ciudad: "Ciudad",
+    observacion: "Observacion",
+    empresa: "Empresa",
+    cedula: "Cedula",
+    correo: "Correo",
+    montoCurso: "Monto en Curso",
+    porcentajeBeca: "Porcentaje De Beca",
+    montoBeca: "Monto Beca",
+    abono: "Abono",
+    saldo: "Saldo",
+    numBoucher: "Numero de Boucher",
+    numDeposito: "Numero de Deposito",
+    transferencia: "Transferencia",
+  };
+  return diccionary[key];
+};
+
 export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
   const date = new Date();
   const todayDate = moment(date).format("DD-MM-YYYY");
-  return [
+  const formCreation = [
     {
       initialValue: "",
       id: "dimension",
-      label: "Dimension",
       type: "string",
       validator: yup
         .string()
@@ -20,14 +45,12 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: "",
       id: "programa",
-      label: "Programa",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: todayDate,
       id: "fecha",
-      label: "Fecha",
       type: "date",
       validator: yup
         .string()
@@ -37,7 +60,6 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: "",
       id: "factura",
-      label: "Factura",
       type: "string",
       validator: yup
         .string()
@@ -47,42 +69,36 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: "",
       id: "proveedor",
-      label: "Proveedor",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "responsable",
-      label: "Responsable",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "QUITO",
       id: "ciudad",
-      label: "Ciudad",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "observacion",
-      label: "Observacion",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "empresa",
-      label: "Empresa",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "cedula",
-      label: "Cedula",
       type: "string",
       validator: yup
         .string()
@@ -92,14 +108,12 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: "",
       id: "correo",
-      label: "Correo",
       type: "string",
       validator: yup.string().email("El formato del correo no es el correcto"),
     },
     {
       initialValue: 0,
       id: "montoCurso",
-      label: "Monto en Curso",
       type: "number",
       validator: yup
         .number()
@@ -109,7 +123,6 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: 0,
       id: "porcentajeBeca",
-      label: "Porcentaje De Beca",
       type: "number",
       validator: yup
         .number()
@@ -120,7 +133,6 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: 0,
       id: "montoBeca",
-      label: "Monto Beca",
       type: "number",
       validator: yup
         .number()
@@ -130,7 +142,6 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: 0,
       id: "abono",
-      label: "Abono",
       type: "number",
       validator: yup
         .number()
@@ -140,7 +151,6 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: 0,
       id: "saldo",
-      label: "Saldo",
       type: "number",
       validator: yup
         .number()
@@ -150,23 +160,25 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: "",
       id: "numBoucher",
-      label: "Numero de Boucher",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "numDeposito",
-      label: "Numero de Deposito",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "transferencia",
-      label: "Transferencia",
       type: "string",
       validator: yup.string(),
     },
-  ];
+  ] as const;
+
+  const formWithName = formCreation.map((item) => {
+    return { ...item, label: getLabel(item.id) };
+  });
+  return formWithName;
 };
