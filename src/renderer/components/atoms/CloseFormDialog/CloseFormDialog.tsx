@@ -22,7 +22,7 @@ const CloseFormDialog: React.FC<CloseFormDialogProps> = ({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"¿Estás seguro seguro que desea salir?"}
+        {"¿Estás seguro que desea salir?"}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
