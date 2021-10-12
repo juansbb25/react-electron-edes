@@ -1,63 +1,112 @@
 import * as React from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+} from "@mui/material";
+import { esESGrid } from "../../../language";
+import { useState } from "react";
+import { Ingreso, Gasto } from "@models/Transaccion";
+import { Presupuesto } from "@models/presupuesto";
+import { getIngresos } from "@database/controllers";
+import UILayout from "@components/layout/UILayout";
 
-const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 90 },
-  {
-    field: "firstName",
-    headerName: "First name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "lastName",
-    headerName: "Last name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.getValue(params.id, "firstName") || ""} ${
-        params.getValue(params.id, "lastName") || ""
-      }`,
-  },
-];
+type TableType = "ingreso" | "gasto" | "presupuesto" | "";
 
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+type ColumnType<T> = {
+  field: keyof T;
+  headerName: string;
+  description?: string;
+  sortable: boolean;
+  width: number;
+};
+
+type TableState = {
+  type: TableType;
+  rows: Ingreso[] | Gasto[] | Presupuesto[];
+  cols: ColumnType<Ingreso>[] | ColumnType<Gasto>[] | ColumnType<Presupuesto>[];
+};
 const ViewPage = () => {
+  const [state, setState] = useState<TableState>({
+    type: "",
+    rows: [],
+    cols: [],
+  });
+  const handleChange = async (type: TableType) => {
+    console.debug("El tipo es", type);
+    if (type === "ingreso") {
+      const ingresos = await getIngresos();
+      if (ingresos.state && ingresos.values) {
+        const cols: ColumnType<Ingreso>[] = [];
+        if (ingresos.values.length > 0) {
+          const keys = Object.keys(ingresos.values[0]) as (keyof Ingreso)[];
+          keys.forEach((key: keyof Ingreso) => {
+            cols.push({
+              field: key,
+              headerName: key,
+              sortable: true,
+              width: 150,
+            });
+          });
+        }
+        console.debug("ingresos", ingresos);
+        setState({
+          type: "ingreso",
+          rows: ingresos.values,
+          cols: cols,
+        });
+      } else {
+        console.debug("Error leyendo los datos");
+      }
+    }
+  };
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-        disableSelectionOnClick
-      />
-    </div>
+    <UILayout title="Tabla de datos">
+      <>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">
+            Seleccione el tipo de búsqueda
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={state?.type}
+            label="Seleccione el tipo de búsqueda"
+            onChange={(event) => handleChange(event.target.value as TableType)}
+          >
+            <MenuItem value={"ingreso"}>Ingreso</MenuItem>
+          </Select>
+        </FormControl>
+        {state ? (
+          <DataGrid
+            rows={state.rows}
+            columns={state.cols}
+            pageSize={5}
+            //rowsPerPageOptions={[15]}
+            //checkboxSelection
+            disableSelectionOnClick
+            localeText={esESGrid}
+          />
+        ) : (
+          <Paper
+            elevation={2}
+            style={{ width: "60%" }}
+            sx={{
+              padding: 3,
+              overflow: "auto",
+              boxShadow: 10,
+              borderRadius: 5,
+              textAlign: "center",
+            }}
+          >
+            Seleccione que tipo de archivo quiere ver
+          </Paper>
+        )}
+      </>
+    </UILayout>
   );
 };
 
