@@ -3,12 +3,18 @@ import {} from "@database/controllers";
 import { Presupuesto } from "@models/presupuesto";
 import * as yup from "yup";
 
+export const getLabel = (key: Extract<keyof Presupuesto, string>): string => {
+  const diccionary = {
+    code: "Codigo",
+    initValue: "Valor Inicial",
+  };
+  return diccionary[key];
+};
 export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
-  return [
+  const formCreation = [
     {
       initialValue: "",
       id: "code",
-      label: "Codigo",
       type: "string",
       validator: yup
         .string()
@@ -18,12 +24,15 @@ export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
     {
       initialValue: "",
       id: "initValue",
-      label: "Valor Inicial",
       type: "number",
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
     },
-  ];
+  ] as const;
+  const formWithName = formCreation.map((item) => {
+    return { ...item, label: getLabel(item.id) };
+  });
+  return formWithName;
 };

@@ -1,17 +1,38 @@
-import { TextFieldProps } from "@components/atoms/InputsForm/types";
-import {} from "@database/controllers";
+import {
+  InitialValue,
+  TextFieldProps,
+} from "@components/atoms/InputsForm/types";
 import { GastoInput } from "@database/controllers/gasto";
 import moment from "moment";
 import * as yup from "yup";
 
+export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
+  const diccionary = {
+    id: "id",
+    dimension: "Dimension",
+    programa: "Programa",
+    fecha: "Fecha",
+    factura: "Factura",
+    proveedor: "Proveedor",
+    responsable: "Responsable",
+    ciudad: "Ciudad",
+    observacion: "Observacion",
+    categoria: "Categoria",
+    subCategoria: "Subcategoria",
+    iva: "Iva",
+    valorConIva: "Valor Con Iva",
+    valorSinIva: "Valor Sin Iva",
+    req: "Requerimiento",
+  };
+  return diccionary[key];
+};
 export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
   const date = new Date();
   const todayDate = moment(date).format("DD-MM-YYYY");
-  return [
+  const formCreation = [
     {
       initialValue: "",
       id: "dimension",
-      label: "Dimension",
       type: "string",
       validator: yup
         .string()
@@ -21,14 +42,12 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     {
       initialValue: "",
       id: "programa",
-      label: "Programa",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: todayDate,
       id: "fecha",
-      label: "Fecha",
       type: "date",
       validator: yup
         .string()
@@ -38,7 +57,6 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     {
       initialValue: "",
       id: "factura",
-      label: "Factura",
       type: "string",
       validator: yup
         .string()
@@ -48,49 +66,42 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     {
       initialValue: "",
       id: "proveedor",
-      label: "Proveedor",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "responsable",
-      label: "Responsable",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "QUITO",
       id: "ciudad",
-      label: "Ciudad",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "observacion",
-      label: "Observacion",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "categoria",
-      label: "Categoria",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: "",
       id: "subCategoria",
-      label: "Subcategoria",
       type: "string",
       validator: yup.string(),
     },
     {
       initialValue: 0,
       id: "iva",
-      label: "IVA",
       type: "number",
       validator: yup
         .number()
@@ -100,20 +111,18 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     {
       initialValue: 0,
       id: "valorConIva",
-      label: "Valor con Iva",
       type: "number",
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
-      render: (context) => {
+      render: (context: InitialValue<GastoInput>) => {
         return (context.iva * context.valorSinIva) / 100 + context.valorSinIva;
       },
     },
     {
       initialValue: 0,
       id: "valorSinIva",
-      label: "Valor sin Iva",
       type: "number",
       validator: yup
         .number()
@@ -123,12 +132,15 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     {
       initialValue: 0,
       id: "req",
-      label: "Requerimiento",
       type: "string",
       validator: yup
         .string()
         .min(2, "Debe tener como mínimo dos caracteres.")
         .required("Este campo es requerido"),
     },
-  ];
+  ] as const;
+  const formWithName = formCreation.map((item) => {
+    return { ...item, label: getLabel(item.id) };
+  });
+  return formWithName;
 };
