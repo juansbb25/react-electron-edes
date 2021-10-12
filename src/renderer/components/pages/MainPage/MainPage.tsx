@@ -43,7 +43,13 @@ const MainPage: React.FC = () => {
           <MenuButton text="MENU1" path="/" />
         </Stack>
       </Stack>
-      <Box sx={{ position: "absolute", bottom: 6, right: 6 }}>
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 2,
+          right: 6,
+        }}
+      >
         <CondorSoftLink />
       </Box>
     </Box>

@@ -6,7 +6,7 @@ const RayoLink: React.FC = () => {
     <Button
       onClick={() => electron.shell.openExternal("http://www.google.com")}
     >
-      <Typography variant="caption">
+      <Typography fontSize={{ xs: "0.3rem", md: "1rem" }}>
         Un software desarrollado por @condorSoft
       </Typography>
     </Button>
