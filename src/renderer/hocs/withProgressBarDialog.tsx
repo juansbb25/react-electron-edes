@@ -18,9 +18,7 @@ function withProgressBar<T extends WithProgress>(
       isOpen: false,
     });
     const CloseProgressBar = () => {
-      setTimeout(() => {
-        setProgressBarState({ isOpen: false });
-      }, 1000);
+      setProgressBarState({ isOpen: false });
     };
     const ShowProgressBar = () => {
       setProgressBarState({ isOpen: true });
@@ -34,7 +32,7 @@ function withProgressBar<T extends WithProgress>(
         />
         <Dialog open={progressBarState.isOpen}>
           <DialogContent>
-            <CircularProgress />
+            <CircularProgress color="primary" size={70} />
           </DialogContent>
         </Dialog>
       </>

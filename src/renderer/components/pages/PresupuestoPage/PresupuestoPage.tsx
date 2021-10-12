@@ -3,18 +3,25 @@ import { InitialValue } from "@components/atoms/InputsForm/types";
 import UILayout from "@components/layout/UILayout";
 import { createPresupuesto } from "@database/controllers/presupuesto";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
+import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 import { Presupuesto } from "@models/presupuesto";
 import React from "react";
 import { createPresupuestoForm } from "./formDefinition";
 
-const PresupuestoPage: React.FC<WithNotifications> = ({ showNotification }) => {
+const PresupuestoPage: React.FC<WithNotifications & WithProgress> = ({
+  showNotification,
+  showProgressBar,
+  closeProgressBar,
+}) => {
   const onSubmit = async (value: InitialValue<Presupuesto>) => {
+    showProgressBar();
     const response = await createPresupuesto(value);
+    closeProgressBar();
     if (response.state) {
-      showNotification("Ingreso creado correctamente", "success");
+      showNotification("Presupuesto creado correctamente", "success");
     } else {
       showNotification(
-        response.message || "Ha ocurrido un error creando el ingreso",
+        response.message || "Ha ocurrido un error creando el presupuesto",
         "error"
       );
     }
@@ -25,4 +32,4 @@ const PresupuestoPage: React.FC<WithNotifications> = ({ showNotification }) => {
     </UILayout>
   );
 };
-export default withNotifications(PresupuestoPage);
+export default withProgressBar(withNotifications(PresupuestoPage));
