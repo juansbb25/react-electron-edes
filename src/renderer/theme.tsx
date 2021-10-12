@@ -14,6 +14,9 @@ const theme = createTheme({
     background: {
       default: "#FFFFFF",
     },
+    success: {
+      main: "#003C71",
+    },
   },
   components: {
     MuiCssBaseline: {
@@ -41,9 +44,10 @@ const theme = createTheme({
   typography: {
     fontWeightMedium: 600,
     fontSize: 17,
-    fontFamily: "Miller Text SC",
+    fontFamily: "Gotham Book",
     h1: {
       fontSize: "2.2rem",
+      fontFamily: "Miller Text SC",
       fontWeight: 400,
       color: "#003C71",
     },
@@ -56,6 +60,9 @@ const theme = createTheme({
       fontSize: "2rem",
       fontWeight: 400,
       color: "#FFFFFF",
+    },
+    caption: {
+      color: "#000000",
     },
   },
 });

@@ -3,7 +3,7 @@ import { Stack, Box, Paper } from "@mui/material";
 import React from "react";
 import bg from "@images/Sprinkle.svg";
 import logo from "@images/Logo2.png";
-import { width } from "@mui/system";
+import CondorSoftLink from "@components/atoms/CondorSoftLink";
 const MainPage: React.FC = () => {
   return (
     <Box
@@ -43,6 +43,9 @@ const MainPage: React.FC = () => {
           <MenuButton text="MENU1" path="/" />
         </Stack>
       </Stack>
+      <Box sx={{ position: "absolute", bottom: 6, right: 6 }}>
+        <CondorSoftLink />
+      </Box>
     </Box>
   );
 };
