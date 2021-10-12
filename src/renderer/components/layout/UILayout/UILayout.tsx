@@ -32,12 +32,18 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
       <Paper
         elevation={2}
         style={{ width: "100%", height: "100%" }}
-        sx={{ padding: 3, overflow: "auto", boxShadow: 10, borderRadius: 5 }}
+        sx={{ padding: 5, overflow: "auto", boxShadow: 10, borderRadius: 5 }}
       >
         <Typography variant="h1" style={{ textAlign: "center" }}>
           {title}
         </Typography>
-        <div>{React.cloneElement(children, { ref: childRef })}</div>
+        <Box
+          sx={{
+            paddingY: 4,
+          }}
+        >
+          {React.cloneElement(children, { ref: childRef })}
+        </Box>
         <CloseFormDialog open={open} handleClose={handleClose} />
         <Box
           sx={{

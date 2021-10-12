@@ -90,5 +90,5 @@ export const esESGrid: Partial<GridLocaleText> = {
     `${visibleCount.toLocaleString()} de ${totalCount.toLocaleString()}`,
 
   // Actions cell more text
-  //actionsCellMore: "más",
+  actionsCellMore: "más",
 };

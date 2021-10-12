@@ -64,7 +64,7 @@ const InputsForm = <T,>(
   }, []);
 
   return (
-    <form onSubmit={formik.handleSubmit} style={{ width: "100%", padding: 40 }}>
+    <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
       <Grid container spacing={2}>
         {items.map((item) => {
           return (

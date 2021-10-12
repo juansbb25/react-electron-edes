@@ -1,18 +1,12 @@
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-} from "@mui/material";
-import { esESGrid } from "../../../language";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 import { Ingreso, Gasto } from "@models/Transaccion";
 import { Presupuesto } from "@models/presupuesto";
 import { getIngresos } from "@database/controllers";
 import UILayout from "@components/layout/UILayout";
+import { DataGrid } from "@mui/x-data-grid";
+import { esESGrid } from "src/renderer/language";
 
 type TableType = "ingreso" | "gasto" | "presupuesto" | "";
 
@@ -49,10 +43,11 @@ const ViewPage = () => {
               headerName: key,
               sortable: true,
               width: 150,
+              ...((key as string) == "id" && { hide: true }),
             });
           });
         }
-        console.debug("ingresos", ingresos);
+        console.debug("ingresos", ingresos, cols);
         setState({
           type: "ingreso",
           rows: ingresos.values,
@@ -80,34 +75,37 @@ const ViewPage = () => {
             <MenuItem value={"ingreso"}>Ingreso</MenuItem>
           </Select>
         </FormControl>
-        {state ? (
-          <DataGrid
-            rows={state.rows}
-            columns={state.cols}
-            pageSize={5}
-            //rowsPerPageOptions={[15]}
-            //checkboxSelection
-            disableSelectionOnClick
-            localeText={esESGrid}
-          />
-        ) : (
-          <Paper
-            elevation={2}
-            style={{ width: "60%" }}
-            sx={{
-              padding: 3,
-              overflow: "auto",
-              boxShadow: 10,
-              borderRadius: 5,
-              textAlign: "center",
-            }}
-          >
-            Seleccione que tipo de archivo quiere ver
-          </Paper>
-        )}
+        <DataGrid
+          rows={state.rows}
+          columns={state.cols}
+          pageSize={5}
+          rowsPerPageOptions={[15]}
+          //checkboxSelection
+          disableSelectionOnClick
+          localeText={esESGrid}
+          style={{ minHeight: "200px" }}
+        />
       </>
     </UILayout>
   );
 };
 
 export default ViewPage;
+
+// : (
+//   <Paper
+//     elevation={2}
+//     style={{ width: "60%" }}
+//     sx={{
+//       padding: 3,
+//       boxShadow: 10,
+//       borderRadius: 5,
+//       textAlign: "center",
+//       margin: 5,
+//       background: "#003C71",
+//       color: "#ffffff",
+//     }}
+//   >
+//     Seleccione que tipo de archivo quiere ver
+//   </Paper>
+// )}

@@ -9,9 +9,9 @@ export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
       initialValue: "",
       id: "code",
       label: "Codigo",
-      type: "number",
+      type: "string",
       validator: yup
-        .number()
+        .string()
         .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
     },

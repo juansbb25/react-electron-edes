@@ -1,0 +1,33 @@
+{
+  "presupuestos": [
+    {
+      "code": "123",
+      "initValue": 100
+    }
+  ],
+  "ingresos": [
+    {
+      "dimension": "123",
+      "programa": "",
+      "fecha": "11-10-2021",
+      "factura": "123",
+      "proveedor": "",
+      "responsable": "",
+      "ciudad": "QUITO",
+      "observacion": "",
+      "empresa": "",
+      "cedula": "123",
+      "correo": "",
+      "montoCurso": 0,
+      "porcentajeBeca": 0,
+      "montoBeca": 0,
+      "abono": 0,
+      "saldo": 0,
+      "numBoucher": "",
+      "numDeposito": "",
+      "transferencia": "",
+      "id": "0d448b9f-0299-4b02-bf91-8d52a95cad99"
+    }
+  ],
+  "gastos": []
+}
