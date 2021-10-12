@@ -1,37 +1,48 @@
 import MenuButton from "@components/atoms/MenuButton";
-import { Box } from "@mui/material";
+import { Stack, Box, Paper } from "@mui/material";
 import React from "react";
-
+import bg from "@images/Sprinkle.svg";
+import logo from "@images/Logo2.png";
+import { width } from "@mui/system";
 const MainPage: React.FC = () => {
   return (
-    <Box sx={{ display: "flex-col", width: "100vw", height: "100vh", p: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          height: 1 / 3,
-          p: 1,
-          justifyContent: "space-evenly",
-        }}
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-around",
+        width: "100vw",
+        height: "100vh",
+        p: 4,
+        backgroundImage: `url(${bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Stack
+        spacing={{ xs: 2, md: 10 }}
+        alignItems="center"
+        justifyContent="space-evenly"
       >
-        <MenuButton text="Ingresos" path="/entryspage" />
-        <MenuButton text="Gastos" path="/gastoPage" />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          height: 1 / 3,
-          p: 1,
-          justifyContent: "space-evenly",
-        }}
-      >
-        <MenuButton text="Presupuesto" path="/presupuestoPage" />
-        <MenuButton text="Ver datos" path="/viewPage" />
-      </Box>
-      <Box
-        sx={{ display: "flex", height: 1 / 3, p: 1, justifyContent: "center" }}
-      >
-        <MenuButton text="MENU1" path="/" />
-      </Box>
+        <Paper
+          elevation={3}
+          sx={{ backgroundColor: "rgba(255, 255, 255, 0.6)" }}
+        >
+          <div
+            style={{ width: "100%", height: "100", backgroundColor: "red" }}
+          ></div>
+          <img src={logo} style={{ width: 540 }} />
+        </Paper>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+          <MenuButton text="Ingresos" path="/entryspage" />
+          <MenuButton text="Gastos" path="/gastoPage" />
+          <MenuButton text="Presupuesto" path="/presupuestoPage" />
+        </Stack>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+          <MenuButton text="Ver datos" path="/viewPage" />
+          <MenuButton text="MENU1" path="/" />
+        </Stack>
+      </Stack>
     </Box>
   );
 };
