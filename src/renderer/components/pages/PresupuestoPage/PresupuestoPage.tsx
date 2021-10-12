@@ -18,10 +18,10 @@ const PresupuestoPage: React.FC<WithNotifications & WithProgress> = ({
     const response = await createPresupuesto(value);
     closeProgressBar();
     if (response.state) {
-      showNotification("Ingreso creado correctamente", "success");
+      showNotification("Presupuesto creado correctamente", "success");
     } else {
       showNotification(
-        response.message || "Ha ocurrido un error creando el ingreso",
+        response.message || "Ha ocurrido un error creando el presupuesto",
         "error"
       );
     }

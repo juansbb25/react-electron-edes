@@ -17,10 +17,10 @@ const GastoPage: React.FC<WithNotifications & WithProgress> = ({
     const response = await createGasto(value);
     closeProgressBar();
     if (response.state) {
-      showNotification("Ingreso creado correctamente", "success");
+      showNotification("Gasto creado correctamente", "success");
     } else {
       showNotification(
-        response.message || "Ha ocurrido un error creando el ingreso",
+        response.message || "Ha ocurrido un error creando el gasto",
         "error"
       );
     }
