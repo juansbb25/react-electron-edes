@@ -17,9 +17,9 @@ export default function App(): JSX.Element {
   return (
     // Setup theme and css baseline for the Material-UI app
     // https://material-ui.com/customization/theming/
-    <LocalizationProvider dateAdapter={AdapterMoment}>
-      <DatabaseProvider>
-        <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterMoment} locale={"esES"}>
+        <DatabaseProvider>
           <CssBaseline />
           <Box
             sx={{
@@ -44,8 +44,8 @@ export default function App(): JSX.Element {
               </HashRouter>
             </main>
           </Box>
-        </ThemeProvider>
-      </DatabaseProvider>
-    </LocalizationProvider>
+        </DatabaseProvider>
+      </LocalizationProvider>
+    </ThemeProvider>
   );
 }
