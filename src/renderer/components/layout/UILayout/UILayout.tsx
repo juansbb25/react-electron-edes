@@ -79,7 +79,9 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
             variant="contained"
             type="submit"
             style={{ width: 200 }}
-            onClick={() => childRef?.current?.submitForm()}
+            onClick={() => {
+              childRef?.current?.submitForm();
+            }}
           >
             Guardar
           </Button>

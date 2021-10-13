@@ -42,13 +42,15 @@ export const deletePresupuesto = async (
 };
 
 export const updatePresupuesto = async (
-  presupuesto: Presupuesto
+  presupuestos: Presupuesto[]
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    obtainBase(db).find({ code: presupuesto.code }).assign(presupuesto);
-    await db.write();
-    return { state: true };
+    if (db.data) {
+      db.data.presupuestos = presupuestos;
+      await db.write();
+      return { state: true };
+    } else throw Error("Bad structure in data");
   } catch (error) {
     console.error(error);
     return { state: false };
@@ -66,6 +68,6 @@ export const getPresupuestos = async (): Promise<
     };
   } catch (error) {
     console.error(error);
-    return { state: false };
+    return { state: false, values: [] };
   }
 };

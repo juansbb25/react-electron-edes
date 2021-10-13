@@ -1,5 +1,4 @@
-export interface ServerResponse<T> {
+export type ServerResponse<T> = {
   state: boolean;
   message?: string;
-  values?: T;
-}
+} & (T extends undefined ? { values?: T } : { values: T });
