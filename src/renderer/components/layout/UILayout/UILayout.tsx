@@ -1,9 +1,10 @@
 import CloseFormDialog from "@components/atoms/CloseFormDialog";
 import { RefObject } from "@components/atoms/InputsForm/InputsForm";
-import { Box, Button, Typography } from "@mui/material";
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import { Paper } from "@mui/material";
 import React, { useState, useRef } from "react";
+import logo from "@images/Logo3.png";
 type UILayoutProps = {
   children: React.ReactElement;
   title: string;
@@ -24,11 +25,16 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        m: "auto",
         padding: 2,
         background: "#dbdbdb",
       }}
     >
+      <AppBar>
+        <Toolbar>
+          <img src={logo} style={{ width: 120 }} />
+        </Toolbar>
+      </AppBar>
+      <Toolbar />
       <Paper
         elevation={2}
         style={{ width: "100%", height: "100%" }}

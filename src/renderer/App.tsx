@@ -12,6 +12,7 @@ import DatabaseProvider from "@context/database";
 import GastoPage from "@components/pages/GastoPage/GastoPage";
 import PresupuestoPage from "@components/pages/PresupuestoPage";
 import ViewPage from "@components/pages/ViewPage";
+import DataPage from "@components/pages/DataPage";
 
 export default function App(): JSX.Element {
   return (
@@ -39,6 +40,7 @@ export default function App(): JSX.Element {
                       component={PresupuestoPage}
                     />
                     <Route exact path="/viewPage" component={ViewPage} />
+                    <Route exact path="/dataPage" component={DataPage} />
                   </Switch>
                 </div>
               </HashRouter>

@@ -4,7 +4,7 @@ import electron from "electron";
 const RayoLink: React.FC = () => {
   return (
     <Button
-      onClick={() => electron.shell.openExternal("http://www.google.com")}
+      onClick={() => electron.shell.openExternal("https://condor-soft.com/")}
     >
       <Typography fontSize={{ xs: "0.3rem", md: "1rem" }}>
         Un software desarrollado por @condorSoft
