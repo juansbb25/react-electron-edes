@@ -46,7 +46,7 @@ function withNotifications<T extends WithNotifications>(
         />
         <Snackbar
           open={toastState.state}
-          autoHideDuration={6000}
+          autoHideDuration={2000}
           onClose={closeToast}
         >
           {toastState.type === "success" ? (

@@ -20,14 +20,19 @@ import {
   useGridSlotComponentProps,
 } from "@mui/x-data-grid";
 import { esESGrid } from "../../../../renderer/language";
-import { getGastos } from "@database/controllers/gasto";
-import { getPresupuestos } from "@database/controllers/presupuesto";
+import { getGastos, updateGasto } from "@database/controllers/gasto";
+import {
+  getPresupuestos,
+  updatePresupuesto,
+} from "@database/controllers/presupuesto";
 import { TextFieldProps } from "@components/atoms/InputsForm/types";
 import { createIngresosForm } from "../EntrysPage/formDefinition";
 import { createGastosForm } from "../GastoPage/formDefinition";
 import { createPresupuestoForm } from "../PresupuestoPage/formDefinition";
 import { withId, WithId, withIdData } from "@utils/addId";
 import { useStyles } from "../../../../renderer/antdTheme";
+import withNotifications, { WithNotifications } from "@hocs/withNotifications";
+import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 
 type TableType = "ingreso" | "gasto" | "presupuesto" | "";
 
@@ -67,7 +72,11 @@ const CustomToolbar = forwardRef<RefGetRows>((props, ref) => {
 });
 
 const ViewPageContainer = (
-  props: Record<string, unknown>,
+  {
+    showNotification,
+    showProgressBar,
+    closeProgressBar,
+  }: WithNotifications & WithProgress,
   ref: Ref<RefObject>
 ): React.ReactElement => {
   const [state, setState] = useState<TableState>({
@@ -111,6 +120,7 @@ const ViewPageContainer = (
     });
   };
   const handleChange = async (type: TableType) => {
+    showProgressBar();
     if (type === "ingreso") {
       const ingresos = await getIngresos();
       manageData(ingresos.values, withId(createIngresosForm()), type);
@@ -125,20 +135,37 @@ const ViewPageContainer = (
         type
       );
     }
+    closeProgressBar();
   };
 
   const updateData = async () => {
+    showProgressBar();
     const data = childRef.current?.getRows();
     if (data) {
       if (state.type === "ingreso") {
-        console.debug(data);
-        await updateIngreso(data as Ingreso[]);
+        const response = await updateIngreso(data as Ingreso[]);
+        if (response.state) {
+          showNotification("Ingreso actualizado correctamente", "success");
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
       } else if (state.type === "gasto") {
-        console.debug("gasto");
+        const response = await updateGasto(data as Gasto[]);
+        if (response.state) {
+          showNotification("Gasto actualizado correctamente", "success");
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
       } else {
-        console.debug("presupuesto");
+        const response = await updatePresupuesto(data as Presupuesto[]);
+        if (response.state) {
+          showNotification("Presupuesto actualizado correctamente", "success");
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
       }
     }
+    closeProgressBar();
   };
   useImperativeHandle(ref, () => ({
     submitForm() {
@@ -185,9 +212,9 @@ const ViewPageContainer = (
 };
 
 const ViewContainerWrapper = forwardRef(ViewPageContainer);
-export const ViewPage: React.FC = () => (
+export const ViewPage: React.FC<WithNotifications & WithProgress> = (props) => (
   <UILayout title="Tabla de datos">
-    <ViewContainerWrapper></ViewContainerWrapper>
+    <ViewContainerWrapper {...props}></ViewContainerWrapper>
   </UILayout>
 );
-export default ViewPage;
+export default withProgressBar(withNotifications(ViewPage));
