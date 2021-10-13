@@ -66,6 +66,6 @@ export const getPresupuestos = async (): Promise<
     };
   } catch (error) {
     console.error(error);
-    return { state: false };
+    return { state: false, values: [] };
   }
 };

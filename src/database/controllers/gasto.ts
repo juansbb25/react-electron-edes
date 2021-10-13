@@ -68,6 +68,6 @@ export const getGastos = async (): Promise<ServerResponse<Gasto[]>> => {
     };
   } catch (error) {
     console.error(error);
-    return { state: false };
+    return { state: false, values: [] };
   }
 };

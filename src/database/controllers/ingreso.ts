@@ -46,13 +46,15 @@ export const deleteIngreso = async (
 };
 
 export const updateIngreso = async (
-  ingreso: Ingreso
+  ingresos: Ingreso[]
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    obtainBase(db).find({ id: ingreso.id }).assign(ingreso);
-    await db.write();
-    return { state: true };
+    if (db.data) {
+      db.data.ingresos = ingresos;
+      await db.write();
+      return { state: true };
+    } else throw Error("Bad structure in data");
   } catch (error) {
     console.error(error);
     return { state: false };
@@ -68,6 +70,6 @@ export const getIngresos = async (): Promise<ServerResponse<Ingreso[]>> => {
     };
   } catch (error) {
     console.error(error);
-    return { state: false };
+    return { state: false, values: [] };
   }
 };

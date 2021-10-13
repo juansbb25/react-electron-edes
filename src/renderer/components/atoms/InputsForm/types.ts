@@ -9,6 +9,7 @@ export type TextFieldProps<T> = {
   initialValue: T[keyof T];
   render?: (context: InitialValue<T>) => string | number | Date;
   renderInTable?: (context: GridValueGetterParams) => string | number | Date; //used to render in tables mui-x
+  editable?: boolean;
 };
 
 export type TextFieldPropsList<T> = {

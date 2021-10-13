@@ -6,6 +6,7 @@ import MillerText from "@fonts/MillerText.otf";
 import GothamBookRegular from "@fonts/GothamBookRegular.otf";
 // Create a Material-UI theme instance
 // https://material-ui.com/customization/theming/
+
 const theme = createTheme(
   {
     palette: {
@@ -47,7 +48,7 @@ const theme = createTheme(
     },
     typography: {
       fontWeightMedium: 600,
-      fontSize: 12,
+      fontSize: 14,
       fontFamily: "Gotham Book",
       h1: {
         fontSize: "2.2rem",
