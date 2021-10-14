@@ -33,15 +33,15 @@ export const createGasto = async (
 
 export const deleteGasto = async (
   gasto: Gasto
-): Promise<ServerResponse<undefined>> => {
+): Promise<ServerResponse<Gasto[]>> => {
   try {
     const db = await initDatabase();
-    obtainBase(db).remove({ id: gasto.id });
+    obtainBase(db).remove({ id: gasto.id }).value();
     await db.write();
-    return { state: true };
+    return { state: true, values: db.data?.gastos || [] };
   } catch (error) {
     console.error(error);
-    return { state: false };
+    return { state: false, values: [] };
   }
 };
 

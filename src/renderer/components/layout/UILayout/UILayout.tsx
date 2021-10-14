@@ -5,12 +5,14 @@ import { ArrowBack } from "@mui/icons-material";
 import { Paper } from "@mui/material";
 import React, { useState, useRef } from "react";
 import logo from "@images/Logo3.png";
+import { useHistory } from "react-router-dom";
 type UILayoutProps = {
   children: React.ReactElement;
   title: string;
 };
 
 const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
+  const history = useHistory();
   const childRef = useRef<RefObject>();
   const [open, isOpen] = useState(false);
   const handleClose = () => {
@@ -57,7 +59,7 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
           contentText="Si sale se perderá su progreso y no podrá recuperar los cambios"
           warningReturnButtonText="Salir"
           successButtonText="Cancelar"
-          path="/"
+          handleSuccess={() => history.push("/")}
         />
         <Box
           sx={{

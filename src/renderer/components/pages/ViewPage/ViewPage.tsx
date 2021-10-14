@@ -1,4 +1,5 @@
 import * as React from "react";
+import CloseFormDialog from "@components/atoms/CloseFormDialog";
 import {
   Button,
   FormControl,
@@ -9,7 +10,11 @@ import {
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from "react";
 import { Ingreso, Gasto } from "@models/Transaccion";
 import { Presupuesto } from "@models/presupuesto";
-import { getIngresos, updateIngreso } from "@database/controllers";
+import {
+  deleteIngreso,
+  getIngresos,
+  updateIngreso,
+} from "@database/controllers";
 import UILayout from "@components/layout/UILayout";
 import {
   DataGrid,
@@ -20,8 +25,13 @@ import {
   useGridSlotComponentProps,
 } from "@mui/x-data-grid";
 import { esESGrid } from "../../../../renderer/language";
-import { getGastos, updateGasto } from "@database/controllers/gasto";
 import {
+  deleteGasto,
+  getGastos,
+  updateGasto,
+} from "@database/controllers/gasto";
+import {
+  deletePresupuesto,
   getPresupuestos,
   updatePresupuesto,
 } from "@database/controllers/presupuesto";
@@ -79,6 +89,14 @@ const ViewPageContainer = (
   }: WithNotifications & WithProgress,
   ref: Ref<RefObject>
 ): React.ReactElement => {
+  //This is to modal message
+  const [open, setOpen] = useState<{ state: boolean; row?: GridRowData }>({
+    state: false,
+  });
+  const handleClose = () => {
+    setOpen({ state: false, row: undefined });
+  };
+
   const [state, setState] = useState<TableState>({
     type: "",
     rows: [],
@@ -112,6 +130,21 @@ const ViewPageContainer = (
         ...(key.id == "id" && { hide: true }),
         ...(key.id == "id" && { editable: false }),
       };
+    });
+    cols.push({
+      field: "eliminar",
+      headerName: "Eliminar",
+      sortable: false,
+      width: 150,
+      //resizable: true,
+      editable: false,
+      renderCell: (params) => {
+        return (
+          <Button onClick={() => setOpen({ state: true, row: params.row })}>
+            Eliminar
+          </Button>
+        );
+      },
     });
     setState({
       type: type,
@@ -167,6 +200,53 @@ const ViewPageContainer = (
     }
     closeProgressBar();
   };
+
+  const deleteData = async () => {
+    showProgressBar();
+    if (open.row) {
+      if (state.type === "ingreso") {
+        console.debug("estoy en ingreso");
+        const response = await deleteIngreso(open.row as Ingreso);
+        if (response.state) {
+          showNotification("Ingreso eliminado correctamente", "success");
+          setState({
+            type: state.type,
+            cols: state.cols,
+            rows: response.values,
+          });
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
+      } else if (state.type === "gasto") {
+        const response = await deleteGasto(open.row as Gasto);
+        if (response.state) {
+          showNotification("Gasto eliminado correctamente", "success");
+          setState({
+            type: state.type,
+            cols: state.cols,
+            rows: response.values,
+          });
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
+      } else {
+        const response = await deletePresupuesto(open.row as Presupuesto);
+        if (response.state) {
+          showNotification("Presupuesto eliminado correctamente", "success");
+          setState({
+            type: state.type,
+            cols: state.cols,
+            rows: response.values,
+          });
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
+      }
+    }
+    handleClose();
+    closeProgressBar();
+  };
+
   useImperativeHandle(ref, () => ({
     submitForm() {
       updateData();
@@ -206,6 +286,15 @@ const ViewPageContainer = (
         }}
         autoHeight={true}
         density="compact"
+      />
+      <CloseFormDialog
+        open={open.state}
+        handleClose={handleClose}
+        title={`¿Esta seguro que desea eliminar este ${state.type}?`}
+        contentText="Este cambio no sera revertible"
+        warningReturnButtonText="Eliminar"
+        successButtonText="Cancelar"
+        handleSuccess={deleteData}
       />
     </>
   );

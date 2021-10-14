@@ -33,15 +33,16 @@ export const createIngreso = async (
 
 export const deleteIngreso = async (
   ingreso: Ingreso
-): Promise<ServerResponse<undefined>> => {
+): Promise<ServerResponse<Ingreso[]>> => {
   try {
+    console.debug("eliminando ingreso con id", ingreso, ingreso.id);
     const db = await initDatabase();
-    obtainBase(db).remove({ id: ingreso.id });
+    obtainBase(db).remove({ id: ingreso.id }).value();
     await db.write();
-    return { state: true };
+    return { state: true, values: db.data?.ingresos ? db.data.ingresos : [] };
   } catch (error) {
     console.error(error);
-    return { state: false };
+    return { state: false, values: [] };
   }
 };
 

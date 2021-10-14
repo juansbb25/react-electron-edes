@@ -7,16 +7,15 @@ import {
   DialogTitle,
 } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
 
 type CloseFormDialogProps = {
+  handleSuccess: () => void;
   handleClose: () => void;
   open: boolean;
   title: string;
   contentText: string;
   warningReturnButtonText: string;
   successButtonText: string;
-  path: string;
 };
 const CloseFormDialog: React.FC<CloseFormDialogProps> = ({
   handleClose,
@@ -25,7 +24,7 @@ const CloseFormDialog: React.FC<CloseFormDialogProps> = ({
   contentText,
   warningReturnButtonText,
   successButtonText,
-  path,
+  handleSuccess,
 }) => {
   return (
     <Dialog
@@ -41,9 +40,9 @@ const CloseFormDialog: React.FC<CloseFormDialogProps> = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Link to={path} style={{ textDecoration: "none" }}>
-          <Button color="error">{warningReturnButtonText}</Button>
-        </Link>
+        <Button color="error" onClick={handleSuccess}>
+          {warningReturnButtonText}
+        </Button>
         <Button onClick={handleClose}>{successButtonText}</Button>
       </DialogActions>
     </Dialog>

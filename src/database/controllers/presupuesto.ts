@@ -29,15 +29,15 @@ export const createPresupuesto = async (
 
 export const deletePresupuesto = async (
   presupuesto: Presupuesto
-): Promise<ServerResponse<undefined>> => {
+): Promise<ServerResponse<Presupuesto[]>> => {
   try {
     const db = await initDatabase();
-    obtainBase(db).remove({ code: presupuesto.code });
+    obtainBase(db).remove({ code: presupuesto.code }).value();
     await db.write();
-    return { state: true };
+    return { state: true, values: db.data?.presupuestos || [] };
   } catch (error) {
     console.error(error);
-    return { state: false };
+    return { state: false, values: [] };
   }
 };
 
