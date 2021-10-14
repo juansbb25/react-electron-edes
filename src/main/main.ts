@@ -1,11 +1,11 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
 import * as url from "url";
-
 let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
+    icon: "static/images/Logo1.jpg",
     width: 1100,
     height: 800,
     minWidth: 500,
