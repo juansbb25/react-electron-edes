@@ -2,7 +2,7 @@
   "name": "electron-typescript-react",
   "version": "1.0.0",
   "private": true,
-  "description": "Lightweight, modern boilerplate built with electron, typescript, and react.",
+  "description": "App encargada de manejo de datos con una base de datos liviana",
   "main": "./dist/main.js",
   "scripts": {
     "dev": "npm-run-all -p dev:react electron:serve",
@@ -18,7 +18,7 @@
     "package:dist": "electron-builder --dir"
   },
   "keywords": [],
-  "author": "HelloSoftware",
+  "author": "Condorsoft",
   "license": "MIT",
   "dependencies": {
     "@emotion/react": "^11.4.1",
@@ -68,8 +68,8 @@
     "webpack-cli": "^4.6.0"
   },
   "build": {
-    "appId": "com.company.app",
-    "productName": "App Name",
+    "appId": "com.edes.app",
+    "productName": "Edes",
     "mac": {
       "category": "public.app-category.video"
     },
