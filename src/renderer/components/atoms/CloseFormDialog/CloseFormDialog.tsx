@@ -9,10 +9,23 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
-type CloseFormDialogProps = { handleClose: () => void; open: boolean };
+type CloseFormDialogProps = {
+  handleClose: () => void;
+  open: boolean;
+  title: string;
+  contentText: string;
+  warningReturnButtonText: string;
+  successButtonText: string;
+  path: string;
+};
 const CloseFormDialog: React.FC<CloseFormDialogProps> = ({
   handleClose,
   open,
+  title,
+  contentText,
+  warningReturnButtonText,
+  successButtonText,
+  path,
 }) => {
   return (
     <Dialog
@@ -21,19 +34,17 @@ const CloseFormDialog: React.FC<CloseFormDialogProps> = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        {"¿Estás seguro que desea salir?"}
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Si sale se perderá su progreso y no podrá recuperar los cambios
+          {contentText}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <Button color="error">Salir</Button>
+        <Link to={path} style={{ textDecoration: "none" }}>
+          <Button color="error">{warningReturnButtonText}</Button>
         </Link>
-        <Button onClick={handleClose}>Cancelar</Button>
+        <Button onClick={handleClose}>{successButtonText}</Button>
       </DialogActions>
     </Dialog>
   );

@@ -50,7 +50,15 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
         >
           {React.cloneElement(children, { ref: childRef })}
         </Box>
-        <CloseFormDialog open={open} handleClose={handleClose} />
+        <CloseFormDialog
+          open={open}
+          handleClose={handleClose}
+          title="¿Estás seguro que desea salir?"
+          contentText="Si sale se perderá su progreso y no podrá recuperar los cambios"
+          warningReturnButtonText="Salir"
+          successButtonText="Cancelar"
+          path="/"
+        />
         <Box
           sx={{
             display: "flex",
