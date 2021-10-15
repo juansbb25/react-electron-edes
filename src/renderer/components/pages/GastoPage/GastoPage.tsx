@@ -12,12 +12,16 @@ const GastoPage: React.FC<WithNotifications & WithProgress> = ({
   showProgressBar,
   closeProgressBar,
 }) => {
-  const onSubmit = async (value: InitialValue<GastoInput>) => {
+  const onSubmit = async (
+    value: InitialValue<GastoInput>,
+    { resetForm }: { resetForm: any }
+  ) => {
     showProgressBar();
     const response = await createGasto(value);
     closeProgressBar();
     if (response.state) {
       showNotification("Gasto creado correctamente", "success");
+      resetForm();
     } else {
       showNotification(
         response.message || "Ha ocurrido un error creando el gasto",
