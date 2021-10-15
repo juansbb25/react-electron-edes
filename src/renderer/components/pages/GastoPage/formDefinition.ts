@@ -18,7 +18,6 @@ export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
     ciudad: "Ciudad",
     observacion: "Observacion",
     categoria: "Categoria",
-    subCategoria: "Subcategoria",
     iva: "Iva",
     valorConIva: "Valor Con Iva",
     valorSinIva: "Valor Sin Iva",
@@ -86,12 +85,6 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     {
       initialValue: "",
       id: "categoria",
-      type: "string",
-      validator: yup.string(),
-    },
-    {
-      initialValue: "",
-      id: "subCategoria",
       type: "string",
       validator: yup.string(),
     },

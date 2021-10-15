@@ -16,6 +16,7 @@ export interface Ingreso extends Transaction {
   correo?: string;
   montoCurso: number;
   porcentajeBeca: number;
+  montoCancelar: number;
   montoBeca: number;
   abono: number;
   saldo: number;
@@ -26,7 +27,6 @@ export interface Ingreso extends Transaction {
 
 export interface Gasto extends Transaction {
   categoria?: string;
-  subCategoria?: string;
   iva: number;
   valorConIva: number;
   valorSinIva: number;

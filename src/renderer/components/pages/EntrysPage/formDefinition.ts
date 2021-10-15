@@ -1,5 +1,9 @@
-import { TextFieldProps } from "@components/atoms/InputsForm/types";
+import {
+  InitialValue,
+  TextFieldProps,
+} from "@components/atoms/InputsForm/types";
 import { IngresoInput } from "@database/controllers";
+import { GridValueGetterParams } from "@mui/x-data-grid";
 import * as yup from "yup";
 
 export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
@@ -24,6 +28,7 @@ export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
     numBoucher: "Numero de Boucher",
     numDeposito: "Numero de Deposito",
     transferencia: "Transferencia",
+    montoCancelar: "Monto a cancelar",
   };
   return diccionary[key];
 };
@@ -117,12 +122,11 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     },
     {
       initialValue: 0,
-      id: "porcentajeBeca",
+      id: "montoCancelar",
       type: "number",
       validator: yup
         .number()
-        .max(100, "El valor debe estar entre 0 y 100")
-        .min(0, "El valor debe estar entre 0 y 100")
+        .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
     },
     {
@@ -133,6 +137,42 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
+      render: (context: InitialValue<IngresoInput>) => {
+        return context.montoCurso - context.montoCancelar;
+      },
+      renderInTable: (context: GridValueGetterParams) => {
+        return (
+          ((context.getValue(context.id, "montoCurso") as number) || 0) -
+          ((context.getValue(context.id, "montoCancelar") as number) || 0)
+        );
+      },
+    },
+    {
+      initialValue: 0,
+      id: "porcentajeBeca",
+      type: "number",
+      validator: yup
+        .number()
+        .max(100, "El valor debe estar entre 0 y 100")
+        .min(0, "El valor debe estar entre 0 y 100")
+        .required("Este campo es requerido"),
+      render: (context: InitialValue<IngresoInput>) => {
+        return context.montoCurso > 0
+          ? ((context.montoCurso - context.montoCancelar) /
+              context.montoCurso) *
+              100
+          : 0;
+      },
+      renderInTable: (context: GridValueGetterParams) => {
+        return ((context.getValue(context.id, "montoCancelar") as number) ||
+          0) > 0
+          ? ((((context.getValue(context.id, "montoCurso") as number) || 0) -
+              ((context.getValue(context.id, "montoCancelar") as number) ||
+                0)) /
+              ((context.getValue(context.id, "montoCurso") as number) || 1)) *
+              100
+          : 0;
+      },
     },
     {
       initialValue: 0,
@@ -147,10 +187,16 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       initialValue: 0,
       id: "saldo",
       type: "number",
-      validator: yup
-        .number()
-        .min(0, "El Valor debe ser mayor o igual a 0")
-        .required("Este campo es requerido"),
+      validator: yup.number().required("Este campo es requerido"),
+      render: (context: InitialValue<IngresoInput>) => {
+        return context.montoCancelar - context.abono;
+      },
+      renderInTable: (context: GridValueGetterParams) => {
+        return (
+          ((context.getValue(context.id, "montoCancelar") as number) || 0) -
+          ((context.getValue(context.id, "abono") as number) || 0)
+        );
+      },
     },
     {
       initialValue: "",
