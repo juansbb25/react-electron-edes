@@ -5,6 +5,7 @@ export type TextFieldProps<T> = {
   id: Extract<keyof T, string>;
   label: string;
   type: "string" | "number" | "date";
+  autocomplete?: string[];
   validator?: any;
   initialValue: T[keyof T];
   render?: (context: InitialValue<T>) => string | number | Date;

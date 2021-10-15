@@ -27,6 +27,7 @@ export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
 };
 export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
   const date = new Date();
+  const autoformList = ["1", "2", "3"];
   const formCreation = [
     {
       initialValue: "",
@@ -83,10 +84,11 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       validator: yup.string(),
     },
     {
-      initialValue: "",
+      initialValue: autoformList[0] as string | "",
       id: "categoria",
       type: "string",
-      validator: yup.string(),
+      autocomplete: autoformList as string[],
+      validator: yup.string().required("Este campo es requerido"),
     },
     {
       initialValue: 0,

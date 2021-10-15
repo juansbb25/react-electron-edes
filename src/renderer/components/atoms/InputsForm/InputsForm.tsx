@@ -1,4 +1,4 @@
-import { Grid, TextField } from "@mui/material";
+import { Autocomplete, Grid, TextField } from "@mui/material";
 import DatePicker from "@mui/lab/DatePicker";
 import { useFormik } from "formik";
 import React, { forwardRef, Ref, useImperativeHandle, useEffect } from "react";
@@ -48,16 +48,14 @@ const InputsForm = <T,>(
   useEffect(() => {
     const eventEnter = (event: any) => {
       if (event.keyCode === 13 && event.target.nodeName === "INPUT") {
-        event.preventDefault();
+        //event.preventDefault();
         event.stopPropagation();
         const form = event.target?.form;
         const index = Array.prototype.indexOf.call(form, event.target);
         console.debug(form, index, event.target, event.target?.type);
         if (event.target?.type === "tel") {
           form.elements[index + 3].focus();
-        } else {
-          form.elements[index + 2].focus();
-        }
+        } else form.elements[index + 2].focus();
       }
     };
     document.addEventListener("keydown", eventEnter);
@@ -82,28 +80,31 @@ const InputsForm = <T,>(
                 justifyContent: "center",
               }}
             >
-              {(item.type === "string" || item.type === "number") && (
-                <TextField
-                  fullWidth
-                  type={item.type === "number" ? item.type : ""}
-                  id={item.id}
-                  label={item.label}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched[item.id] && Boolean(formik.errors[item.id])
-                  }
-                  value={
-                    item.render
-                      ? item.render(formik.values)
-                      : formik.values[item.id]
-                  }
-                  helperText={formik.touched[item.id] && formik.errors[item.id]}
-                  onKeyPress={(e) => {
-                    e.key == "Enter" && e.preventDefault;
-                  }}
-                  disabled={!!item.render}
-                />
-              )}
+              {(item.type === "string" || item.type === "number") &&
+                !item.autocomplete && (
+                  <TextField
+                    fullWidth
+                    type={item.type === "number" ? item.type : ""}
+                    id={item.id}
+                    label={item.label}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched[item.id] && Boolean(formik.errors[item.id])
+                    }
+                    value={
+                      item.render
+                        ? item.render(formik.values)
+                        : formik.values[item.id]
+                    }
+                    helperText={
+                      formik.touched[item.id] && formik.errors[item.id]
+                    }
+                    onKeyPress={(e) => {
+                      e.key == "Enter" && e.preventDefault;
+                    }}
+                    disabled={!!item.render}
+                  />
+                )}
               {item.type === "date" && (
                 <DatePicker
                   value={formik.values[item.id]}
@@ -119,6 +120,25 @@ const InputsForm = <T,>(
                         formik.touched[item.id] &&
                         formik.errors[item.id] &&
                         "La fecha es requerida y debe tener un formato válido"
+                      }
+                    />
+                  )}
+                />
+              )}
+              {item.type === "string" && item.autocomplete && (
+                <Autocomplete
+                  value={formik.values[item.id]}
+                  autoSelect
+                  autoComplete
+                  sx={{ width: "100%" }}
+                  options={item.autocomplete}
+                  onChange={formik.handleChange}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={item.label}
+                      helperText={
+                        formik.touched[item.id] && formik.errors[item.id]
                       }
                     />
                   )}
