@@ -43,6 +43,7 @@ import { withId, WithId, withIdData } from "@utils/addId";
 import { useStyles } from "../../../../renderer/antdTheme";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
+import moment from "moment";
 
 type TableType = "ingreso" | "gasto" | "presupuesto" | "";
 
@@ -129,6 +130,10 @@ const ViewPageContainer = (
         ...(key.render && { editable: false }),
         ...(key.id == "id" && { hide: true }),
         ...(key.id == "id" && { editable: false }),
+        ...(key.id == "fecha" && {
+          renderCell: (params) =>
+            moment(new Date(params.value as string)).format("DD-MM-YYYY"),
+        }),
       };
     });
     cols.push({

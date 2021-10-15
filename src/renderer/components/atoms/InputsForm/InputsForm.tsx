@@ -108,7 +108,7 @@ const InputsForm = <T,>(
                 <DatePicker
                   value={formik.values[item.id]}
                   label={item.label}
-                  onChange={(e) => {
+                  onChange={(e: Date | null) => {
                     formik.setFieldValue(item.id, e);
                   }}
                   renderInput={(params: any) => (
