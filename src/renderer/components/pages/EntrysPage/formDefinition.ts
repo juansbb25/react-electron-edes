@@ -5,7 +5,7 @@ import * as yup from "yup";
 export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
   const diccionary = {
     id: "id",
-    dimension: "Dimension",
+    dimension: "Dimensión",
     programa: "Programa",
     fecha: "Fecha",
     factura: "Factura",
@@ -16,7 +16,7 @@ export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
     empresa: "Empresa",
     cedula: "Cedula",
     correo: "Correo",
-    montoCurso: "Monto en Curso",
+    montoCurso: "Monto del Curso",
     porcentajeBeca: "Porcentaje De Beca",
     montoBeca: "Monto Beca",
     abono: "Abono",

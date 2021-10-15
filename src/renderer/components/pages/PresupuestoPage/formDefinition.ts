@@ -5,8 +5,8 @@ import * as yup from "yup";
 
 export const getLabel = (key: Extract<keyof Presupuesto, string>): string => {
   const diccionary = {
-    code: "Codigo",
-    initValue: "Valor Inicial",
+    code: "Dimensión",
+    initValue: "Ingreso neto",
   };
   return diccionary[key];
 };

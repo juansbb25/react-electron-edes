@@ -9,7 +9,7 @@ import * as yup from "yup";
 export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
   const diccionary = {
     id: "id",
-    dimension: "Dimension",
+    dimension: "Dimensión",
     programa: "Programa",
     fecha: "Fecha",
     factura: "Factura",
@@ -97,7 +97,7 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     },
     {
       initialValue: 0,
-      id: "iva",
+      id: "valorSinIva",
       type: "number",
       validator: yup
         .number()
@@ -106,13 +106,14 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     },
     {
       initialValue: 0,
-      id: "valorSinIva",
+      id: "iva",
       type: "number",
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
     },
+
     {
       initialValue: 0,
       id: "valorConIva",

@@ -6,7 +6,7 @@ import { DB } from "src/models/DB";
 export type EnhancedDb = Low<DB> & { chain: ObjectChain<DB> };
 // Use JSON file for storage
 export const initDatabase = async (): Promise<EnhancedDb> => {
-  const adapter = new JSONFile<DB>("db.json");
+  const adapter = new JSONFile<DB>("data/db.json");
   const db = new Low<DB>(adapter) as EnhancedDb;
 
   await db.read();

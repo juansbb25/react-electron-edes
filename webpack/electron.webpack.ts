@@ -1,5 +1,6 @@
 import * as path from "path";
 import { Configuration } from "webpack";
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const rootPath = path.resolve(__dirname, "..");
 
@@ -28,6 +29,7 @@ const config: Configuration = {
     path: path.resolve(rootPath, "dist"),
     filename: "[name].js",
   },
+  plugins: [new HtmlWebpackPlugin({ title: "Edes" })],
 };
 
 export default config;
