@@ -73,6 +73,9 @@
     "mac": {
       "category": "public.app-category.video"
     },
+    "win": {
+      "icon": "static/images/logo-edes.jpg"
+    },
     "directories": {
       "output": "packages"
     },
