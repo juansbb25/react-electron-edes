@@ -51,5 +51,23 @@
       "id": "8ecfb837-019b-4c6f-9a1e-d60ed7bce796"
     }
   ],
-  "gastos": []
+  "gastos": [
+    {
+      "dimension": "111",
+      "programa": "",
+      "fecha": null,
+      "factura": "111",
+      "proveedor": "",
+      "responsable": "111",
+      "ciudad": "QUITO",
+      "observacion": "111",
+      "categoria": "",
+      "subCategoria": "",
+      "iva": 0,
+      "valorSinIva": 0,
+      "valorConIva": 0,
+      "req": "111",
+      "id": "ea6b4983-0098-4186-9b7a-76f977a9b12c"
+    }
+  ]
 }

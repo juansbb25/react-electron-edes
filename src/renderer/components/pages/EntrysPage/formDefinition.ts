@@ -50,7 +50,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       initialValue: date,
       id: "fecha",
       type: "date",
-      validator: yup.string().required("Este campo es requerido"),
+      validator: yup.date().required("Este campo es requerido"),
     },
     {
       initialValue: "",
