@@ -4,7 +4,6 @@ import {
 } from "@components/atoms/InputsForm/types";
 import { GastoInput } from "@database/controllers/gasto";
 import { GridValueGetterParams } from "@mui/x-data-grid";
-import moment from "moment";
 import * as yup from "yup";
 
 export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
@@ -29,7 +28,6 @@ export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
 };
 export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
   const date = new Date();
-  const todayDate = moment(date).format("DD-MM-YYYY");
   const formCreation = [
     {
       initialValue: "",
@@ -47,13 +45,10 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
       validator: yup.string(),
     },
     {
-      initialValue: todayDate,
+      initialValue: date,
       id: "fecha",
       type: "date",
-      validator: yup
-        .string()
-        .min(2, "Debe tener como mínimo dos caracteres.")
-        .required("Este campo es requerido"),
+      validator: yup.string().required("Este campo es requerido"),
     },
     {
       initialValue: "",
@@ -140,7 +135,7 @@ export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
     },
 
     {
-      initialValue: 0,
+      initialValue: "",
       id: "req",
       type: "string",
       validator: yup

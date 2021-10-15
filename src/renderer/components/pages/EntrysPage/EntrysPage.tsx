@@ -12,13 +12,17 @@ const EntrysPage: React.FC<WithNotifications & WithProgress> = ({
   showProgressBar,
   closeProgressBar,
 }) => {
-  const onSubmit = async (ingreso: InitialValue<IngresoInput>) => {
+  const onSubmit = async (
+    ingreso: InitialValue<IngresoInput>,
+    { resetForm }: { resetForm: any }
+  ) => {
     console.debug({ ingreso });
     showProgressBar();
     const response = await createIngreso(ingreso);
     closeProgressBar();
     if (response.state) {
       showNotification("Ingreso creado correctamente", "success");
+      resetForm();
     } else {
       showNotification(
         response.message || "Ha ocurrido un error creando el ingreso",

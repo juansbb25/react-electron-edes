@@ -1,6 +1,5 @@
 import { TextFieldProps } from "@components/atoms/InputsForm/types";
 import { IngresoInput } from "@database/controllers";
-import moment from "moment";
 import * as yup from "yup";
 
 export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
@@ -31,7 +30,6 @@ export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
 
 export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
   const date = new Date();
-  const todayDate = moment(date).format("DD-MM-YYYY");
   const formCreation = [
     {
       initialValue: "",
@@ -49,13 +47,10 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       validator: yup.string(),
     },
     {
-      initialValue: todayDate,
+      initialValue: date,
       id: "fecha",
       type: "date",
-      validator: yup
-        .string()
-        .min(2, "Debe tener como mínimo dos caracteres.")
-        .required("Este campo es requerido"),
+      validator: yup.string().required("Este campo es requerido"),
     },
     {
       initialValue: "",

@@ -3,11 +3,13 @@ import DatePicker from "@mui/lab/DatePicker";
 import { useFormik } from "formik";
 import React, { forwardRef, Ref, useImperativeHandle, useEffect } from "react";
 import * as yup from "yup";
-import moment from "moment";
 import { InitialValue, TextFieldProps, Validator } from "./types";
 
 type InputsFormProps<T> = {
-  onSubmit: (values: InitialValue<T>) => void;
+  onSubmit: (
+    values: InitialValue<T>,
+    { resetForm }: { resetForm: any }
+  ) => void;
   items: TextFieldProps<T>[];
 };
 
@@ -36,7 +38,6 @@ const InputsForm = <T,>(
     validationSchema: validationSchema,
     onSubmit: onSubmit,
   });
-
   useImperativeHandle(ref, () => ({
     submitForm() {
       const submit = formik.submitForm;
@@ -108,17 +109,16 @@ const InputsForm = <T,>(
                   value={formik.values[item.id]}
                   label={item.label}
                   onChange={(e) => {
-                    formik.setFieldValue(
-                      item.id,
-                      moment(e).format("DD-MM-YYYY")
-                    );
+                    formik.setFieldValue(item.id, e);
                   }}
                   renderInput={(params: any) => (
                     <TextField
                       fullWidth
                       {...params}
                       helperText={
-                        formik.touched[item.id] && formik.errors[item.id]
+                        formik.touched[item.id] &&
+                        formik.errors[item.id] &&
+                        "La fecha es requerida y debe tener un formato válido"
                       }
                     />
                   )}
