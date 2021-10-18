@@ -36,6 +36,7 @@ const GastoPage: React.FC<WithNotifications & WithProgress> = ({
     TextFieldProps<GastoInput>[] | null
   >(null);
   React.useEffect(() => {
+    showProgressBar();
     createGastosForm()
       .then((res) => {
         setGastoForm(res);
@@ -43,14 +44,13 @@ const GastoPage: React.FC<WithNotifications & WithProgress> = ({
       .catch((err) => {
         setGastoForm([]);
         console.debug(err);
-      });
+      })
+      .finally(() => closeProgressBar());
   }, []);
   return (
-    gastoForm && (
-      <UILayout title="Crear Gasto">
-        <InputsForm items={gastoForm} onSubmit={onSubmit} />
-      </UILayout>
-    )
+    <UILayout title="Crear Gasto">
+      {gastoForm ? <InputsForm items={gastoForm} onSubmit={onSubmit} /> : <></>}
+    </UILayout>
   );
 };
 export default withProgressBar(withNotifications(GastoPage));
