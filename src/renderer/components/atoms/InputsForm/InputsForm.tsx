@@ -128,11 +128,9 @@ const InputsForm = <T,>(
               {item.type === "string" && item.autocomplete && (
                 <Autocomplete
                   value={formik.values[item.id]}
-                  autoSelect
-                  autoComplete
                   sx={{ width: "100%" }}
                   options={item.autocomplete}
-                  onChange={formik.handleChange}
+                  onChange={(_, value) => formik.setFieldValue(item.id, value)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
