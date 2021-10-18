@@ -13,12 +13,16 @@ const PresupuestoPage: React.FC<WithNotifications & WithProgress> = ({
   showProgressBar,
   closeProgressBar,
 }) => {
-  const onSubmit = async (value: InitialValue<Presupuesto>) => {
+  const onSubmit = async (
+    value: InitialValue<Presupuesto>,
+    { resetForm }: { resetForm: any }
+  ) => {
     showProgressBar();
     const response = await createPresupuesto(value);
     closeProgressBar();
     if (response.state) {
       showNotification("Presupuesto creado correctamente", "success");
+      resetForm();
     } else {
       showNotification(
         response.message || "Ha ocurrido un error creando el presupuesto",

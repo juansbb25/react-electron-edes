@@ -3,7 +3,9 @@ import {
   TextFieldProps,
 } from "@components/atoms/InputsForm/types";
 import { GastoInput } from "@database/controllers/gasto";
+import { getRubros } from "@database/controllers/rubro";
 import { GridValueGetterParams } from "@mui/x-data-grid";
+import console from "console";
 import * as yup from "yup";
 
 export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
@@ -25,9 +27,23 @@ export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
   };
   return diccionary[key];
 };
-export const createGastosForm = (): TextFieldProps<GastoInput>[] => {
+export const createGastosForm = async (): Promise<
+  TextFieldProps<GastoInput>[]
+> => {
   const date = new Date();
-  const autoformList = ["1", "2", "3"];
+  const rubros = async () => {
+    try {
+      const rubros = await getRubros();
+      return rubros.values.map((items) => {
+        return items.nombre;
+      });
+    } catch (error) {
+      console.debug(error);
+      return [];
+    }
+  };
+  const autoformList = await rubros();
+
   const formCreation = [
     {
       initialValue: "",

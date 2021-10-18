@@ -171,7 +171,7 @@ const ViewPageContainer = (
       manageData(ingresos.values, withId(createIngresosForm()), type);
     } else if (type === "gasto") {
       const gastos = await getGastos();
-      manageData(gastos.values, withId(createGastosForm()), type);
+      manageData(gastos.values, withId(await createGastosForm()), type);
     } else if (type === "presupuesto") {
       const presupuestos = await getPresupuestos();
       manageData(

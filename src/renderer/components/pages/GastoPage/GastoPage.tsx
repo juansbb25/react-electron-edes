@@ -1,5 +1,8 @@
 import InputsForm from "@components/atoms/InputsForm";
-import { InitialValue } from "@components/atoms/InputsForm/types";
+import {
+  InitialValue,
+  TextFieldProps,
+} from "@components/atoms/InputsForm/types";
 import UILayout from "@components/layout/UILayout";
 import { createGasto, GastoInput } from "@database/controllers/gasto";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
@@ -29,10 +32,25 @@ const GastoPage: React.FC<WithNotifications & WithProgress> = ({
       );
     }
   };
+  const [gastoForm, setGastoForm] = React.useState<
+    TextFieldProps<GastoInput>[] | null
+  >(null);
+  React.useEffect(() => {
+    createGastosForm()
+      .then((res) => {
+        setGastoForm(res);
+      })
+      .catch((err) => {
+        setGastoForm([]);
+        console.debug(err);
+      });
+  }, []);
   return (
-    <UILayout title="Crear Gasto">
-      <InputsForm items={createGastosForm()} onSubmit={onSubmit} />
-    </UILayout>
+    gastoForm && (
+      <UILayout title="Crear Gasto">
+        <InputsForm items={gastoForm} onSubmit={onSubmit} />
+      </UILayout>
+    )
   );
 };
 export default withProgressBar(withNotifications(GastoPage));

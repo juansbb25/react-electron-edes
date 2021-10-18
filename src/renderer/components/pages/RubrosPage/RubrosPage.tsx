@@ -12,12 +12,16 @@ const RubrosPage: React.FC<WithNotifications & WithProgress> = ({
   showProgressBar,
   closeProgressBar,
 }) => {
-  const onSubmit = async (value: InitialValue<RubroInput>) => {
+  const onSubmit = async (
+    value: InitialValue<RubroInput>,
+    { resetForm }: { resetForm: any }
+  ) => {
     showProgressBar();
     const response = await createRubro(value);
     closeProgressBar();
     if (response.state) {
       showNotification("Rubro creado correctamente", "success");
+      resetForm();
     } else {
       showNotification(
         response.message || "Ha ocurrido un error creando el rubro",
