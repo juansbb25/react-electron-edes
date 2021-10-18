@@ -8,7 +8,7 @@ import {
   Select,
 } from "@mui/material";
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from "react";
-import { Ingreso, Gasto } from "@models/Transaccion";
+import { Ingreso, Gasto, Rubro } from "@models/Transaccion";
 import { Presupuesto } from "@models/presupuesto";
 import {
   deleteIngreso,
@@ -35,19 +35,25 @@ import {
   getPresupuestos,
   updatePresupuesto,
 } from "@database/controllers/presupuesto";
+import {
+  deleteRubro,
+  getRubros,
+  updateRubros,
+} from "@database/controllers/rubro";
 import { TextFieldProps } from "@components/atoms/InputsForm/types";
 import { createIngresosForm } from "../EntrysPage/formDefinition";
 import { createGastosForm } from "../GastoPage/formDefinition";
 import { createPresupuestoForm } from "../PresupuestoPage/formDefinition";
+import { createRubroForm } from "../RubrosPage/formDefinition";
 import { withId, WithId, withIdData } from "@utils/addId";
 import { useStyles } from "../../../../renderer/antdTheme";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 import moment from "moment";
 
-type TableType = "ingreso" | "gasto" | "presupuesto" | "";
+type TableType = "ingreso" | "gasto" | "presupuesto" | "rubro" | "";
 
-type RowsType = Ingreso[] | Gasto[] | Presupuesto[];
+type RowsType = Ingreso[] | Gasto[] | Presupuesto[] | Rubro[];
 
 type TableState = {
   type: TableType;
@@ -114,6 +120,7 @@ const ViewPageContainer = (
     colsDefinition:
       | TextFieldProps<Ingreso>[]
       | TextFieldProps<Gasto>[]
+      | TextFieldProps<Rubro>[]
       | TextFieldProps<Presupuesto & WithId>[],
     type: TableType
   ) => {
@@ -165,13 +172,16 @@ const ViewPageContainer = (
     } else if (type === "gasto") {
       const gastos = await getGastos();
       manageData(gastos.values, withId(createGastosForm()), type);
-    } else {
+    } else if (type === "presupuesto") {
       const presupuestos = await getPresupuestos();
       manageData(
         withIdData(presupuestos.values, "code"),
         withId(createPresupuestoForm()),
         type
       );
+    } else {
+      const rubros = await getRubros();
+      manageData(rubros.values, withId(createRubroForm()), type);
     }
     closeProgressBar();
   };
@@ -194,10 +204,17 @@ const ViewPageContainer = (
         } else {
           showNotification(response.message || "Ha ocurrido un error", "error");
         }
-      } else {
+      } else if (state.type === "presupuesto") {
         const response = await updatePresupuesto(data as Presupuesto[]);
         if (response.state) {
           showNotification("Presupuesto actualizado correctamente", "success");
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
+      } else {
+        const response = await updateRubros(data as Rubro[]);
+        if (response.state) {
+          showNotification("Rubro actualizado correctamente", "success");
         } else {
           showNotification(response.message || "Ha ocurrido un error", "error");
         }
@@ -234,10 +251,22 @@ const ViewPageContainer = (
         } else {
           showNotification(response.message || "Ha ocurrido un error", "error");
         }
-      } else {
+      } else if (state.type === "presupuesto") {
         const response = await deletePresupuesto(open.row as Presupuesto);
         if (response.state) {
           showNotification("Presupuesto eliminado correctamente", "success");
+          setState({
+            type: state.type,
+            cols: state.cols,
+            rows: response.values,
+          });
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
+      } else {
+        const response = await deleteRubro(open.row as Rubro);
+        if (response.state) {
+          showNotification("Rubro eliminado correctamente", "success");
           setState({
             type: state.type,
             cols: state.cols,
@@ -274,6 +303,7 @@ const ViewPageContainer = (
           <MenuItem value={"ingreso"}>Ingreso</MenuItem>
           <MenuItem value={"gasto"}>Gasto</MenuItem>
           <MenuItem value={"presupuesto"}>Presupuesto</MenuItem>
+          <MenuItem value={"rubro"}>Rubro</MenuItem>
         </Select>
       </FormControl>
       <DataGrid

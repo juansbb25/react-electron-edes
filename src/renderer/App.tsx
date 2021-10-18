@@ -13,6 +13,7 @@ import GastoPage from "@components/pages/GastoPage/GastoPage";
 import PresupuestoPage from "@components/pages/PresupuestoPage";
 import ViewPage from "@components/pages/ViewPage";
 import DataPage from "@components/pages/DataPage";
+import RubrosPage from "@components/pages/RubrosPage";
 
 export default function App(): JSX.Element {
   return (
@@ -41,6 +42,7 @@ export default function App(): JSX.Element {
                     />
                     <Route exact path="/viewPage" component={ViewPage} />
                     <Route exact path="/dataPage" component={DataPage} />
+                    <Route exact path="/rubroPage" component={RubrosPage} />
                   </Switch>
                 </div>
               </HashRouter>

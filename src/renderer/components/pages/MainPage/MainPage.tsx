@@ -40,7 +40,8 @@ const MainPage: React.FC = () => {
         </Stack>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <MenuButton text="Ver datos" path="/viewPage" />
-          <MenuButton text="MENU1" path="/dataPage" />
+          <MenuButton text="Informe" path="/dataPage" />
+          <MenuButton text="Crear Rubro" path="/rubroPage" />
         </Stack>
       </Stack>
       <Box
