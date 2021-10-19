@@ -6,6 +6,7 @@ import * as yup from "yup";
 export const getLabel = (key: Extract<keyof Presupuesto, string>): string => {
   const diccionary = {
     code: "Dimensión",
+    programa: "Programa",
     initValue: "Ingreso neto",
     gastoTotal: "Gasto total",
     ingresoTotal: "Ingreso total",
@@ -31,6 +32,15 @@ export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
       validator: yup
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
+        .required("Este campo es requerido"),
+    },
+    {
+      initialValue: "",
+      id: "programa",
+      type: "string",
+      validator: yup
+        .string()
+        .min(2, "Debe tener como mínimo dos caracteres.")
         .required("Este campo es requerido"),
     },
     {

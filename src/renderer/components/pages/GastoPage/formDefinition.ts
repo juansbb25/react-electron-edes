@@ -12,7 +12,6 @@ export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
   const diccionary = {
     id: "id",
     dimension: "Dimensión",
-    programa: "Programa",
     fecha: "Fecha",
     factura: "Factura",
     proveedor: "Proveedor",
@@ -55,12 +54,6 @@ export const createGastosForm = async (): Promise<
         .required("Este campo es requerido"),
     },
     {
-      initialValue: "",
-      id: "programa",
-      type: "string",
-      validator: yup.string(),
-    },
-    {
       initialValue: date,
       id: "fecha",
       type: "date",
@@ -100,7 +93,7 @@ export const createGastosForm = async (): Promise<
       validator: yup.string(),
     },
     {
-      initialValue: autoformList[0] as string | "",
+      initialValue: autoformList.length > 0 ? autoformList[0] : "",
       id: "categoria",
       type: "string",
       autocomplete: autoformList as string[],

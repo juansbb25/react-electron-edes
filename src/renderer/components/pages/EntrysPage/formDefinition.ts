@@ -10,7 +10,6 @@ export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
   const diccionary = {
     id: "id",
     dimension: "Dimensión",
-    programa: "Programa",
     fecha: "Fecha",
     factura: "Factura",
     proveedor: "Proveedor",
@@ -45,12 +44,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
         .min(2, "Debe tener como mínimo dos caracteres.")
         .required("Este campo es requerido"),
     },
-    {
-      initialValue: "",
-      id: "programa",
-      type: "string",
-      validator: yup.string(),
-    },
+
     {
       initialValue: date,
       id: "fecha",
@@ -166,11 +160,16 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       renderInTable: (context: GridValueGetterParams) => {
         return ((context.getValue(context.id, "montoCancelar") as number) ||
           0) > 0
-          ? ((((context.getValue(context.id, "montoCurso") as number) || 0) -
-              ((context.getValue(context.id, "montoCancelar") as number) ||
-                0)) /
-              ((context.getValue(context.id, "montoCurso") as number) || 1)) *
-              100
+          ? Math.round(
+              100 *
+                ((((context.getValue(context.id, "montoCurso") as number) ||
+                  0) -
+                  ((context.getValue(context.id, "montoCancelar") as number) ||
+                    0)) /
+                  ((context.getValue(context.id, "montoCurso") as number) ||
+                    1)) *
+                100
+            ) / 100
           : 0;
       },
     },

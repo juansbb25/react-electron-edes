@@ -1,7 +1,6 @@
 export interface Transaction {
   id: string;
   dimension: string;
-  programa: string;
   fecha: Date;
   factura: string;
   proveedor?: string; //talves solo en gastos obligatorio

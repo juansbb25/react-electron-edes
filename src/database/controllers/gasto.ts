@@ -11,7 +11,9 @@ const obtainBase = (db: EnhancedDb) => {
 const obtainBasePresupuesto = (db: EnhancedDb) => {
   return db.chain.get("presupuestos");
 };
-
+const obtainValorConIva = (gasto: GastoInput) => {
+  return { ...gasto, valorConIva: gasto.valorSinIva * (1 + gasto.iva / 100) };
+};
 export const createGasto = async (
   gasto: GastoInput
 ): Promise<ServerResponse<undefined>> => {
@@ -24,15 +26,16 @@ export const createGasto = async (
     if (!exists) return { state: false, message: "No existe la dimension" };
     const id = uuidv4();
     obtainBase(db)
-      .push({ ...gasto, id })
+      .push({ ...obtainValorConIva(gasto), id })
       .value();
     obtainBasePresupuesto(db)
       .find({ code: gasto.dimension })
       .assign({
-        total: presupuesto.total - gasto.valorConIva,
         gastoTotal: presupuesto.gastoTotal - gasto.valorConIva,
+        total: presupuesto.total - gasto.valorConIva,
       })
       .value();
+
     await db.write();
     return { state: true };
   } catch (error) {

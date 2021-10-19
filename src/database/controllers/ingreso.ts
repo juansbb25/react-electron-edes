@@ -12,7 +12,15 @@ const obtainBase = (db: EnhancedDb) => {
 const obtainBasePresupuesto = (db: EnhancedDb) => {
   return db.chain.get("presupuestos");
 };
-
+const obtainMontos = (ingreso: IngresoInput) => {
+  return {
+    ...ingreso,
+    montoBeca: ingreso.montoCurso - ingreso.montoCancelar,
+    porcentajeBeca:
+      ((ingreso.montoCurso - ingreso.montoCancelar) / ingreso.montoCurso) * 100,
+    saldo: ingreso.montoCancelar - ingreso.abono,
+  };
+};
 export const createIngreso = async (
   ingreso: IngresoInput
 ): Promise<ServerResponse<undefined>> => {
@@ -25,7 +33,7 @@ export const createIngreso = async (
       return { state: false, message: "No existe la dimension" };
     const id = uuidv4();
     obtainBase(db)
-      .push({ ...ingreso, id })
+      .push({ ...obtainMontos(ingreso), id })
       .value();
     obtainBasePresupuesto(db)
       .find({ code: ingreso.dimension })
