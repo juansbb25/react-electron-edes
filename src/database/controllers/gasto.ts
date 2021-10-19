@@ -31,8 +31,9 @@ export const createGasto = async (
     obtainBasePresupuesto(db)
       .find({ code: gasto.dimension })
       .assign({
-        gastoTotal: presupuesto.gastoTotal - gasto.valorConIva,
-        total: presupuesto.total - gasto.valorConIva,
+        gastoTotal:
+          presupuesto.gastoTotal + obtainValorConIva(gasto).valorConIva,
+        total: presupuesto.total - obtainValorConIva(gasto).valorConIva,
       })
       .value();
 
@@ -63,20 +64,38 @@ export const updateGasto = async (
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    const existDimension = () => {
-      const presupuestos = db.chain.get("presupuestos");
-      if (presupuestos.find({ code: gasto.dimension }).value()) return true;
-      else return false;
-    };
-    if (existDimension()) {
-      const gastos = db.chain.get("gastos");
-      gastos
-        .find({ dimension: gasto.dimension })
-        .assign(obtainValorConIva(gasto))
-        .value();
-      await db.write();
-      return { state: true };
-    } else return { state: false, message: "No existe la dimensión" };
+    const gastoAnterior = db.chain.get("gastos").find({ id: gasto.id }).value();
+    if (!gastoAnterior)
+      return { state: false, message: "No existe el gasto a actualizar" };
+
+    const presupuesto = db.chain
+      .get("presupuestos")
+      .find({ code: gasto.dimension })
+      .value();
+
+    if (!presupuesto)
+      return { state: false, message: "No existe la dimensión" };
+
+    const gastos = db.chain.get("gastos");
+    gastos
+      .find({ dimension: gasto.dimension })
+      .assign(obtainValorConIva(gasto))
+      .value();
+    obtainBasePresupuesto(db)
+      .find({ code: gasto.dimension })
+      .assign({
+        gastoTotal:
+          presupuesto.gastoTotal +
+          obtainValorConIva(gasto).valorConIva -
+          gastoAnterior.valorConIva,
+        total:
+          presupuesto.total -
+          obtainValorConIva(gasto).valorConIva +
+          gastoAnterior.valorConIva,
+      })
+      .value();
+    await db.write();
+    return { state: true };
   } catch (error) {
     console.error(error);
     return { state: false };
