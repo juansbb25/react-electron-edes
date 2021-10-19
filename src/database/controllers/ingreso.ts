@@ -66,15 +66,21 @@ export const deleteIngreso = async (
 };
 
 export const updateIngreso = async (
-  ingresos: Ingreso[]
+  ingreso: Ingreso
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    if (db.data) {
-      db.data.ingresos = ingresos;
+    const existDimension = () => {
+      const presupuestos = db.chain.get("presupuestos");
+      if (presupuestos.find({ code: ingreso.dimension })) return true;
+      else return false;
+    };
+    if (existDimension()) {
+      const ingresos = db.chain.get("ingresos");
+      ingresos.find({ id: ingreso.id }).assign(obtainMontos(ingreso)).value();
       await db.write();
       return { state: true };
-    } else throw Error("Bad structure in data");
+    } else return { state: false, message: "No existe la dimensión" };
   } catch (error) {
     console.error(error);
     return { state: false };

@@ -41,15 +41,13 @@ export const deleteRubro = async (
 };
 
 export const updateRubros = async (
-  rubros: Rubro[]
+  rubro: Rubro
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    if (db.data) {
-      db.data.rubros = rubros;
-      await db.write();
-      return { state: true };
-    } else throw Error("Bad structure in data");
+    db.chain.get("rubros").find({ id: rubro.id }).assign(rubro).value();
+    await db.write();
+    return { state: true };
   } catch (error) {
     console.error(error);
     return { state: false };

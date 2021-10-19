@@ -44,13 +44,13 @@ function withNotifications<T extends WithNotifications>(
           {...(props as T)}
           showNotification={showNotification}
         />
-        <Snackbar
-          open={toastState.state}
-          autoHideDuration={2000}
-          onClose={closeToast}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          {toastState.type === "success" ? (
+        {toastState.type === "success" && (
+          <Snackbar
+            open={toastState.state}
+            autoHideDuration={2000}
+            onClose={closeToast}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
             <Alert
               onClose={closeToast}
               severity="success"
@@ -58,12 +58,20 @@ function withNotifications<T extends WithNotifications>(
             >
               {toastState.message}
             </Alert>
-          ) : (
+          </Snackbar>
+        )}
+        {toastState.type === "error" && (
+          <Snackbar
+            open={toastState.state}
+            autoHideDuration={2000}
+            onClose={closeToast}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
             <Alert onClose={closeToast} severity="error" sx={{ width: "100%" }}>
               {toastState.message}
             </Alert>
-          )}
-        </Snackbar>
+          </Snackbar>
+        )}
       </>
     );
   };
