@@ -17,7 +17,10 @@ const obtainMontos = (ingreso: IngresoInput) => {
     ...ingreso,
     montoBeca: ingreso.montoCurso - ingreso.montoCancelar,
     porcentajeBeca:
-      ((ingreso.montoCurso - ingreso.montoCancelar) / ingreso.montoCurso) * 100,
+      ingreso.montoCurso !== 0
+        ? ((ingreso.montoCurso - ingreso.montoCancelar) / ingreso.montoCurso) *
+          100
+        : 0,
     saldo: ingreso.montoCancelar - ingreso.abono,
   };
 };
