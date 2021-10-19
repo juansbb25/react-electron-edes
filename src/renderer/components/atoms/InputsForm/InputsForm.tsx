@@ -81,7 +81,8 @@ const InputsForm = <T,>(
               }}
             >
               {(item.type === "string" || item.type === "number") &&
-                !item.autocomplete && (
+                !item.autocomplete &&
+                item.initialValue !== undefined && (
                   <TextField
                     fullWidth
                     type={item.type === "number" ? item.type : ""}
@@ -105,7 +106,7 @@ const InputsForm = <T,>(
                     disabled={!!item.render}
                   />
                 )}
-              {item.type === "date" && (
+              {item.type === "date" && item.initialValue !== undefined && (
                 <DatePicker
                   value={formik.values[item.id]}
                   label={item.label}
@@ -125,23 +126,27 @@ const InputsForm = <T,>(
                   )}
                 />
               )}
-              {item.type === "string" && item.autocomplete && (
-                <Autocomplete
-                  value={formik.values[item.id]}
-                  sx={{ width: "100%" }}
-                  options={item.autocomplete}
-                  onChange={(_, value) => formik.setFieldValue(item.id, value)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={item.label}
-                      helperText={
-                        formik.touched[item.id] && formik.errors[item.id]
-                      }
-                    />
-                  )}
-                />
-              )}
+              {item.type === "string" &&
+                item.autocomplete &&
+                item.initialValue !== undefined && (
+                  <Autocomplete
+                    value={formik.values[item.id]}
+                    sx={{ width: "100%" }}
+                    options={item.autocomplete}
+                    onChange={(_, value) =>
+                      formik.setFieldValue(item.id, value)
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={item.label}
+                        helperText={
+                          formik.touched[item.id] && formik.errors[item.id]
+                        }
+                      />
+                    )}
+                  />
+                )}
             </Grid>
           );
         })}

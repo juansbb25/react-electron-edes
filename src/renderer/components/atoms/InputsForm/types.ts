@@ -7,7 +7,7 @@ export type TextFieldProps<T> = {
   type: "string" | "number" | "date";
   autocomplete?: string[];
   validator?: any;
-  initialValue: T[keyof T];
+  initialValue?: T[keyof T];
   render?: (context: InitialValue<T>) => string | number | Date;
   renderInTable?: (context: GridValueGetterParams) => string | number | Date; //used to render in tables mui-x
   valueInTable?: (context: GridValueGetterParams) => string | number | Date; //used to render in tables mui-x
