@@ -29,7 +29,10 @@ export const createIngreso = async (
       .value();
     obtainBasePresupuesto(db)
       .find({ code: ingreso.dimension })
-      .assign({ ingresoTotal: presupuesto.ingresoTotal + ingreso.abono })
+      .assign({
+        ingresoTotal: presupuesto.ingresoTotal + ingreso.abono,
+        total: presupuesto.total + ingreso.abono,
+      })
       .value();
     await db.write();
     return { state: true };

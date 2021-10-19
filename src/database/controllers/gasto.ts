@@ -8,20 +8,30 @@ export type GastoInput = Omit<Gasto, "id">;
 const obtainBase = (db: EnhancedDb) => {
   return db.chain.get("gastos");
 };
+const obtainBasePresupuesto = (db: EnhancedDb) => {
+  return db.chain.get("presupuestos");
+};
 
 export const createGasto = async (
   gasto: GastoInput
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    const exists = !!db.chain
-      .get("presupuestos")
+    const presupuesto = obtainBasePresupuesto(db)
       .find({ code: gasto.dimension })
       .value();
+    const exists = !!presupuesto;
     if (!exists) return { state: false, message: "No existe la dimension" };
     const id = uuidv4();
     obtainBase(db)
       .push({ ...gasto, id })
+      .value();
+    obtainBasePresupuesto(db)
+      .find({ code: gasto.dimension })
+      .assign({
+        total: presupuesto.total - gasto.valorConIva,
+        gastoTotal: presupuesto.gastoTotal - gasto.valorConIva,
+      })
       .value();
     await db.write();
     return { state: true };

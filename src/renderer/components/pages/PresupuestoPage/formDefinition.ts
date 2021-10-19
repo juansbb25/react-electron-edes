@@ -7,6 +7,9 @@ export const getLabel = (key: Extract<keyof Presupuesto, string>): string => {
   const diccionary = {
     code: "Dimensión",
     initValue: "Ingreso neto",
+    gastoTotal: "Gasto total",
+    ingresoTotal: "Ingreso total",
+    total: "Total",
   };
   return diccionary[key];
 };
@@ -29,6 +32,18 @@ export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
+    },
+    {
+      id: "ingresoTotal",
+      type: "number",
+    },
+    {
+      id: "gastoTotal",
+      type: "number",
+    },
+    {
+      id: "total",
+      type: "number",
     },
   ] as const;
   const formWithName = formCreation.map((item) => {
