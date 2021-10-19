@@ -1,7 +1,7 @@
 import MenuButton from "@components/atoms/MenuButton";
 import { Stack, Box, Paper } from "@mui/material";
 import React from "react";
-import bg from "@images/Sprinkle.svg";
+import bg from "@images/mapa.svg";
 import logo from "@images/Logo2.png";
 import CondorSoftLink from "@components/atoms/CondorSoftLink";
 const MainPage: React.FC = () => {
