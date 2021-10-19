@@ -6,6 +6,7 @@ import {
 } from "@components/atoms/InputsForm/types";
 import { IngresoInput, updateIngreso } from "@database/controllers";
 import { GastoInput, updateGasto } from "@database/controllers/gasto";
+import { updatePresupuesto } from "@database/controllers/presupuesto";
 import { RubroInput, updateRubro } from "@database/controllers/rubro";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
@@ -137,17 +138,17 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
         }
       } else if (type === "presupuesto") {
         showProgressBar();
-        // const response = await updatePresupuesto({
-        //   ...(value as IngresoInput),
-        //   id: row.id,
-        // });
+        const response = await updatePresupuesto({
+          ...(value as Presupuesto),
+          code: row.code,
+        });
         closeProgressBar();
-        // if (response.state) {
-        //   showNotification("Actualizado correctamente", "success");
-        //   handleClose();
-        // } else {
-        //   showNotification(response.message || "Ha ocurrido un error", "error");
-        // }
+        if (response.state) {
+          showNotification("Actualizado correctamente", "success");
+          handleClose();
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
       } else {
         showProgressBar();
         const response = await updateRubro({
