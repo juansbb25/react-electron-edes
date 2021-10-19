@@ -71,7 +71,7 @@ type RefGetRows = {
 
 const CustomToolbar = forwardRef<RefGetRows>((props, ref) => {
   const { rows } = useGridSlotComponentProps();
-  console.debug("el estado en toolbar es ", rows);
+
   useImperativeHandle(ref, () => ({
     getRows() {
       return rows;
@@ -80,11 +80,6 @@ const CustomToolbar = forwardRef<RefGetRows>((props, ref) => {
   return (
     <GridToolbarContainer>
       <GridToolbarExport />
-      <Button
-        onClick={() => {
-          console.debug(rows);
-        }}
-      ></Button>
     </GridToolbarContainer>
   );
 });
@@ -133,11 +128,10 @@ const ViewPageContainer = (
         width: 150,
         type: key.type,
         //resizable: true,
-        editable: key.editable ? key.editable : true,
-        ...(key.renderInTable && { renderCell: key.renderInTable }),
-        ...(key.render && { editable: false }),
+        ...(key.renderInTable && {
+          renderCell: key.renderInTable,
+        }),
         ...(key.id == "id" && { hide: true }),
-        ...(key.id == "id" && { editable: false }),
         ...(key.id == "fecha" && {
           renderCell: (params) =>
             moment(new Date(params.value as string)).format("DD-MM-YYYY"),
@@ -229,7 +223,6 @@ const ViewPageContainer = (
     showProgressBar();
     if (open.row) {
       if (state.type === "ingreso") {
-        console.debug("estoy en ingreso");
         const response = await deleteIngreso(open.row as Ingreso);
         if (response.state) {
           showNotification("Ingreso eliminado correctamente", "success");
