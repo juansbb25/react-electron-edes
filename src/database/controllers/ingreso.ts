@@ -72,7 +72,7 @@ export const updateIngreso = async (
     const db = await initDatabase();
     const existDimension = () => {
       const presupuestos = db.chain.get("presupuestos");
-      if (presupuestos.find({ code: ingreso.dimension })) return true;
+      if (presupuestos.find({ code: ingreso.dimension }).value()) return true;
       else return false;
     };
     if (existDimension()) {

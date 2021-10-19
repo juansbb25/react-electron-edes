@@ -74,8 +74,9 @@ const ViewPageContainer = ({
     isEditing: boolean;
     row?: GridRowData;
   }>();
-  const handleClose = () => {
+  const handleClose = async () => {
     setOpen({ state: false, row: undefined });
+    await handleChange(state.type);
   };
 
   const [state, setState] = useState<TableState>({
@@ -135,6 +136,7 @@ const ViewPageContainer = ({
     });
   };
   const handleChange = async (type: TableType) => {
+    console.debug("cambiando los datos");
     showProgressBar();
     if (type === "ingreso") {
       const ingresos = await getIngresos();

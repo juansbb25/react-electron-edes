@@ -65,14 +65,15 @@ export const updateGasto = async (
     const db = await initDatabase();
     const existDimension = () => {
       const presupuestos = db.chain.get("presupuestos");
-      if (presupuestos.find({ code: gasto.dimension })) return true;
+      if (presupuestos.find({ code: gasto.dimension }).value()) return true;
       else return false;
     };
-    if (db.data && existDimension()) {
+    if (existDimension()) {
       const gastos = db.chain.get("gastos");
       gastos
         .find({ dimension: gasto.dimension })
-        .assign(obtainValorConIva(gasto));
+        .assign(obtainValorConIva(gasto))
+        .value();
       await db.write();
       return { state: true };
     } else return { state: false, message: "No existe la dimensión" };
