@@ -9,9 +9,14 @@ import { useHistory } from "react-router-dom";
 type UILayoutProps = {
   children: React.ReactElement;
   title: string;
+  save?: boolean;
 };
 
-const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
+const UILayout: React.FC<UILayoutProps> = ({
+  children,
+  title,
+  save = true,
+}) => {
   const history = useHistory();
   const childRef = useRef<RefObject>();
   const [open, isOpen] = useState(false);
@@ -84,17 +89,19 @@ const UILayout: React.FC<UILayoutProps> = ({ children, title }) => {
           >
             Salir
           </Button>
-          <Button
-            color="success"
-            variant="contained"
-            type="submit"
-            style={{ width: 200 }}
-            onClick={() => {
-              childRef?.current?.submitForm();
-            }}
-          >
-            Guardar
-          </Button>
+          {save && (
+            <Button
+              color="success"
+              variant="contained"
+              type="submit"
+              style={{ width: 200 }}
+              onClick={() => {
+                childRef?.current?.submitForm();
+              }}
+            >
+              Guardar
+            </Button>
+          )}
         </Box>
       </Paper>
     </Box>

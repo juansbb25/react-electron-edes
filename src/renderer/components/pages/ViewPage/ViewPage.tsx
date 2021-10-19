@@ -7,14 +7,10 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { forwardRef, Ref, useImperativeHandle, useRef, useState } from "react";
+import { useState } from "react";
 import { Ingreso, Gasto, Rubro } from "@models/Transaccion";
 import { Presupuesto } from "@models/presupuesto";
-import {
-  deleteIngreso,
-  getIngresos,
-  updateIngreso,
-} from "@database/controllers";
+import { deleteIngreso, getIngresos } from "@database/controllers";
 import UILayout from "@components/layout/UILayout";
 import {
   DataGrid,
@@ -22,24 +18,14 @@ import {
   GridRowData,
   GridToolbarContainer,
   GridToolbarExport,
-  useGridSlotComponentProps,
 } from "@mui/x-data-grid";
 import { esESGrid } from "../../../../renderer/language";
-import {
-  deleteGasto,
-  getGastos,
-  updateGasto,
-} from "@database/controllers/gasto";
+import { deleteGasto, getGastos } from "@database/controllers/gasto";
 import {
   deletePresupuesto,
   getPresupuestos,
-  updatePresupuesto,
 } from "@database/controllers/presupuesto";
-import {
-  deleteRubro,
-  getRubros,
-  updateRubros,
-} from "@database/controllers/rubro";
+import { deleteRubro, getRubros } from "@database/controllers/rubro";
 import { TextFieldProps } from "@components/atoms/InputsForm/types";
 import { createIngresosForm } from "../EntrysPage/formDefinition";
 import { createGastosForm } from "../GastoPage/formDefinition";
@@ -50,6 +36,7 @@ import { useStyles } from "../../../../renderer/antdTheme";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 import moment from "moment";
+import EditPage from "../EditPage";
 
 type TableType = "ingreso" | "gasto" | "presupuesto" | "rubro" | "";
 
@@ -65,42 +52,28 @@ export type RefObject = {
   submitForm: () => void;
 };
 
-type RefGetRows = {
-  getRows: () => GridRowData[];
-};
-
-const CustomToolbar = forwardRef<RefGetRows>((props, ref) => {
-  const { rows } = useGridSlotComponentProps();
-  console.debug("el estado en toolbar es ", rows);
-  useImperativeHandle(ref, () => ({
-    getRows() {
-      return rows;
-    },
-  }));
+const CustomToolbar = () => {
   return (
     <GridToolbarContainer>
       <GridToolbarExport />
-      <Button
-        onClick={() => {
-          console.debug(rows);
-        }}
-      ></Button>
     </GridToolbarContainer>
   );
-});
+};
 
-const ViewPageContainer = (
-  {
-    showNotification,
-    showProgressBar,
-    closeProgressBar,
-  }: WithNotifications & WithProgress,
-  ref: Ref<RefObject>
-): React.ReactElement => {
+const ViewPageContainer = ({
+  showNotification,
+  showProgressBar,
+  closeProgressBar,
+}: WithNotifications & WithProgress): React.ReactElement => {
   //This is to modal message
   const [open, setOpen] = useState<{ state: boolean; row?: GridRowData }>({
     state: false,
   });
+
+  const [editMode, setEditMode] = useState<{
+    isEditing: boolean;
+    row?: GridRowData;
+  }>();
   const handleClose = () => {
     setOpen({ state: false, row: undefined });
   };
@@ -112,10 +85,7 @@ const ViewPageContainer = (
   });
 
   const classes = useStyles();
-  const childRef = useRef<RefGetRows | null>(null);
-  const ToolbarWithRef = () => {
-    return <CustomToolbar ref={childRef}></CustomToolbar>;
-  };
+
   const manageData = (
     response: RowsType,
     colsDefinition:
@@ -133,11 +103,10 @@ const ViewPageContainer = (
         width: 150,
         type: key.type,
         //resizable: true,
-        editable: key.editable ? key.editable : true,
-        ...(key.renderInTable && { renderCell: key.renderInTable }),
-        ...(key.render && { editable: false }),
+        ...(key.renderInTable && {
+          renderCell: key.renderInTable,
+        }),
         ...(key.id == "id" && { hide: true }),
-        ...(key.id == "id" && { editable: false }),
         ...(key.id == "fecha" && {
           renderCell: (params) =>
             moment(new Date(params.value as string)).format("DD-MM-YYYY"),
@@ -187,49 +156,10 @@ const ViewPageContainer = (
     closeProgressBar();
   };
 
-  const updateData = async () => {
-    showProgressBar();
-    const data = childRef.current?.getRows();
-    console.debug("data, ", data);
-    if (data) {
-      if (state.type === "ingreso") {
-        const response = await updateIngreso(data as Ingreso[]);
-        if (response.state) {
-          showNotification("Ingreso actualizado correctamente", "success");
-        } else {
-          showNotification(response.message || "Ha ocurrido un error", "error");
-        }
-      } else if (state.type === "gasto") {
-        const response = await updateGasto(data as Gasto[]);
-        if (response.state) {
-          showNotification("Gasto actualizado correctamente", "success");
-        } else {
-          showNotification(response.message || "Ha ocurrido un error", "error");
-        }
-      } else if (state.type === "presupuesto") {
-        const response = await updatePresupuesto(data as Presupuesto[]);
-        if (response.state) {
-          showNotification("Presupuesto actualizado correctamente", "success");
-        } else {
-          showNotification(response.message || "Ha ocurrido un error", "error");
-        }
-      } else {
-        const response = await updateRubros(data as Rubro[]);
-        if (response.state) {
-          showNotification("Rubro actualizado correctamente", "success");
-        } else {
-          showNotification(response.message || "Ha ocurrido un error", "error");
-        }
-      }
-    }
-    closeProgressBar();
-  };
-
   const deleteData = async () => {
     showProgressBar();
     if (open.row) {
       if (state.type === "ingreso") {
-        console.debug("estoy en ingreso");
         const response = await deleteIngreso(open.row as Ingreso);
         if (response.state) {
           showNotification("Ingreso eliminado correctamente", "success");
@@ -283,12 +213,6 @@ const ViewPageContainer = (
     closeProgressBar();
   };
 
-  useImperativeHandle(ref, () => ({
-    submitForm() {
-      updateData();
-    },
-  }));
-
   return (
     <>
       <FormControl fullWidth>
@@ -319,10 +243,16 @@ const ViewPageContainer = (
         localeText={esESGrid}
         style={{ marginTop: "40px" }}
         components={{
-          Toolbar: ToolbarWithRef,
+          Toolbar: CustomToolbar,
         }}
         autoHeight={true}
         density="compact"
+        onRowDoubleClick={(params) => {
+          setEditMode({
+            isEditing: true,
+            row: params.row,
+          });
+        }}
       />
       <CloseFormDialog
         open={open.state}
@@ -333,14 +263,22 @@ const ViewPageContainer = (
         successButtonText="Cancelar"
         handleSuccess={deleteData}
       />
+      <EditPage
+        open={editMode?.isEditing || false}
+        handleClose={() => {
+          setEditMode({ isEditing: false });
+        }}
+        title="Editar "
+        type={state.type}
+        row={editMode?.row}
+      ></EditPage>
     </>
   );
 };
 
-const ViewContainerWrapper = forwardRef(ViewPageContainer);
 export const ViewPage: React.FC<WithNotifications & WithProgress> = (props) => (
-  <UILayout title="Tabla de datos">
-    <ViewContainerWrapper {...props}></ViewContainerWrapper>
+  <UILayout title="Tabla de datos" save={false}>
+    <ViewPageContainer {...props}></ViewPageContainer>
   </UILayout>
 );
 export default withProgressBar(withNotifications(ViewPage));
