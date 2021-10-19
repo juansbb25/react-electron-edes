@@ -40,7 +40,7 @@ export const deleteRubro = async (
   }
 };
 
-export const updateRubros = async (
+export const updateRubro = async (
   rubro: Rubro
 ): Promise<ServerResponse<undefined>> => {
   try {

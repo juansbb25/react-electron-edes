@@ -1,5 +1,15 @@
 import InputsForm from "@components/atoms/InputsForm";
-import { TextFieldProps } from "@components/atoms/InputsForm/types";
+import { RefObject } from "@components/atoms/InputsForm/InputsForm";
+import {
+  InitialValue,
+  TextFieldProps,
+} from "@components/atoms/InputsForm/types";
+import { IngresoInput, updateIngreso } from "@database/controllers";
+import { GastoInput, updateGasto } from "@database/controllers/gasto";
+import { RubroInput, updateRubro } from "@database/controllers/rubro";
+import withNotifications, { WithNotifications } from "@hocs/withNotifications";
+import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
+import { Presupuesto } from "@models/presupuesto";
 import {
   Button,
   CircularProgress,
@@ -9,7 +19,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { GridRowData } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createIngresosForm } from "../EntrysPage/formDefinition";
 import { createGastosForm } from "../GastoPage/formDefinition";
 import { createPresupuestoForm } from "../PresupuestoPage/formDefinition";
@@ -23,21 +33,18 @@ type EditPageProps = {
   type: TableType;
 };
 
-const EditPage: React.FC<EditPageProps> = ({
+const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
   open,
   handleClose,
   title,
   row,
   type,
+  showProgressBar,
+  closeProgressBar,
+  showNotification,
 }) => {
-  const handleSuccess = () => {
-    console.debug("exito");
-  };
-  const onSubmit = () => {
-    console.debug("submit");
-  };
-
   const [items, setItems] = useState<TextFieldProps<any>[]>();
+  const childRef = useRef<RefObject | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -92,7 +99,73 @@ const EditPage: React.FC<EditPageProps> = ({
     })();
   }, [row]);
 
-  items;
+  const manageUpdate = async (
+    value:
+      | InitialValue<IngresoInput>
+      | InitialValue<GastoInput>
+      | InitialValue<Presupuesto>
+      | InitialValue<RubroInput>,
+    { resetForm }: { resetForm: any }
+  ) => {
+    console.debug(resetForm);
+    if (row && type) {
+      if (type === "ingreso") {
+        showProgressBar();
+        const response = await updateIngreso({
+          ...(value as IngresoInput),
+          id: row.id,
+        });
+        closeProgressBar();
+        if (response.state) {
+          showNotification("Actualizado correctamente", "success");
+          handleClose();
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
+      } else if (type === "gasto") {
+        showProgressBar();
+        const response = await updateGasto({
+          ...(value as GastoInput),
+          id: row.id,
+        });
+        closeProgressBar();
+        if (response.state) {
+          showNotification("Actualizado correctamente", "success");
+          handleClose();
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
+      } else if (type === "presupuesto") {
+        showProgressBar();
+        // const response = await updatePresupuesto({
+        //   ...(value as IngresoInput),
+        //   id: row.id,
+        // });
+        closeProgressBar();
+        // if (response.state) {
+        //   showNotification("Actualizado correctamente", "success");
+        //   handleClose();
+        // } else {
+        //   showNotification(response.message || "Ha ocurrido un error", "error");
+        // }
+      } else {
+        showProgressBar();
+        const response = await updateRubro({
+          ...(value as RubroInput),
+          id: row.id,
+        });
+        closeProgressBar();
+        if (response.state) {
+          showNotification("Actualizado correctamente", "success");
+          handleClose();
+        } else {
+          showNotification(response.message || "Ha ocurrido un error", "error");
+        }
+      }
+    } else {
+      setItems(undefined);
+    }
+  };
   return (
     <>
       <Dialog
@@ -105,7 +178,7 @@ const EditPage: React.FC<EditPageProps> = ({
         <DialogContent sx={{ padding: 3 }}>
           <DialogTitle id="alert-dialog-title"></DialogTitle>
           {items ? (
-            <InputsForm items={items} onSubmit={onSubmit} />
+            <InputsForm items={items} onSubmit={manageUpdate} ref={childRef} />
           ) : (
             <CircularProgress color="primary" size={70} />
           )}
@@ -114,11 +187,17 @@ const EditPage: React.FC<EditPageProps> = ({
           <Button color="error" onClick={handleClose}>
             Salir
           </Button>
-          <Button onClick={handleSuccess}>Actualizar</Button>
+          <Button
+            onClick={() => {
+              childRef?.current?.submitForm();
+            }}
+          >
+            Actualizar
+          </Button>
         </DialogActions>
       </Dialog>
     </>
   );
 };
 
-export default EditPage;
+export default withProgressBar(withNotifications(EditPage));
