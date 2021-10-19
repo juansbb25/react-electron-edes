@@ -2,12 +2,16 @@ import { initDatabase, EnhancedDb } from "@database/initDb";
 import { ServerResponse } from "@database/types";
 import { Presupuesto } from "@models/presupuesto";
 
+type NotNeededKeysForCreation = "id" | "gastoTotal" | "ingresoTotal" | "total";
+
+type PresupuestoInput = Omit<Presupuesto, NotNeededKeysForCreation>;
+
 const obtainBase = (db: EnhancedDb) => {
   return db.chain.get("presupuestos");
 };
 
 export const createPresupuesto = async (
-  presupuesto: Presupuesto
+  presupuesto: PresupuestoInput
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
@@ -17,7 +21,12 @@ export const createPresupuesto = async (
       .value();
     if (exists) return { state: false, message: "Ya existe este presupuesto" };
     obtainBase(db)
-      .push({ ...presupuesto })
+      .push({
+        ...presupuesto,
+        gastoTotal: 0,
+        ingresoTotal: 0,
+        total: presupuesto.initValue,
+      })
       .value();
     await db.write();
     return { state: true };

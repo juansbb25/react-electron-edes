@@ -71,6 +71,7 @@ type RefGetRows = {
 
 const CustomToolbar = forwardRef<RefGetRows>((props, ref) => {
   const { rows } = useGridSlotComponentProps();
+  console.debug("el estado en toolbar es ", rows);
   useImperativeHandle(ref, () => ({
     getRows() {
       return rows;
@@ -133,7 +134,7 @@ const ViewPageContainer = (
         type: key.type,
         //resizable: true,
         editable: key.editable ? key.editable : true,
-        ...(key.renderInTable && { valueGetter: key.renderInTable }),
+        ...(key.renderInTable && { renderCell: key.renderInTable }),
         ...(key.render && { editable: false }),
         ...(key.id == "id" && { hide: true }),
         ...(key.id == "id" && { editable: false }),
@@ -189,6 +190,7 @@ const ViewPageContainer = (
   const updateData = async () => {
     showProgressBar();
     const data = childRef.current?.getRows();
+    console.debug("data, ", data);
     if (data) {
       if (state.type === "ingreso") {
         const response = await updateIngreso(data as Ingreso[]);

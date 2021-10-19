@@ -48,6 +48,7 @@ function withNotifications<T extends WithNotifications>(
           open={toastState.state}
           autoHideDuration={2000}
           onClose={closeToast}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
           {toastState.type === "success" ? (
             <Alert

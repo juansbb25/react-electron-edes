@@ -9,19 +9,27 @@ const obtainBase = (db: EnhancedDb) => {
   return db.chain.get("ingresos");
 };
 
+const obtainBasePresupuesto = (db: EnhancedDb) => {
+  return db.chain.get("presupuestos");
+};
+
 export const createIngreso = async (
   ingreso: IngresoInput
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    const exists = !!db.chain
-      .get("presupuestos")
+    const presupuesto = obtainBasePresupuesto(db)
       .find({ code: ingreso.dimension })
       .value();
-    if (!exists) return { state: false, message: "No existe la dimension" };
+    if (!presupuesto)
+      return { state: false, message: "No existe la dimension" };
     const id = uuidv4();
     obtainBase(db)
       .push({ ...ingreso, id })
+      .value();
+    obtainBasePresupuesto(db)
+      .find({ code: ingreso.dimension })
+      .assign({ ingresoTotal: presupuesto.ingresoTotal + ingreso.abono })
       .value();
     await db.write();
     return { state: true };
