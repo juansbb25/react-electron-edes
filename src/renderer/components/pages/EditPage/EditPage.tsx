@@ -69,7 +69,9 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
             ingresoForm.map((form) => {
               return {
                 ...form,
-                ...(form.initialValue && { initialValue: row[form.id] }),
+                ...(form.initialValue !== undefined && {
+                  initialValue: row[form.id],
+                }),
               };
             })
           );
@@ -79,7 +81,9 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
             ingresoForm.map((form) => {
               return {
                 ...form,
-                ...(form.initialValue && { initialValue: row[form.id] }),
+                ...(form.initialValue !== undefined && {
+                  initialValue: row[form.id],
+                }),
               };
             })
           );
@@ -89,7 +93,9 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
             ingresoForm.map((form) => {
               return {
                 ...form,
-                ...(form.initialValue && { initialValue: row[form.id] }),
+                ...(form.initialValue !== undefined && {
+                  initialValue: row[form.id],
+                }),
               };
             })
           );
@@ -176,7 +182,7 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-        <DialogContent sx={{ padding: 3 }}>
+        <DialogContent sx={{ padding: 3, minWidth: "400px" }}>
           <DialogTitle id="alert-dialog-title"></DialogTitle>
           {items ? (
             <InputsForm items={items} onSubmit={manageUpdate} ref={childRef} />
