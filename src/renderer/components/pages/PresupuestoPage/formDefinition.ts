@@ -44,14 +44,20 @@ export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
         .required("Este campo es requerido"),
     },
     {
+      isHiddenInForm: true,
+      initialValue: 0,
       id: "ingresoTotal",
       type: "number",
     },
     {
+      isHiddenInForm: true,
+      initialValue: 0,
       id: "gastoTotal",
       type: "number",
     },
     {
+      isHiddenInForm: true,
+      initialValue: 0,
       id: "total",
       type: "number",
     },

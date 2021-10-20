@@ -66,7 +66,7 @@ const InputsForm = <T,>(
     <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
       <Grid container spacing={2}>
         {items.map((item) => {
-          return (
+          return !item.isHiddenInForm ? (
             <Grid
               item
               xs={12}
@@ -81,8 +81,7 @@ const InputsForm = <T,>(
               }}
             >
               {(item.type === "string" || item.type === "number") &&
-                !item.autocomplete &&
-                item.initialValue !== undefined && (
+                !item.autocomplete && (
                   <TextField
                     fullWidth
                     type={item.type === "number" ? item.type : ""}
@@ -106,7 +105,7 @@ const InputsForm = <T,>(
                     disabled={!!item.render}
                   />
                 )}
-              {item.type === "date" && item.initialValue !== undefined && (
+              {item.type === "date" && (
                 <DatePicker
                   value={formik.values[item.id]}
                   label={item.label}
@@ -126,28 +125,26 @@ const InputsForm = <T,>(
                   )}
                 />
               )}
-              {item.type === "string" &&
-                item.autocomplete &&
-                item.initialValue !== undefined && (
-                  <Autocomplete
-                    value={formik.values[item.id]}
-                    sx={{ width: "100%" }}
-                    options={item.autocomplete}
-                    onChange={(_, value) =>
-                      formik.setFieldValue(item.id, value)
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={item.label}
-                        helperText={
-                          formik.touched[item.id] && formik.errors[item.id]
-                        }
-                      />
-                    )}
-                  />
-                )}
+              {item.type === "string" && item.autocomplete && (
+                <Autocomplete
+                  value={formik.values[item.id]}
+                  sx={{ width: "100%" }}
+                  options={item.autocomplete}
+                  onChange={(_, value) => formik.setFieldValue(item.id, value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={item.label}
+                      helperText={
+                        formik.touched[item.id] && formik.errors[item.id]
+                      }
+                    />
+                  )}
+                />
+              )}
             </Grid>
+          ) : (
+            <></>
           );
         })}
       </Grid>

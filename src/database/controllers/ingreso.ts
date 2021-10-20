@@ -73,17 +73,30 @@ export const updateIngreso = async (
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    const existDimension = () => {
-      const presupuestos = db.chain.get("presupuestos");
-      if (presupuestos.find({ code: ingreso.dimension }).value()) return true;
-      else return false;
-    };
-    if (existDimension()) {
-      const ingresos = db.chain.get("ingresos");
-      ingresos.find({ id: ingreso.id }).assign(obtainMontos(ingreso)).value();
-      await db.write();
-      return { state: true };
-    } else return { state: false, message: "No existe la dimensión" };
+    const ingresoAnterior = db.chain
+      .get("ingresos")
+      .find({ id: ingreso.id })
+      .value();
+    if (!ingresoAnterior)
+      return { state: false, message: "No existe el ingreso a actualizar" };
+    const presupuesto = db.chain
+      .get("presupuestos")
+      .find({ code: ingreso.dimension })
+      .value();
+    if (!presupuesto)
+      return { state: false, message: "No existe la dimensión" };
+    const ingresos = db.chain.get("ingresos");
+    ingresos.find({ id: ingreso.id }).assign(obtainMontos(ingreso)).value();
+    obtainBasePresupuesto(db)
+      .find({ code: ingreso.dimension })
+      .assign({
+        ingresoTotal:
+          presupuesto.ingresoTotal - ingresoAnterior.abono + ingreso.abono,
+        total: presupuesto.total - ingresoAnterior.abono + ingreso.abono,
+      })
+      .value();
+    await db.write();
+    return { state: true };
   } catch (error) {
     console.error(error);
     return { state: false };

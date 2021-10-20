@@ -76,17 +76,16 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
             })
           );
         } else if (type === "presupuesto") {
-          const ingresoForm = createPresupuestoForm();
-          setItems(
-            ingresoForm.map((form) => {
-              return {
-                ...form,
-                ...(form.initialValue !== undefined && {
-                  initialValue: row[form.id],
-                }),
-              };
-            })
-          );
+          const presupuestoForm = createPresupuestoForm();
+          const presupuestos = presupuestoForm.map((form) => {
+            return {
+              ...form,
+              ...(form.initialValue !== undefined && {
+                initialValue: row[form.id],
+              }),
+            };
+          });
+          setItems(presupuestos);
         } else {
           const ingresoForm = createRubroForm();
           setItems(

@@ -55,10 +55,20 @@ export const updatePresupuesto = async (
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
+    const presupuestoAnterior = db.chain
+      .get("presupuestos")
+      .find({ code: presupuesto.code })
+      .value();
     db.chain
       .get("presupuestos")
       .find({ code: presupuesto.code })
-      .assign(presupuesto)
+      .assign({
+        ...presupuesto,
+        total:
+          presupuesto.initValue +
+          presupuestoAnterior.total -
+          presupuestoAnterior.initValue,
+      })
       .value();
     await db.write();
     return { state: true };

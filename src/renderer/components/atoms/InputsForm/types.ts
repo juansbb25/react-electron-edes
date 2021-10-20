@@ -5,9 +5,10 @@ export type TextFieldProps<T> = {
   id: Extract<keyof T, string>;
   label: string;
   type: "string" | "number" | "date";
+  isHiddenInForm?: boolean;
   autocomplete?: string[];
   validator?: any;
-  initialValue?: T[keyof T];
+  initialValue: T[keyof T];
   render?: (context: InitialValue<T>) => string | number | Date;
   renderInTable?: (context: GridValueGetterParams) => string | number | Date; //used to render in tables mui-x
   editable?: boolean;
