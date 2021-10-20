@@ -74,9 +74,16 @@ const ViewPageContainer = ({
     isEditing: boolean;
     row?: GridRowData;
   }>();
-  const handleClose = async () => {
+  const handleClose = () => {
+    console.debug("llamando a handle close");
+    handleChange(state.type);
     setOpen({ state: false, row: undefined });
-    await handleChange(state.type);
+  };
+
+  const handleCloseEdit = () => {
+    console.debug("llamando a handle close");
+    handleChange(state.type);
+    setEditMode({ isEditing: false });
   };
 
   const [state, setState] = useState<TableState>({
@@ -267,9 +274,7 @@ const ViewPageContainer = ({
       />
       <EditPage
         open={editMode?.isEditing || false}
-        handleClose={() => {
-          setEditMode({ isEditing: false });
-        }}
+        handleClose={() => handleCloseEdit()}
         title="Editar "
         type={state.type}
         row={editMode?.row}
