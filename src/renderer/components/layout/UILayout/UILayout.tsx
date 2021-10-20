@@ -55,7 +55,7 @@ const UILayout: React.FC<UILayoutProps> = ({
             paddingY: 4,
           }}
         >
-          {React.cloneElement(children, { ref: childRef })}
+          {save ? React.cloneElement(children, { ref: childRef }) : children}
         </Box>
         <CloseFormDialog
           open={open}
