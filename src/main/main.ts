@@ -12,6 +12,7 @@ function createWindow() {
     minHeight: 800,
     backgroundColor: "#f2f2f2",
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true,
       contextIsolation: false,
       devTools: process.env.NODE_ENV !== "production",

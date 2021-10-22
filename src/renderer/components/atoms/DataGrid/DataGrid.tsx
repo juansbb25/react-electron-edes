@@ -11,30 +11,24 @@ import {
 } from "@mui/material";
 import React from "react";
 type DataGridProps = {
-  data: {
-    title: string;
-    items: string[];
-  }[];
+  data: string[][];
   tableName: string;
 };
 
 const DataGrid: React.FC<DataGridProps> = ({ data, tableName }) => {
-  const tableRowTitleComponent = data.map((item, i) => {
-    return <TableCell key={i}>{item.title}</TableCell>;
+  const [header, ...rows] = data;
+  console.debug(header, rows);
+  const tableRowTitleComponent = header.map((item: string, i) => {
+    return <TableCell key={i}>{item}</TableCell>;
   });
-  const tableSize = {
-    x: data.length,
-    y: data.length ? data[0].items.length : 0,
-  };
-  const array = Array.from({ length: tableSize.y }, (_, i) => i + 1);
-  console.debug(array);
-  const tableRowItemsComponent = array.map((item, i) => {
-    const reorderItems = data.map((item, j) => {
-      const value = item.items[i];
-      return <TableCell key={j}>{value}</TableCell>;
-    });
-    return <TableRow key={i}>{reorderItems}</TableRow>;
+  const tableRowItemsComponent = rows.map((item, i) => {
+    return (
+      <TableRow key={i}>
+        <TableCell key={i}>{item}</TableCell>
+      </TableRow>
+    );
   });
+
   return (
     <Stack spacing={2} sx={{ width: "100%" }}>
       <Typography variant="subtitle1">{tableName}</Typography>

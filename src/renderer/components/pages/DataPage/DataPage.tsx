@@ -28,6 +28,8 @@ import {
   obtainAnualReport,
   ReportTable,
 } from "./utils";
+import XLSX from "xlsx";
+//import { constant} from "lodash";
 
 type Options = "mensual" | "anual" | "total";
 type ExtraInformation<T extends Options> = T extends "mensual"
@@ -135,9 +137,29 @@ const DataPage = (
       createReport();
     },
   }));
-
+  const downloadExcel = () => {
+    //react electron show dialog
+    const { remote } = require("electron");
+    const dialog = remote.dialog;
+    const browserWindow = remote.getCurrentWindow();
+    const options = {
+      title: "Guardar archivo como...",
+      name: "data.xlsx",
+      filters: [{ name: "xlsx", extensions: ["xlsx"] }],
+    };
+    //excel creato sheet
+    console.debug("downloadExcel");
+    console.debug(data[0].data);
+    const workSheet = XLSX.utils.json_to_sheet(data[0].data);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, "data");
+    //Download
+    const o = dialog.showSaveDialog(browserWindow, options);
+    o.then((path) => XLSX.writeFile(workBook, path.filePath!));
+  };
   return (
     <Stack spacing={6} justifyContent="center">
+      <Button onClick={downloadExcel}>Excell</Button>
       <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
         <FormControl sx={{ width: 226 }} size="small">
           <InputLabel>Seleccione un reporte</InputLabel>

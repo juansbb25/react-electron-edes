@@ -21,6 +21,9 @@ export type ReportTable = {
   title: string;
   data: TableColumn[];
 };
+const fromColToRow = (data: TableColumn[]): string[][] => {
+  return;
+};
 
 // export const obtainMensualReport = async (
 //   information: { month: MonthNumber; year: number }[]
