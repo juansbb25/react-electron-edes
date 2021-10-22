@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   createReport,
   GroupPresupuesto,
 } from "@database/controllers/estadistica";
 import { currencyFormat } from "@utils/number";
 import moment from "moment";
-import { MonthNumber } from "@utils/date";
+import { mapMonthName, MonthNumber } from "@utils/date";
 import lodash from "lodash";
 
 export type TableColumn = {
@@ -22,47 +23,157 @@ export type ReportTable = {
   data: TableColumn[];
 };
 
-// export const obtainMensualReport = async (
-//   information: { month: MonthNumber; year: number }[]
-// ): Promise<TableColumn[]> => {
-//   const report = await createReport();
-//   const monthCols = information.map((data) => {
-//     return {
-//       title: `${mapMonthName(data.month)} - ${data.year}`,
-//       items: [],
-//     };
-//   });
-//   const gastos = report.gastos.filter((gasto) => gasto.year == year);
-//   const ingresos = report.ingresos.filter((ingreso) => ingreso.year == year);
-//   const presupuestos = report.presupuestos
-//     .filter(
-//       (presupuesto) =>
-//         lodash.some(gastos, { dimension: presupuesto.code }) ||
-//         lodash.some(ingresos, { dimension: presupuesto.code })
-//     )
-//     .map((presupuesto) => {
-//       return {
-//         ...presupuesto,
-//         gastoTotal: 0,
-//         ingresoTotal: 0,
-//         saldosTotal: 0,
-//         total: 0,
-//       };
-//     });
+export const obtainMensualReport = async (
+  information: { month: MonthNumber; year: number }[]
+): Promise<ReportTable[]> => {
+  const report = await createReport();
+  const gastos = report.gastos.filter(
+    (gasto) =>
+      lodash.some(information, { month: gasto.month }) &&
+      lodash.some(information, { year: gasto.year })
+  );
+  const ingresos = report.ingresos.filter(
+    (ingreso) =>
+      lodash.some(information, { month: ingreso.month }) &&
+      lodash.some(information, { year: ingreso.year })
+  );
+  const presupuestos = report.presupuestos
+    .filter(
+      (presupuesto) =>
+        lodash.some(gastos, { dimension: presupuesto.code }) ||
+        lodash.some(ingresos, { dimension: presupuesto.code })
+    )
+    .map((presupuesto) => {
+      return {
+        ...presupuesto,
+        gastoTotal: 0,
+        ingresoTotal: 0,
+        saldosTotal: 0,
+        total: 0,
+      };
+    });
 
-//   const table: TableColumn[] = [
-//     { title: "Dimensiones", items: [] },
-//     { title: "Nombre del programa", items: [] },
-//     { title: "Valor del presupuesto", items: [] },
-//     { title: "Responsable", items: [] },
-//     ...monthCols,
-//     { title: "Total ingresos", items: [] },
-//     { title: "Total gastos", items: [] },
-//     { title: "Saldos pendientes", items: [] },
-//     { title: "Total", items: [] },
-//   ];
-//   return table;
-// };
+  const totalIngreso = (dimension: string): number => {
+    const result = ingresos
+      .filter((ingreso) => ingreso.dimension == dimension)
+      .reduce((previousValue, currentValue) => {
+        return previousValue + currentValue.abonos;
+      }, 0);
+    return result;
+  };
+
+  const totalGasto = (dimension: string): number => {
+    const result = gastos
+      .filter((gasto) => gasto.dimension == dimension)
+      .reduce((previousValue, currentValue) => {
+        return previousValue + currentValue.valoresConIva;
+      }, 0);
+    return result;
+  };
+
+  const totalSaldos = (dimension: string): number => {
+    const result = ingresos
+      .filter((ingreso) => ingreso.dimension == dimension)
+      .reduce((previousValue, currentValue) => {
+        return previousValue + currentValue.saldos;
+      }, 0);
+    return result;
+  };
+
+  const tableReport: TablePresupuesto<GroupPresupuesto>[] = [];
+  presupuestos.forEach((presupuesto) => {
+    const index = tableReport.findIndex(
+      (item) => item.title == presupuesto.tipoPrograma
+    );
+    if (index >= 0) {
+      tableReport[index] = {
+        ...tableReport[index],
+        presupuesto: [...tableReport[index].presupuesto, presupuesto],
+      };
+    } else {
+      tableReport.push({
+        title: presupuesto.tipoPrograma,
+        presupuesto: [presupuesto],
+      });
+    }
+  });
+
+  const finalReport = tableReport.map((tableReport) => {
+    const monthColsGasto = information.map((data) => {
+      const dataCol = tableReport.presupuesto.map((presupuesto) =>
+        currencyFormat(
+          gastos.find(
+            (gasto) =>
+              gasto.month == data.month &&
+              gasto.year == data.year &&
+              gasto.dimension == presupuesto.code
+          )?.valoresConIva || 0
+        )
+      );
+      return {
+        title: `${mapMonthName(data.month)} (${data.year})`,
+        items: dataCol,
+      };
+    });
+
+    const monthColsIngreso = information.map((data) => {
+      const dataCol = tableReport.presupuesto.map((presupuesto) =>
+        currencyFormat(
+          ingresos.find(
+            (ingreso) =>
+              ingreso.month == data.month &&
+              ingreso.year == data.year &&
+              ingreso.dimension == presupuesto.code
+          )?.abonos || 0
+        )
+      );
+      return {
+        title: `${mapMonthName(data.month)} (${data.year})`,
+        items: dataCol,
+      };
+    });
+
+    const table: TableColumn[] = [
+      { title: "Dimensiones", items: [] },
+      { title: "Nombre del programa", items: [] },
+      { title: "Valor del presupuesto", items: [] },
+      { title: "Responsable", items: [] },
+      ...monthColsGasto,
+      { title: "GastoTotal", items: [] },
+      ...monthColsIngreso,
+      { title: "IngresoTotal", items: [] },
+      // { title: "Total ingresos", items: [] },
+      // { title: "Total gastos", items: [] },
+      { title: "Saldos pendientes", items: [] },
+      { title: "Total", items: [] },
+    ];
+    tableReport.presupuesto.forEach((presupuesto) => {
+      table[0].items.push(presupuesto.code);
+      table[1].items.push(presupuesto.programa);
+      table[2].items.push(currencyFormat(presupuesto.initValue));
+      table[3].items.push(presupuesto.responsable);
+      table[4 + monthColsGasto.length].items.push(
+        currencyFormat(totalGasto(presupuesto.code))
+      );
+
+      table[5 + monthColsGasto.length * 2].items.push(
+        currencyFormat(totalIngreso(presupuesto.code))
+      );
+      table[6 + monthColsGasto.length * 2].items.push(
+        currencyFormat(totalSaldos(presupuesto.code))
+      );
+      table[7 + monthColsGasto.length * 2].items.push(
+        currencyFormat(
+          totalIngreso(presupuesto.code) +
+            presupuesto.initValue -
+            totalGasto(presupuesto.code)
+        )
+      );
+    });
+    return { title: tableReport.title, data: table };
+  });
+  return finalReport;
+};
 
 export const obtainAnualReport = async (
   year: number
@@ -82,7 +193,7 @@ export const obtainAnualReport = async (
         gastoTotal: 0,
         ingresoTotal: 0,
         saldosTotal: 0,
-        total: 0,
+        total: presupuesto.initValue,
       };
     });
 

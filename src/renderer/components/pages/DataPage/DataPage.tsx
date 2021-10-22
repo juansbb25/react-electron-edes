@@ -27,6 +27,7 @@ import {
   createDate,
   obtainAnualReport,
   ReportTable,
+  obtainMensualReport,
 } from "./utils";
 
 type Options = "mensual" | "anual" | "total";
@@ -126,6 +127,9 @@ const DataPage = (
       setData(report);
     } else if (filter.type == "anual") {
       const report = await obtainAnualReport(filter.year);
+      setData(report);
+    } else {
+      const report = await obtainMensualReport(filter.information);
       setData(report);
     }
   };
