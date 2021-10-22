@@ -44,7 +44,13 @@ export const createReport = async (): Promise<Report> => {
   const ingresosList: GroupIngresos[] = [];
   const presupuestoList: GroupPresupuesto[] = presupuestos.map(
     (presupuesto) => {
-      return { ...presupuesto, saldosTotal: 0 };
+      return {
+        ...presupuesto,
+        saldosTotal: 0,
+        gastoTotal: 0,
+        ingresoTotal: 0,
+        total: presupuesto.initValue,
+      };
     }
   );
 

@@ -27,6 +27,7 @@ import {
   createDate,
   obtainAnualReport,
   ReportTable,
+  obtainMensualReport,
 } from "./utils";
 import XLSX from "xlsx";
 //import { constant} from "lodash";
@@ -128,6 +129,9 @@ const DataPage = (
       setData(report);
     } else if (filter.type == "anual") {
       const report = await obtainAnualReport(filter.year);
+      setData(report);
+    } else {
+      const report = await obtainMensualReport(filter.information);
       setData(report);
     }
   };

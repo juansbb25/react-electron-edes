@@ -108,7 +108,7 @@ const ViewPageContainer = ({
         field: key.id,
         headerName: key.label,
         sortable: true,
-        width: 150,
+        width: 200,
         type: key.type,
         //resizable: true,
         ...(key.renderInTable && {
