@@ -66,12 +66,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
       type: "string",
       validator: yup.string(),
     },
-    {
-      initialValue: "",
-      id: "responsable",
-      type: "string",
-      validator: yup.string(),
-    },
+
     {
       initialValue: "QUITO",
       id: "ciudad",

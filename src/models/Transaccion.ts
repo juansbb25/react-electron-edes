@@ -4,7 +4,6 @@ export interface Transaction {
   fecha: Date;
   factura: string;
   proveedor?: string; //talves solo en gastos obligatorio
-  responsable?: "FEDES" | "UTPL"; //talves solo en gastos obligatorio
   ciudad?: string; //talves solo en ingresos obligatorio
   observacion?: string;
 }
