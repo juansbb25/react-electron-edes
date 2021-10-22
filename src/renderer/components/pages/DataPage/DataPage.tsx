@@ -28,6 +28,7 @@ import {
   obtainAnualReport,
   ReportTable,
   obtainMensualReport,
+  fromColToRow,
 } from "./utils";
 import XLSX from "xlsx";
 //import { constant} from "lodash";
@@ -141,6 +142,7 @@ const DataPage = (
       createReport();
     },
   }));
+
   const downloadExcel = () => {
     //react electron show dialog
     const { remote } = require("electron");
@@ -153,8 +155,15 @@ const DataPage = (
     };
     //excel creato sheet
     console.debug("downloadExcel");
-    console.debug(data[0].data);
-    const workSheet = XLSX.utils.json_to_sheet(data[0].data);
+    console.debug();
+    const workSheet = XLSX.utils.aoa_to_sheet([["Tabla De Reporte"]]);
+    data.forEach((item) => {
+      XLSX.utils.sheet_add_aoa(workSheet, [[]], { origin: -1 });
+      XLSX.utils.sheet_add_aoa(workSheet, [[item.title]], { origin: -1 });
+      XLSX.utils.sheet_add_aoa(workSheet, fromColToRow(item.data), {
+        origin: -1,
+      });
+    });
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, "data");
     //Download
@@ -296,8 +305,12 @@ const DataPage = (
           </Box>
         )}
       </Stack>
-      {data.map((table) => (
-        <DataGrid tableName={table.title} data={table.data} key={table.title} />
+      {data.map((table, i) => (
+        <DataGrid
+          tableName={table.title}
+          data={fromColToRow(table.data)}
+          key={i}
+        />
       ))}
     </Stack>
   );

@@ -24,7 +24,9 @@ const DataGrid: React.FC<DataGridProps> = ({ data, tableName }) => {
   const tableRowItemsComponent = rows.map((item, i) => {
     return (
       <TableRow key={i}>
-        <TableCell key={i}>{item}</TableCell>
+        {item.map((cell, i) => (
+          <TableCell key={i}>{cell}</TableCell>
+        ))}
       </TableRow>
     );
   });

@@ -22,8 +22,25 @@ export type ReportTable = {
   title: string;
   data: TableColumn[];
 };
-const fromColToRow = (data: TableColumn[]): string[][] => {
-  return;
+export const fromColToRow = (data: TableColumn[]): string[][] => {
+  console.debug(data);
+  const cols = [];
+  const colsTitle: string[] = [];
+  data.forEach((item) => {
+    colsTitle.push(item.title);
+  });
+  cols.push(colsTitle);
+  const length = data[0].items.length;
+  const array = Array.from("x".repeat(length));
+  array.forEach((_, i) => {
+    const colsItem: string[] = [];
+    data.forEach((tableCol) => {
+      colsItem.push(tableCol.items[i]);
+    });
+    cols.push(colsItem);
+  });
+  console.debug(cols);
+  return cols;
 };
 
 export const obtainMensualReport = async (
