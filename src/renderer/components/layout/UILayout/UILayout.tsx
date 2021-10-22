@@ -10,12 +10,14 @@ type UILayoutProps = {
   children: React.ReactElement;
   title: string;
   save?: boolean;
+  buttonTitle?: string;
 };
 
 const UILayout: React.FC<UILayoutProps> = ({
   children,
   title,
   save = true,
+  buttonTitle = "Guardar",
 }) => {
   const history = useHistory();
   const childRef = useRef<RefObject>();
@@ -99,7 +101,7 @@ const UILayout: React.FC<UILayoutProps> = ({
                 childRef?.current?.submitForm();
               }}
             >
-              Guardar
+              {buttonTitle}
             </Button>
           )}
         </Box>

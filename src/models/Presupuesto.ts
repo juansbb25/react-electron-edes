@@ -5,4 +5,6 @@ export interface Presupuesto {
   gastoTotal: number;
   ingresoTotal: number;
   total: number;
+  tipoPrograma: string;
+  responsable: string;
 }
