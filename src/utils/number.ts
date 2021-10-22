@@ -1,5 +1,5 @@
 export const currencyFormat = (num: number): string => {
-  return num.toFixed(2).toString();
+  return num.toFixed(2);
 };
 
 // export const currencyFormat = (num: number): string => {
