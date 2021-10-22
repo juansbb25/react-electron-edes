@@ -37,7 +37,7 @@ const DataGrid: React.FC<DataGridProps> = ({ data, tableName }) => {
   });
   return (
     <Stack spacing={2} sx={{ width: "100%" }}>
-      <Typography variant="h1">{tableName}</Typography>
+      <Typography variant="subtitle1">{tableName}</Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
