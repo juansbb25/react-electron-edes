@@ -172,7 +172,6 @@ const DataPage = (
   };
   return (
     <Stack spacing={6} justifyContent="center">
-      <Button onClick={downloadExcel}>Excell</Button>
       <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
         <FormControl sx={{ width: 226 }} size="small">
           <InputLabel>Seleccione un reporte</InputLabel>
@@ -305,6 +304,17 @@ const DataPage = (
           </Box>
         )}
       </Stack>
+      {data.length > 0 && (
+        <Button
+          onClick={downloadExcel}
+          color="success"
+          variant="contained"
+          size="small"
+          sx={{ width: 200 }}
+        >
+          Exportar
+        </Button>
+      )}
       {data.map((table, i) => (
         <DataGrid
           tableName={table.title}
