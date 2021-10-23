@@ -16,7 +16,13 @@ import {
   IconButton,
   Grid,
 } from "@mui/material";
-import React, { forwardRef, Ref, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  Ref,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import moment from "moment";
 import { MonthNumber } from "@utils/date";
 import {
@@ -59,6 +65,10 @@ const DataPage = (
   });
 
   const [data, setData] = useState<ReportTable[]>([]);
+
+  useEffect(() => {
+    setData([]);
+  }, [filter]);
 
   const filterChange = (event: SelectChangeEvent) => {
     const type = event.target.value as Options;

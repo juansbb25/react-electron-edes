@@ -70,8 +70,8 @@ const InputsForm = <T,>(
             <Grid
               item
               xs={12}
-              sm={6}
-              md={6}
+              sm={items.length > 1 ? 6 : 12}
+              md={items.length > 1 ? 6 : 12}
               key={item.id}
               style={{
                 width: "100%",
