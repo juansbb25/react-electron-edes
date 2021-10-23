@@ -69,7 +69,7 @@ const theme = createTheme(
       caption: {
         color: "#000000",
       },
-      subtitle1: {
+      subtitle2: {
         fontWeight: 600,
         fontSize: "1.4rem",
         color: "#000000",
