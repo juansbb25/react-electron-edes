@@ -10,7 +10,7 @@ import lodash from "lodash";
 
 export type TableColumn = {
   title: string;
-  items: string[];
+  items: (string | number)[];
 };
 
 type TablePresupuesto<T extends GroupPresupuesto> = {
@@ -33,7 +33,7 @@ export const fromColToRow = (data: TableColumn[]): string[][] => {
   const length = data[0].items.length;
   const array = Array.from("x".repeat(length));
   array.forEach((_, i) => {
-    const colsItem: string[] = [];
+    const colsItem: (string | number)[] = [];
     data.forEach((tableCol) => {
       colsItem.push(tableCol.items[i]);
     });
