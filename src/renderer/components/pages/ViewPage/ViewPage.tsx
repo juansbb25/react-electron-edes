@@ -37,6 +37,7 @@ import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 import moment from "moment";
 import EditPage from "../EditPage";
+import { addGastos } from "../../../../../scripts/addInformation";
 
 type TableType = "ingreso" | "gasto" | "presupuesto" | "rubro" | "";
 
@@ -246,7 +247,7 @@ const ViewPageContainer = ({
         rows={state.rows}
         columns={state.cols}
         pageSize={20}
-        rowsPerPageOptions={[20]}
+        // rowsPerPageOptions={[20]}
         //checkboxSelection
         //disableSelectionOnClick
         localeText={esESGrid}
@@ -279,6 +280,7 @@ const ViewPageContainer = ({
         type={state.type}
         row={editMode?.row}
       ></EditPage>
+      <Button onClick={() => addGastos()}>Cargar</Button>
     </>
   );
 };

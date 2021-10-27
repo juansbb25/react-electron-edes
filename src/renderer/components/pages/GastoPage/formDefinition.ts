@@ -23,6 +23,7 @@ export const getLabel = (key: Extract<keyof GastoInput, string>): string => {
     valorConIva: "Valor Con Iva",
     valorSinIva: "Valor Sin Iva",
     req: "Requerimiento",
+    programa: "Programa",
   };
   return diccionary[key];
 };
@@ -54,6 +55,15 @@ export const createGastosForm = async (): Promise<
         .required("Este campo es requerido"),
     },
     {
+      initialValue: "",
+      id: "programa",
+      type: "string",
+      validator: yup
+        .string()
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
+    },
+    {
       initialValue: date,
       id: "fecha",
       type: "date",
@@ -74,25 +84,18 @@ export const createGastosForm = async (): Promise<
       type: "string",
       validator: yup.string(),
     },
-
-    {
-      initialValue: "QUITO",
-      id: "ciudad",
-      type: "string",
-      validator: yup.string(),
-    },
-    {
-      initialValue: "",
-      id: "observacion",
-      type: "string",
-      validator: yup.string(),
-    },
     {
       initialValue: autoformList.length > 0 ? autoformList[0] : "",
       id: "categoria",
       type: "string",
       autocomplete: autoformList as string[],
       validator: yup.string().required("Este campo es requerido"),
+    },
+    {
+      initialValue: "QUITO",
+      id: "ciudad",
+      type: "string",
+      validator: yup.string(),
     },
     {
       initialValue: 0,
@@ -102,6 +105,13 @@ export const createGastosForm = async (): Promise<
         .number()
         .min(0, "El Valor debe ser mayor o igual a 0")
         .required("Este campo es requerido"),
+      renderInTable: (context: GridValueGetterParams) => {
+        return (
+          Math.round(
+            ((context.getValue(context.id, "valorSinIva") as number) || 0) * 100
+          ) / 100
+        );
+      },
     },
     {
       initialValue: 0,
@@ -126,10 +136,9 @@ export const createGastosForm = async (): Promise<
       },
       renderInTable: (context: GridValueGetterParams) => {
         return (
-          (((context.getValue(context.id, "iva") as number) || 0) *
-            ((context.getValue(context.id, "valorSinIva") as number) || 0)) /
-            100 +
-          ((context.getValue(context.id, "valorSinIva") as number) || 0)
+          Math.round(
+            ((context.getValue(context.id, "valorConIva") as number) || 0) * 100
+          ) / 100
         );
       },
     },
@@ -142,6 +151,12 @@ export const createGastosForm = async (): Promise<
         .string()
         .min(2, "Debe tener como mínimo dos caracteres.")
         .required("Este campo es requerido"),
+    },
+    {
+      initialValue: "",
+      id: "observacion",
+      type: "string",
+      validator: yup.string(),
     },
   ] as const;
   const formWithName = formCreation.map((item) => {

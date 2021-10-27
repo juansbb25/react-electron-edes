@@ -6,6 +6,7 @@ export interface Transaction {
   proveedor?: string; //talves solo en gastos obligatorio
   ciudad?: string; //talves solo en ingresos obligatorio
   observacion?: string;
+  programa?: string;
 }
 
 export interface Ingreso extends Transaction {

@@ -12,7 +12,10 @@ const obtainBasePresupuesto = (db: EnhancedDb) => {
   return db.chain.get("presupuestos");
 };
 const obtainValorConIva = (gasto: GastoInput) => {
-  return { ...gasto, valorConIva: gasto.valorSinIva * (1 + gasto.iva / 100) };
+  return {
+    ...gasto,
+    valorConIva: gasto.valorSinIva * (1 + gasto.iva / 100),
+  };
 };
 export const createGasto = async (
   gasto: GastoInput
@@ -28,19 +31,21 @@ export const createGasto = async (
     obtainBase(db)
       .push({ ...obtainValorConIva(gasto), id })
       .value();
-    obtainBasePresupuesto(db)
-      .find({ code: gasto.dimension })
-      .assign({
-        gastoTotal:
-          presupuesto.gastoTotal + obtainValorConIva(gasto).valorConIva,
-        total: presupuesto.total - obtainValorConIva(gasto).valorConIva,
-      })
-      .value();
+    if (exists) {
+      obtainBasePresupuesto(db)
+        .find({ code: gasto.dimension })
+        .assign({
+          gastoTotal:
+            presupuesto.gastoTotal + obtainValorConIva(gasto).valorConIva,
+          total: presupuesto.total - obtainValorConIva(gasto).valorConIva,
+        })
+        .value();
+    }
 
     await db.write();
     return { state: true };
   } catch (error) {
-    console.error(error);
+    console.debug("error creando----", error);
     return { state: false };
   }
 };

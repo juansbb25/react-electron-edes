@@ -64,6 +64,9 @@ export const updatePresupuesto = async (
       .find({ code: presupuesto.code })
       .assign({
         ...presupuesto,
+        code: presupuesto.code.trim(),
+        programa: presupuesto.programa.trim(),
+        tipoPrograma: presupuesto.tipoPrograma.trim(),
         total:
           presupuesto.initValue +
           presupuestoAnterior.total -

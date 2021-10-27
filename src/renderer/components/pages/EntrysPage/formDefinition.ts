@@ -12,7 +12,7 @@ export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
     dimension: "Dimensión",
     fecha: "Fecha",
     factura: "Factura",
-    proveedor: "Proveedor",
+    proveedor: "Nombre",
     responsable: "Responsable",
     ciudad: "Ciudad",
     observacion: "Observación",
@@ -28,6 +28,7 @@ export const getLabel = (key: Extract<keyof IngresoInput, string>): string => {
     numDeposito: "Número de Depósito",
     transferencia: "Transferencia",
     montoCancelar: "Monto a cancelar",
+    programa: "Programa",
   };
   return diccionary[key];
 };
@@ -44,38 +45,9 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
         .min(2, "Debe tener como mínimo dos caracteres.")
         .required("Este campo es requerido"),
     },
-
-    {
-      initialValue: date,
-      id: "fecha",
-      type: "date",
-      validator: yup.date().required("Este campo es requerido"),
-    },
-    {
-      initialValue: "",
-      id: "factura",
-      type: "string",
-      validator: yup
-        .string()
-        .min(2, "Debe tener como mínimo dos caracteres.")
-        .required("Este campo es requerido"),
-    },
     {
       initialValue: "",
       id: "proveedor",
-      type: "string",
-      validator: yup.string(),
-    },
-
-    {
-      initialValue: "QUITO",
-      id: "ciudad",
-      type: "string",
-      validator: yup.string(),
-    },
-    {
-      initialValue: "",
-      id: "observacion",
       type: "string",
       validator: yup.string(),
     },
@@ -87,7 +59,7 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     },
     {
       initialValue: "",
-      id: "cedula",
+      id: "programa",
       type: "string",
       validator: yup
         .string()
@@ -96,10 +68,41 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     },
     {
       initialValue: "",
+      id: "cedula",
+      type: "string",
+      validator: yup
+        .string()
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
+    },
+    {
+      initialValue: "QUITO",
+      id: "ciudad",
+      type: "string",
+      validator: yup.string(),
+    },
+    {
+      initialValue: "",
       id: "correo",
       type: "string",
       validator: yup.string().email("El formato del correo no es el correcto"),
     },
+    {
+      initialValue: "",
+      id: "factura",
+      type: "string",
+      validator: yup
+        .string()
+        .min(2, "Debe tener como mínimo dos caracteres.")
+        .required("Este campo es requerido"),
+    },
+    {
+      initialValue: date,
+      id: "fecha",
+      type: "date",
+      validator: yup.date().required("Este campo es requerido"),
+    },
+
     {
       initialValue: 0,
       id: "montoCurso",
@@ -207,6 +210,12 @@ export const createIngresosForm = (): TextFieldProps<IngresoInput>[] => {
     {
       initialValue: "",
       id: "transferencia",
+      type: "string",
+      validator: yup.string(),
+    },
+    {
+      initialValue: "",
+      id: "observacion",
       type: "string",
       validator: yup.string(),
     },

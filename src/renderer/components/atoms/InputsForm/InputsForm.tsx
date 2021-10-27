@@ -107,6 +107,7 @@ const InputsForm = <T,>(
                 )}
               {item.type === "date" && (
                 <DatePicker
+                  inputFormat={"DD/MM/YYYY"}
                   value={formik.values[item.id]}
                   label={item.label}
                   onChange={(e: Date | null) => {
