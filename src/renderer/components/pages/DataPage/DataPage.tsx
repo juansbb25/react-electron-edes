@@ -37,6 +37,7 @@ import {
   fromColToRow,
 } from "./utils";
 import XLSX from "xlsx";
+import "moment/locale/es-mx";
 //import { constant} from "lodash";
 
 type Options = "mensual" | "anual" | "total";
