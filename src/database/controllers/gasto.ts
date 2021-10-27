@@ -26,7 +26,7 @@ export const createGasto = async (
       .find({ code: gasto.dimension })
       .value();
     const exists = !!presupuesto;
-    if (!exists) return { state: false, message: "No existe la dimension" };
+    //if (!exists) return { state: false, message: "No existe la dimension" };
     const id = uuidv4();
     obtainBase(db)
       .push({ ...obtainValorConIva(gasto), id })

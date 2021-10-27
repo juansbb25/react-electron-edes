@@ -32,23 +32,26 @@ export const createIngreso = async (
     const presupuesto = obtainBasePresupuesto(db)
       .find({ code: ingreso.dimension })
       .value();
-    if (!presupuesto)
-      return { state: false, message: "No existe la dimension" };
+    // if (!presupuesto)
+    //   return { state: false, message: "No existe la dimension" };
     const id = uuidv4();
     obtainBase(db)
       .push({ ...obtainMontos(ingreso), id })
       .value();
-    obtainBasePresupuesto(db)
-      .find({ code: ingreso.dimension })
-      .assign({
-        ingresoTotal: presupuesto.ingresoTotal + ingreso.abono,
-        total: presupuesto.total + ingreso.abono,
-      })
-      .value();
+    if (presupuesto) {
+      obtainBasePresupuesto(db)
+        .find({ code: ingreso.dimension })
+        .assign({
+          ingresoTotal: presupuesto.ingresoTotal + ingreso.abono,
+          total: presupuesto.total + ingreso.abono,
+        })
+        .value();
+    }
+
     await db.write();
     return { state: true };
   } catch (error) {
-    console.error(error);
+    console.debug(error);
     return { state: false };
   }
 };

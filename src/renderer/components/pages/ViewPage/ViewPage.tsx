@@ -37,7 +37,7 @@ import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 import moment from "moment";
 import EditPage from "../EditPage";
-import { addGastos } from "../../../../../scripts/addInformation";
+import { updateData } from "../../../../../scripts/addInformation";
 
 type TableType = "ingreso" | "gasto" | "presupuesto" | "rubro" | "";
 
@@ -173,11 +173,6 @@ const ViewPageContainer = ({
         const response = await deleteIngreso(open.row as Ingreso);
         if (response.state) {
           showNotification("Ingreso eliminado correctamente", "success");
-          setState({
-            type: state.type,
-            cols: state.cols,
-            rows: response.values,
-          });
         } else {
           showNotification(response.message || "Ha ocurrido un error", "error");
         }
@@ -185,11 +180,6 @@ const ViewPageContainer = ({
         const response = await deleteGasto(open.row as Gasto);
         if (response.state) {
           showNotification("Gasto eliminado correctamente", "success");
-          setState({
-            type: state.type,
-            cols: state.cols,
-            rows: response.values,
-          });
         } else {
           showNotification(response.message || "Ha ocurrido un error", "error");
         }
@@ -197,11 +187,6 @@ const ViewPageContainer = ({
         const response = await deletePresupuesto(open.row as Presupuesto);
         if (response.state) {
           showNotification("Presupuesto eliminado correctamente", "success");
-          setState({
-            type: state.type,
-            cols: state.cols,
-            rows: response.values,
-          });
         } else {
           showNotification(response.message || "Ha ocurrido un error", "error");
         }
@@ -246,7 +231,7 @@ const ViewPageContainer = ({
         className={classes.root}
         rows={state.rows}
         columns={state.cols}
-        pageSize={20}
+        pageSize={16}
         // rowsPerPageOptions={[20]}
         //checkboxSelection
         //disableSelectionOnClick
@@ -280,7 +265,7 @@ const ViewPageContainer = ({
         type={state.type}
         row={editMode?.row}
       ></EditPage>
-      <Button onClick={() => addGastos()}>Cargar</Button>
+      <Button onClick={() => updateData()}>Cargar</Button>
     </>
   );
 };

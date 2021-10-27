@@ -49,7 +49,7 @@ export const createReport = async (): Promise<Report> => {
         saldosTotal: 0,
         gastoTotal: 0,
         ingresoTotal: 0,
-        total: presupuesto.initValue,
+        total: 0,
       };
     }
   );

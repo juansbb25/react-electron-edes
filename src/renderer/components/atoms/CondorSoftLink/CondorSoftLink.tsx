@@ -6,8 +6,11 @@ const RayoLink: React.FC = () => {
     <Button
       onClick={() => electron.shell.openExternal("https://condor-soft.com/")}
     >
-      <Typography fontSize={{ xs: "0.3rem", md: "1rem" }}>
-        Un software desarrollado por @condorSoft
+      <Typography
+        fontSize={{ xs: "0.3rem", md: "1rem" }}
+        sx={{ color: "#C4C4C4" }}
+      >
+        Powered by @condorSoft
       </Typography>
     </Button>
   );

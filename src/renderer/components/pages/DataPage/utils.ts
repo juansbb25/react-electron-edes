@@ -184,9 +184,7 @@ export const obtainMensualReport = async (
       );
       table[7 + monthColsGasto.length * 2].items.push(
         currencyFormat(
-          totalIngreso(presupuesto.code) +
-            presupuesto.initValue -
-            totalGasto(presupuesto.code)
+          totalIngreso(presupuesto.code) - totalGasto(presupuesto.code)
         )
       );
     });
@@ -213,7 +211,7 @@ export const obtainAnualReport = async (
         gastoTotal: 0,
         ingresoTotal: 0,
         saldosTotal: 0,
-        total: presupuesto.initValue,
+        total: 0,
       };
     });
 
