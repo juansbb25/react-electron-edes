@@ -56,6 +56,19 @@ export const deleteGasto = async (
   try {
     const db = await initDatabase();
     obtainBase(db).remove({ id: gasto.id }).value();
+    const presupuesto = db.chain
+      .get("presupuestos")
+      .find({ code: gasto.dimension })
+      .value();
+    if (presupuesto) {
+      obtainBasePresupuesto(db)
+        .find({ code: gasto.dimension })
+        .assign({
+          gastoTotal: presupuesto.gastoTotal - gasto.valorConIva,
+          total: presupuesto.total + gasto.valorConIva,
+        })
+        .value();
+    }
     await db.write();
     return { state: true, values: db.data?.gastos || [] };
   } catch (error) {

@@ -76,7 +76,7 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
             })
           );
         } else if (type === "presupuesto") {
-          const presupuestoForm = createPresupuestoForm();
+          const presupuestoForm = await createPresupuestoForm();
           const presupuestos = presupuestoForm.map((form) => {
             return {
               ...form,

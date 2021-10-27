@@ -1,5 +1,8 @@
 import InputsForm from "@components/atoms/InputsForm";
-import { InitialValue } from "@components/atoms/InputsForm/types";
+import {
+  InitialValue,
+  TextFieldProps,
+} from "@components/atoms/InputsForm/types";
 import UILayout from "@components/layout/UILayout";
 import { createPresupuesto } from "@database/controllers/presupuesto";
 import withNotifications, { WithNotifications } from "@hocs/withNotifications";
@@ -30,9 +33,30 @@ const PresupuestoPage: React.FC<WithNotifications & WithProgress> = ({
       );
     }
   };
+
+  const [presupuestoForm, setPresupuestoForm] = React.useState<
+    TextFieldProps<Presupuesto>[] | null
+  >(null);
+  React.useEffect(() => {
+    showProgressBar();
+    createPresupuestoForm()
+      .then((res) => {
+        setPresupuestoForm(res);
+      })
+      .catch((err) => {
+        setPresupuestoForm([]);
+        console.debug(err);
+      })
+      .finally(() => closeProgressBar());
+  }, []);
+
   return (
     <UILayout title="Crear Presupuesto">
-      <InputsForm items={createPresupuestoForm()} onSubmit={onSubmit} />
+      {presupuestoForm ? (
+        <InputsForm items={presupuestoForm} onSubmit={onSubmit} />
+      ) : (
+        <></>
+      )}
     </UILayout>
   );
 };

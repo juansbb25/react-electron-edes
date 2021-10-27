@@ -1,6 +1,8 @@
 import { TextFieldProps } from "@components/atoms/InputsForm/types";
 import {} from "@database/controllers";
+import { createReport } from "@database/controllers/estadistica";
 import { Presupuesto } from "@models/presupuesto";
+import { GridValueGetterParams } from "@mui/x-data-grid";
 import * as yup from "yup";
 
 export const getLabel = (key: Extract<keyof Presupuesto, string>): string => {
@@ -16,7 +18,10 @@ export const getLabel = (key: Extract<keyof Presupuesto, string>): string => {
   };
   return diccionary[key];
 };
-export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
+export const createPresupuestoForm = async (): Promise<
+  TextFieldProps<Presupuesto>[]
+> => {
+  const report = await createReport();
   const formCreation = [
     {
       initialValue: "",
@@ -68,18 +73,51 @@ export const createPresupuestoForm = (): TextFieldProps<Presupuesto>[] => {
       initialValue: 0,
       id: "ingresoTotal",
       type: "number",
+      renderInTable: (context: GridValueGetterParams) => {
+        const presupuesto = report.presupuestos.find(
+          (presupuesto) =>
+            presupuesto.code == (context.getValue(context.id, "code") || "")
+        );
+        if (presupuesto) {
+          return Math.round(presupuesto.ingresoTotal * 100) / 100;
+        } else {
+          return 0;
+        }
+      },
     },
     {
       isHiddenInForm: true,
       initialValue: 0,
       id: "gastoTotal",
       type: "number",
+      renderInTable: (context: GridValueGetterParams) => {
+        const presupuesto = report.presupuestos.find(
+          (presupuesto) =>
+            presupuesto.code == (context.getValue(context.id, "code") || "")
+        );
+        if (presupuesto) {
+          return Math.round(presupuesto.gastoTotal * 100) / 100;
+        } else {
+          return 0;
+        }
+      },
     },
     {
       isHiddenInForm: true,
       initialValue: 0,
       id: "total",
       type: "number",
+      renderInTable: (context: GridValueGetterParams) => {
+        const presupuesto = report.presupuestos.find(
+          (presupuesto) =>
+            presupuesto.code == (context.getValue(context.id, "code") || "")
+        );
+        if (presupuesto) {
+          return Math.round(presupuesto.total * 100) / 100;
+        } else {
+          return 0;
+        }
+      },
     },
   ] as const;
   const formWithName = formCreation.map((item) => {

@@ -63,6 +63,20 @@ export const deleteIngreso = async (
     console.debug("eliminando ingreso con id", ingreso, ingreso.id);
     const db = await initDatabase();
     obtainBase(db).remove({ id: ingreso.id }).value();
+    const presupuesto = db.chain
+      .get("presupuestos")
+      .find({ code: ingreso.dimension })
+      .value();
+    if (presupuesto) {
+      obtainBasePresupuesto(db)
+        .find({ code: ingreso.dimension })
+        .assign({
+          ingresoTotal: presupuesto.ingresoTotal - ingreso.abono,
+          total: presupuesto.total - ingreso.abono,
+        })
+        .value();
+    }
+
     await db.write();
     return { state: true, values: db.data?.ingresos ? db.data.ingresos : [] };
   } catch (error) {
