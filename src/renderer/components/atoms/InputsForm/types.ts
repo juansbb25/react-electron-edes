@@ -4,14 +4,18 @@ import * as yup from "yup";
 export type TextFieldProps<T> = {
   id: Extract<keyof T, string>;
   label: string;
-  type: "string" | "number" | "date";
+  type: "string" | "number" | "date" | "array" | "boolean";
   isHiddenInForm?: boolean;
   autocomplete?: string[];
   validator?: any;
-  initialValue: T[keyof T];
+  initialValue: T[keyof T] | Array<any>;
   render?: (context: InitialValue<T>) => string | number | Date;
-  renderInTable?: (context: GridValueGetterParams) => string | number | Date; //used to render in tables mui-x
+  renderInTable?: (
+    context: GridValueGetterParams
+  ) => string | number | Date | React.ReactElement; //used to render in tables mui-x
   editable?: boolean;
+  arrayOptions?: TextFieldProps<Record<string, unknown>>[];
+  full?: boolean;
 };
 
 export type TextFieldPropsList<T> = {

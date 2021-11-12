@@ -26,6 +26,7 @@ export interface GroupPresupuesto {
   tipoPrograma: string;
   responsable: string;
   total: number;
+  gastosRubro: { rubro: string; total: number }[];
 }
 
 export interface Report {
@@ -35,6 +36,7 @@ export interface Report {
 }
 
 export const createReport = async (): Promise<Report> => {
+  console.debug("creando reporte");
   const db = await initDatabase();
   const gastos = db.chain.get("gastos").value();
   const ingresos = db.chain.get("ingresos").value();
@@ -50,6 +52,7 @@ export const createReport = async (): Promise<Report> => {
         gastoTotal: 0,
         ingresoTotal: 0,
         total: 0,
+        gastosRubro: [],
       };
     }
   );
@@ -57,7 +60,6 @@ export const createReport = async (): Promise<Report> => {
   gastos.forEach((gasto) => {
     const month = new Date(gasto.fecha).getMonth();
     const year = new Date(gasto.fecha).getFullYear();
-    console.debug("gastos creacion de estadistica", month, year, gasto.fecha);
     const index = gastosList.findIndex(
       (gastoInList) =>
         gastoInList.month == month &&
@@ -86,12 +88,35 @@ export const createReport = async (): Promise<Report> => {
     const indexPresupuesto = presupuestoList.findIndex(
       (presupuestoInList) => presupuestoInList.code == gasto.dimension
     );
+
     if (indexPresupuesto >= 0) {
+      const indexPresupuestoRubro = presupuestoList[
+        indexPresupuesto
+      ].gastosRubro.findIndex(
+        (gastoRubro) => gastoRubro.rubro == gasto.categoria
+      );
+      const presupuestoRubroList =
+        presupuestoList[indexPresupuesto].gastosRubro;
+
+      if (indexPresupuestoRubro >= 0) {
+        presupuestoList[indexPresupuesto].gastosRubro[indexPresupuestoRubro] = {
+          rubro: presupuestoRubroList[indexPresupuestoRubro].rubro,
+          total:
+            presupuestoRubroList[indexPresupuestoRubro].total +
+            gasto.valorConIva,
+        };
+      } else {
+        presupuestoRubroList.push({
+          rubro: gasto.categoria || "",
+          total: gasto.valorConIva,
+        });
+      }
       const presupuestoGroup = {
         ...presupuestoList[indexPresupuesto],
         gastoTotal:
           presupuestoList[indexPresupuesto].gastoTotal + gasto.valorConIva,
         total: presupuestoList[indexPresupuesto].total - gasto.valorConIva,
+        gastosRubro: presupuestoRubroList,
       };
       presupuestoList[indexPresupuesto] = presupuestoGroup;
     } else {
@@ -105,6 +130,9 @@ export const createReport = async (): Promise<Report> => {
         saldosTotal: 0,
         tipoPrograma: "No generado",
         responsable: "No generado",
+        gastosRubro: [
+          // { total: gasto.valorConIva, rubro: gasto.categoria || "" },
+        ],
       };
       presupuestoList.push(presupuestoGroup);
     }
@@ -162,6 +190,9 @@ export const createReport = async (): Promise<Report> => {
         saldosTotal: 0,
         tipoPrograma: "No generado",
         responsable: "No generado",
+        gastosRubro: [
+          // { total: gasto.valorConIva, rubro: gasto.categoria || "" },
+        ],
       };
       presupuestoList.push(presupuestoGroup);
     }

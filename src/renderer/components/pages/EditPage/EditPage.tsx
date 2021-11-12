@@ -76,12 +76,20 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
             })
           );
         } else if (type === "presupuesto") {
-          const presupuestoForm = await createPresupuestoForm();
+          const presupuestoForm = await createPresupuestoForm(
+            true,
+            row["code"]
+          );
           const presupuestos = presupuestoForm.map((form) => {
             return {
               ...form,
               ...(form.initialValue !== undefined && {
-                initialValue: row[form.id],
+                initialValue:
+                  form.type !== "array"
+                    ? row[form.id]
+                    : row[form.id]
+                    ? row[form.id]
+                    : [],
               }),
             };
           });
@@ -179,6 +187,7 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth="lg"
       >
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent sx={{ padding: 3, minWidth: "400px" }}>

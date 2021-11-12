@@ -7,4 +7,5 @@ export interface Presupuesto {
   total: number;
   tipoPrograma: string;
   responsable: string;
+  rubros: { name: string; initValue: number }[];
 }
