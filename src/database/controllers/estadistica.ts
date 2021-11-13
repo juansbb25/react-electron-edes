@@ -1,4 +1,5 @@
 import { initDatabase } from "@database/initDb";
+import { cleanData } from "@utils/string";
 
 interface Group {
   month: number;
@@ -93,7 +94,8 @@ export const createReport = async (): Promise<Report> => {
       const indexPresupuestoRubro = presupuestoList[
         indexPresupuesto
       ].gastosRubro.findIndex(
-        (gastoRubro) => gastoRubro.rubro == gasto.categoria
+        (gastoRubro) =>
+          cleanData(gastoRubro.rubro) == cleanData(gasto.categoria || "")
       );
       const presupuestoRubroList =
         presupuestoList[indexPresupuesto].gastosRubro;

@@ -39,6 +39,78 @@ export const createPresupuestoForm = async (
   };
 
   const autoformList = await rubros();
+  const formRubros = [
+    {
+      initialValue: "",
+      id: "initValue" as const,
+      type: "number" as const,
+      validator: yup.number().required("Este campo es requerido"),
+      label: "Valor inicial",
+      full: true,
+    },
+    {
+      initialValue: autoformList.length > 0 ? autoformList[0] : "",
+      id: "rubro" as const,
+      type: "string" as const,
+      autocomplete: autoformList as string[],
+      validator: yup.string().required("Este campo es requerido"),
+      label: "Rubro",
+      full: true,
+    },
+    {
+      initialValue: 0,
+      id: "gasto" as const,
+      type: "number" as const,
+      label: "Total Gasto",
+      full: true,
+      isHiddenInForm: true,
+      renderInTable: (context: GridValueGetterParams) => {
+        const presupuesto = report.presupuestos.find(
+          (presupuesto) => presupuesto.code == presupuestoCode
+        );
+        if (presupuesto) {
+          const gastoResult = presupuesto.gastosRubro.find(
+            (gastoRubro) =>
+              gastoRubro.rubro == (context.getValue(context.id, "rubro") || "")
+          );
+          return Math.round((gastoResult ? gastoResult.total : 0) * 100) / 100;
+        } else {
+          return 0;
+        }
+      },
+    },
+    {
+      initialValue: 0,
+      id: "total" as const,
+      type: "number" as const,
+      label: "Total",
+      full: true,
+      isHiddenInForm: true,
+      renderInTable: (context: GridValueGetterParams) => {
+        const presupuesto = report.presupuestos.find(
+          (presupuesto) => presupuesto.code == presupuestoCode
+        );
+        const rubro = (context.getValue(context.id, "rubro") as string) || "";
+        console.debug("presupuesto report", presupuesto, rubro);
+        if (presupuesto) {
+          const gastoResult = presupuesto.gastosRubro.find(
+            (gastoRubro) => gastoRubro.rubro == rubro
+          );
+          console.debug("informe", gastoResult);
+          const initValue =
+            (context.getValue(context.id, "initValue") as number) || 0;
+
+          return (
+            Math.round(
+              (gastoResult ? initValue - gastoResult.total : initValue) * 100
+            ) / 100
+          );
+        } else {
+          return 0;
+        }
+      },
+    },
+  ];
   const formCreation = [
     {
       isHiddenInForm: isHiddenId,
@@ -158,79 +230,7 @@ export const createPresupuestoForm = async (
       initialValue: [],
       id: "rubros" as const,
       type: "array" as const,
-      arrayOptions: [
-        {
-          initialValue: "",
-          id: "initValue" as const,
-          type: "number" as const,
-          validator: yup.number().required("Este campo es requerido"),
-          label: "Valor inicial",
-          full: true,
-        },
-        {
-          initialValue: autoformList.length > 0 ? autoformList[0] : "",
-          id: "rubro" as const,
-          type: "string" as const,
-          autocomplete: autoformList as string[],
-          validator: yup.string().required("Este campo es requerido"),
-          label: "Rubro",
-          full: true,
-        },
-        {
-          initialValue: 0,
-          id: "gasto" as const,
-          type: "number" as const,
-          label: "Total Gasto",
-          full: true,
-          isHiddenInForm: true,
-          renderInTable: (context: GridValueGetterParams) => {
-            const presupuesto = report.presupuestos.find(
-              (presupuesto) => presupuesto.code == presupuestoCode
-            );
-            if (presupuesto) {
-              const gastoResult = presupuesto.gastosRubro.find(
-                (gastoRubro) =>
-                  gastoRubro.rubro ==
-                  (context.getValue(context.id, "rubro") || "")
-              );
-              return gastoResult ? gastoResult.total : 0;
-            } else {
-              return 0;
-            }
-          },
-        },
-        {
-          initialValue: 0,
-          id: "total" as const,
-          type: "number" as const,
-          label: "Total",
-          full: true,
-          isHiddenInForm: true,
-          renderInTable: (context: GridValueGetterParams) => {
-            const presupuesto = report.presupuestos.find(
-              (presupuesto) => presupuesto.code == presupuestoCode
-            );
-            console.debug(
-              "presupuesto report",
-              presupuesto,
-              context.getValue(context.id, "rubro") || ""
-            );
-            if (presupuesto) {
-              const gastoResult = presupuesto.gastosRubro.find(
-                (gastoRubro) =>
-                  gastoRubro.rubro ==
-                  (context.getValue(context.id, "rubro") || "")
-              );
-              console.debug("informe", gastoResult);
-              return gastoResult
-                ? presupuesto.initValue - gastoResult.total
-                : presupuesto.total;
-            } else {
-              return 0;
-            }
-          },
-        },
-      ],
+      arrayOptions: formRubros,
     },
   ];
   const formWithName = formCreation.map((item) => {

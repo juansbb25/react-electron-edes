@@ -18,6 +18,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Typography,
 } from "@mui/material";
 import { GridRowData } from "@mui/x-data-grid";
 import React, { useEffect, useRef, useState } from "react";
@@ -25,6 +26,7 @@ import { createIngresosForm } from "../EntrysPage/formDefinition";
 import { createGastosForm } from "../GastoPage/formDefinition";
 import { createPresupuestoForm } from "../PresupuestoPage/formDefinition";
 import { createRubroForm } from "../RubrosPage/formDefinition";
+import NotCreatedCategories from "./NotCreatedCategories";
 type TableType = "ingreso" | "gasto" | "presupuesto" | "rubro" | "";
 type EditPageProps = {
   title: string;
@@ -193,7 +195,31 @@ const EditPage: React.FC<EditPageProps & WithNotifications & WithProgress> = ({
         <DialogContent sx={{ padding: 3, minWidth: "400px" }}>
           <DialogTitle id="alert-dialog-title"></DialogTitle>
           {items ? (
-            <InputsForm items={items} onSubmit={manageUpdate} ref={childRef} />
+            <>
+              <InputsForm
+                items={items}
+                onSubmit={manageUpdate}
+                ref={childRef}
+              />
+              {type === "presupuesto" && (
+                <>
+                  <Typography sx={{ marginTop: 4 }}>
+                    Rubros no creados en el presupuesto
+                  </Typography>
+                  <NotCreatedCategories
+                    items={items}
+                    code={row ? row["code"] : ""}
+                    excludeList={
+                      !row
+                        ? []
+                        : row["rubros"]?.map((rubro: any) => rubro.rubro)
+                        ? row["rubros"]?.map((rubro: any) => rubro.rubro)
+                        : []
+                    }
+                  />
+                </>
+              )}
+            </>
           ) : (
             <CircularProgress color="primary" size={70} />
           )}
