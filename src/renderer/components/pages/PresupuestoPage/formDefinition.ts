@@ -4,6 +4,7 @@ import { createReport } from "@database/controllers/estadistica";
 import { getRubros } from "@database/controllers/rubro";
 import { Presupuesto } from "@models/presupuesto";
 import { GridValueGetterParams } from "@mui/x-data-grid";
+import { cleanData } from "@utils/string";
 import * as yup from "yup";
 
 export const getLabel = (key: Extract<keyof Presupuesto, string>): string => {
@@ -71,7 +72,8 @@ export const createPresupuestoForm = async (
         if (presupuesto) {
           const gastoResult = presupuesto.gastosRubro.find(
             (gastoRubro) =>
-              gastoRubro.rubro == (context.getValue(context.id, "rubro") || "")
+              cleanData(gastoRubro.rubro) ==
+              cleanData((context.getValue(context.id, "rubro") as string) || "")
           );
           return Math.round((gastoResult ? gastoResult.total : 0) * 100) / 100;
         } else {
@@ -83,7 +85,7 @@ export const createPresupuestoForm = async (
       initialValue: 0,
       id: "total" as const,
       type: "number" as const,
-      label: "Total",
+      label: "Total Saldo",
       full: true,
       isHiddenInForm: true,
       renderInTable: (context: GridValueGetterParams) => {
@@ -94,7 +96,7 @@ export const createPresupuestoForm = async (
         console.debug("presupuesto report", presupuesto, rubro);
         if (presupuesto) {
           const gastoResult = presupuesto.gastosRubro.find(
-            (gastoRubro) => gastoRubro.rubro == rubro
+            (gastoRubro) => cleanData(gastoRubro.rubro) == cleanData(rubro)
           );
           console.debug("informe", gastoResult);
           const initValue =
