@@ -80,7 +80,11 @@ export const getPresupuestos = async (): Promise<
     const db = await initDatabase();
     return {
       state: true,
-      values: obtainBase(db).value(),
+      values: obtainBase(db)
+        .value()
+        .sort((iterator, iterator2) =>
+          iterator.code.localeCompare(iterator2.code)
+        ),
     };
   } catch (error) {
     console.error(error);

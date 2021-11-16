@@ -59,7 +59,11 @@ export const getRubros = async (): Promise<ServerResponse<Rubro[]>> => {
     const db = await initDatabase();
     return {
       state: true,
-      values: obtainBase(db).value(),
+      values: obtainBase(db)
+        .value()
+        .sort((iterator, iterator2) =>
+          iterator.nombre.localeCompare(iterator2.nombre)
+        ),
     };
   } catch (error) {
     console.error(error);

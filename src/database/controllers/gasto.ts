@@ -125,7 +125,11 @@ export const getGastos = async (): Promise<ServerResponse<Gasto[]>> => {
     const db = await initDatabase();
     return {
       state: true,
-      values: obtainBase(db).value(),
+      values: obtainBase(db)
+        .value()
+        .sort((iterator, iterator2) =>
+          iterator.fecha > iterator2.fecha ? -1 : 1
+        ),
     };
   } catch (error) {
     console.error(error);
