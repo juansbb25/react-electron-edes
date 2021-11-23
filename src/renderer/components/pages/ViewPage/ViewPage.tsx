@@ -37,7 +37,7 @@ import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 import moment from "moment";
 import EditPage from "../EditPage";
-import { updateData } from "../../../../../scripts/addInformation";
+// import { updateData } from "../../../../../scripts/addInformation";
 
 type TableType = "ingreso" | "gasto" | "presupuesto" | "rubro" | "";
 
@@ -267,7 +267,7 @@ const ViewPageContainer = ({
         type={state.type}
         row={editMode?.row}
       ></EditPage>
-      <Button onClick={() => updateData()}>Cargar</Button>
+      {/* <Button onClick={() => updateData()}>Cargar</Button> */}
     </>
   );
 };
