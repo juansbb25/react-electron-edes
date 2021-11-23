@@ -9,9 +9,6 @@ const obtainBase = (db: EnhancedDb) => {
   return db.chain.get("ingresos");
 };
 
-const obtainBasePresupuesto = (db: EnhancedDb) => {
-  return db.chain.get("presupuestos");
-};
 const obtainMontos = (ingreso: IngresoInput) => {
   return {
     ...ingreso,
@@ -29,24 +26,13 @@ export const createIngreso = async (
 ): Promise<ServerResponse<undefined>> => {
   try {
     const db = await initDatabase();
-    const presupuesto = obtainBasePresupuesto(db)
-      .find({ code: ingreso.dimension })
-      .value();
+
     // if (!presupuesto)
     //   return { state: false, message: "No existe la dimension" };
     const id = uuidv4();
     obtainBase(db)
       .push({ ...obtainMontos(ingreso), id })
       .value();
-    if (presupuesto) {
-      obtainBasePresupuesto(db)
-        .find({ code: ingreso.dimension })
-        .assign({
-          ingresoTotal: presupuesto.ingresoTotal + ingreso.abono,
-          total: presupuesto.total + ingreso.abono,
-        })
-        .value();
-    }
 
     await db.write();
     return { state: true };
@@ -63,20 +49,6 @@ export const deleteIngreso = async (
     console.debug("eliminando ingreso con id", ingreso, ingreso.id);
     const db = await initDatabase();
     obtainBase(db).remove({ id: ingreso.id }).value();
-    const presupuesto = db.chain
-      .get("presupuestos")
-      .find({ code: ingreso.dimension })
-      .value();
-    if (presupuesto) {
-      obtainBasePresupuesto(db)
-        .find({ code: ingreso.dimension })
-        .assign({
-          ingresoTotal: presupuesto.ingresoTotal - ingreso.abono,
-          total: presupuesto.total - ingreso.abono,
-        })
-        .value();
-    }
-
     await db.write();
     return { state: true, values: db.data?.ingresos ? db.data.ingresos : [] };
   } catch (error) {
@@ -96,22 +68,8 @@ export const updateIngreso = async (
       .value();
     if (!ingresoAnterior)
       return { state: false, message: "No existe el ingreso a actualizar" };
-    const presupuesto = db.chain
-      .get("presupuestos")
-      .find({ code: ingreso.dimension })
-      .value();
-    if (!presupuesto)
-      return { state: false, message: "No existe la dimensión" };
     const ingresos = db.chain.get("ingresos");
     ingresos.find({ id: ingreso.id }).assign(obtainMontos(ingreso)).value();
-    obtainBasePresupuesto(db)
-      .find({ code: ingreso.dimension })
-      .assign({
-        ingresoTotal:
-          presupuesto.ingresoTotal - ingresoAnterior.abono + ingreso.abono,
-        total: presupuesto.total - ingresoAnterior.abono + ingreso.abono,
-      })
-      .value();
     await db.write();
     return { state: true };
   } catch (error) {

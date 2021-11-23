@@ -81,6 +81,7 @@ export const updateGasto = async (
   gasto: Gasto
 ): Promise<ServerResponse<undefined>> => {
   try {
+    console.debug("gasto", gasto);
     const db = await initDatabase();
     const gastoAnterior = db.chain.get("gastos").find({ id: gasto.id }).value();
     if (!gastoAnterior)
@@ -95,23 +96,7 @@ export const updateGasto = async (
       return { state: false, message: "No existe la dimensión" };
 
     const gastos = db.chain.get("gastos");
-    gastos
-      .find({ dimension: gasto.dimension })
-      .assign(obtainValorConIva(gasto))
-      .value();
-    obtainBasePresupuesto(db)
-      .find({ code: gasto.dimension })
-      .assign({
-        gastoTotal:
-          presupuesto.gastoTotal +
-          obtainValorConIva(gasto).valorConIva -
-          gastoAnterior.valorConIva,
-        total:
-          presupuesto.total -
-          obtainValorConIva(gasto).valorConIva +
-          gastoAnterior.valorConIva,
-      })
-      .value();
+    gastos.find({ id: gasto.id }).assign(obtainValorConIva(gasto)).value();
     await db.write();
     return { state: true };
   } catch (error) {

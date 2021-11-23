@@ -5,6 +5,7 @@ export type TextFieldProps<T> = {
   id: Extract<keyof T, string>;
   label: string;
   type: "string" | "number" | "date" | "array" | "boolean";
+  isHiddenInTable?: boolean;
   isHiddenInForm?: boolean;
   autocomplete?: string[];
   validator?: any;

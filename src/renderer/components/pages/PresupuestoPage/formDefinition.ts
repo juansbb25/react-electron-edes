@@ -233,6 +233,11 @@ export const createPresupuestoForm = async (
       id: "rubros" as const,
       type: "array" as const,
       arrayOptions: formRubros,
+      isHiddenInTable: true,
+      renderInTable: (context: GridValueGetterParams) => {
+        console.debug(context);
+        return "";
+      },
     },
   ];
   const formWithName = formCreation.map((item) => {

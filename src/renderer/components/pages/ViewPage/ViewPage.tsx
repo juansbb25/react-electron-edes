@@ -37,7 +37,7 @@ import withNotifications, { WithNotifications } from "@hocs/withNotifications";
 import withProgressBar, { WithProgress } from "@hocs/withProgressBarDialog";
 import moment from "moment";
 import EditPage from "../EditPage";
-// import { updateData } from "../../../../../scripts/addInformation";
+import { updateData } from "../../../../../scripts/addInformation";
 
 type TableType = "ingreso" | "gasto" | "presupuesto" | "rubro" | "";
 
@@ -116,6 +116,8 @@ const ViewPageContainer = ({
           renderCell: key.renderInTable,
         }),
         ...(key.id == "id" && { hide: true }),
+        ...(key.isHiddenInTable && { hide: true }),
+        ...(key.isHiddenInTable && { headerName: "" }),
         ...(key.id == "fecha" && {
           renderCell: (params) =>
             moment(new Date(params.value as string)).format("DD-MM-YYYY"),
@@ -265,7 +267,7 @@ const ViewPageContainer = ({
         type={state.type}
         row={editMode?.row}
       ></EditPage>
-      {/* <Button onClick={() => updateData()}>Cargar</Button> */}
+      <Button onClick={() => updateData()}>Cargar</Button>
     </>
   );
 };

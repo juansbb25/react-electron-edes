@@ -105,19 +105,19 @@ export const createReport = async (): Promise<Report> => {
           rubro: presupuestoRubroList[indexPresupuestoRubro].rubro,
           total:
             presupuestoRubroList[indexPresupuestoRubro].total +
-            gasto.valorConIva,
+            gasto.valorSinIva,
         };
       } else {
         presupuestoRubroList.push({
           rubro: gasto.categoria || "",
-          total: gasto.valorConIva,
+          total: gasto.valorSinIva,
         });
       }
       const presupuestoGroup = {
         ...presupuestoList[indexPresupuesto],
         gastoTotal:
-          presupuestoList[indexPresupuesto].gastoTotal + gasto.valorConIva,
-        total: presupuestoList[indexPresupuesto].total - gasto.valorConIva,
+          presupuestoList[indexPresupuesto].gastoTotal + gasto.valorSinIva,
+        total: presupuestoList[indexPresupuesto].total - gasto.valorSinIva,
         gastosRubro: presupuestoRubroList,
       };
       presupuestoList[indexPresupuesto] = presupuestoGroup;
@@ -126,9 +126,9 @@ export const createReport = async (): Promise<Report> => {
         code: gasto.dimension,
         initValue: 0,
         programa: "Presupuesto creado automaticamente",
-        gastoTotal: gasto.valorConIva,
+        gastoTotal: gasto.valorSinIva,
         ingresoTotal: 0,
-        total: 0 - gasto.valorConIva,
+        total: 0 - gasto.valorSinIva,
         saldosTotal: 0,
         tipoPrograma: "No generado",
         responsable: "No generado",
