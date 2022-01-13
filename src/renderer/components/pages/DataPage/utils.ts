@@ -86,7 +86,7 @@ export const obtainMensualReport = async (
     const result = gastos
       .filter((gasto) => gasto.dimension == dimension)
       .reduce((previousValue, currentValue) => {
-        return previousValue + currentValue.valoresConIva;
+        return previousValue + currentValue.valoresSinIva;
       }, 0);
     return result;
   };
@@ -127,7 +127,7 @@ export const obtainMensualReport = async (
               gasto.month == data.month &&
               gasto.year == data.year &&
               gasto.dimension == presupuesto.code
-          )?.valoresConIva || 0
+          )?.valoresSinIva || 0
         )
       );
       return {
@@ -221,8 +221,8 @@ export const obtainAnualReport = async (
       (presupuesto) => presupuesto.code == gasto.dimension
     );
     presupuestos[index].gastoTotal =
-      presupuestos[index].gastoTotal + gasto.valoresConIva;
-    presupuestos[index].total = presupuestos[index].total - gasto.valoresConIva;
+      presupuestos[index].gastoTotal + gasto.valoresSinIva;
+    presupuestos[index].total = presupuestos[index].total - gasto.valoresSinIva;
   });
 
   ingresos.forEach((ingreso) => {
