@@ -30,6 +30,7 @@ export interface Gasto extends Transaction {
   valorConIva: number;
   valorSinIva: number;
   req: string;
+  responsable: string;
 }
 export interface Rubro {
   id: string;

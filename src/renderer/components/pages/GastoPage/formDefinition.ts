@@ -154,6 +154,12 @@ export const createGastosForm = async (): Promise<
     },
     {
       initialValue: "",
+      id: "responsable",
+      type: "string",
+      validator: yup.string(),
+    },
+    {
+      initialValue: "",
       id: "observacion",
       type: "string",
       validator: yup.string(),
